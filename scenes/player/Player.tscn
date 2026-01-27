@@ -1,4 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://brwopraptvbiv"]
+[gd_scene load_steps=4 format=3 uid="uid://brwopraptvbiv"]
+
+[ext_resource type="Texture2D" uid="uid://cy0nye0c5e82a" path="res://icon.svg" id="1_gfjak"]
+[ext_resource type="Script" uid="uid://bio3afoxa4838" path="res://scenes/player/ThoughtBubble.gd" id="2_4kuee"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o8nba"]
 resource_local_to_scene = true
@@ -7,5 +10,22 @@ height = 24.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_gfjak")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_o8nba")
+
+[node name="ThoughtBubble" type="Node2D" parent="."]
+position = Vector2(-20, -92)
+script = ExtResource("2_4kuee")
+
+[node name="ColorRect" type="ColorRect" parent="ThoughtBubble"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="ThoughtBubble"]
+offset_right = 40.0
+offset_bottom = 23.0
+horizontal_alignment = 1
+vertical_alignment = 1

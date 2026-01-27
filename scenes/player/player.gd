@@ -5,6 +5,8 @@ var goal_shape: GameTypes.ShapeType
 var goal_color: GameTypes.ColorType
 var has_goal := true
 
+@onready var thought_bubble := $ThoughtBubble
+
 func _physics_process(_delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
@@ -24,5 +26,9 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _ready() -> void:
-	goal_shape = GameTypes.ShapeType.CIRCLE
-	goal_color = GameTypes.ColorType.RED
+	thought_bubble.set_icon(
+		GameTypes.ShapeType.TRIANGLE,
+		GameTypes.ColorType.BLUE
+	)
+	#goal_shape = GameTypes.ShapeType.CIRCLE
+	#goal_color = GameTypes.ColorType.RED

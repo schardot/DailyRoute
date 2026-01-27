@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bx3oguwcxqllf"]
+[gd_scene load_steps=7 format=3 uid="uid://bx3oguwcxqllf"]
 
 [ext_resource type="Script" uid="uid://br4nwm45o4d25" path="res://scenes/main/Game.gd" id="1_15kd6"]
 [ext_resource type="PackedScene" uid="uid://brwopraptvbiv" path="res://scenes/player/Player.tscn" id="1_q24mn"]
 [ext_resource type="Script" uid="uid://bifr411verfq1" path="res://scenes/player/player.gd" id="2_gyg6b"]
-[ext_resource type="Texture2D" uid="uid://cy0nye0c5e82a" path="res://icon.svg" id="3_dc040"]
 [ext_resource type="PackedScene" uid="uid://b1vm5fu64tcxp" path="res://scenes/world/Store.tscn" id="4_gyg6b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q24mn"]
@@ -83,16 +82,13 @@ color = Color(0.2357319, 0.23573193, 0.2357319, 1)
 position = Vector2(1005, 361)
 script = ExtResource("2_gyg6b")
 
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
-position = Vector2(3, -5)
-texture = ExtResource("3_dc040")
-
 [node name="LeftBlock" type="Node2D" parent="."]
 light_mask = 2
 position = Vector2(2, 26)
 
 [node name="Store" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 88)
+shape = 2
 
 [node name="Store2" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 209)
@@ -120,12 +116,13 @@ metadata/_edit_group_ = true
 
 [node name="Store" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 88)
-shape = 2
+shape = 1
 color = 2
 
 [node name="Store2" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 209)
 shape = 1
+color = 0
 
 [node name="Store3" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 337)
@@ -137,3 +134,4 @@ color = 1
 
 [node name="Store5" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 593)
+shape = 4
