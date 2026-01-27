@@ -37,4 +37,9 @@ func set_goal(shape: GameTypes.ShapeType, color: GameTypes.ColorType):
 	goal_color = color
 	has_goal = true
 
+	thought_bubble.show()
 	thought_bubble.set_icon(shape, color)
+
+func clear_goal():
+	has_goal = false
+	thought_bubble.hide()
