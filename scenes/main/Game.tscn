@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bx3oguwcxqllf"]
+[gd_scene load_steps=8 format=3 uid="uid://bx3oguwcxqllf"]
 
 [ext_resource type="Script" uid="uid://br4nwm45o4d25" path="res://scenes/main/Game.gd" id="1_15kd6"]
 [ext_resource type="PackedScene" uid="uid://brwopraptvbiv" path="res://scenes/player/Player.tscn" id="1_q24mn"]
+[ext_resource type="PackedScene" uid="uid://dnchrhae8ay0m" path="res://scenes/CrowdMember.tscn" id="2_15kd6"]
 [ext_resource type="Script" uid="uid://bifr411verfq1" path="res://scenes/player/player.gd" id="2_gyg6b"]
 [ext_resource type="PackedScene" uid="uid://b1vm5fu64tcxp" path="res://scenes/world/Store.tscn" id="4_gyg6b"]
 
@@ -13,119 +14,127 @@ size = Vector2(1000, 720)
 
 [node name="Node2D" type="Node2D" groups=["game"]]
 script = ExtResource("1_15kd6")
+crowd_scene = ExtResource("2_15kd6")
+crowd_count = 100
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="Camera"]
 position = Vector2(642, 360)
 
-[node name="WorldBounds" type="Node2D" parent="."]
-visible = false
+[node name="World" type="Node2D" parent="."]
 
-[node name="Wall_Bottom" type="StaticBody2D" parent="WorldBounds"]
+[node name="Bounds" type="Node2D" parent="World"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds/Wall_Bottom"]
+[node name="Wall_Bottom" type="StaticBody2D" parent="World/Bounds"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Bounds/Wall_Bottom"]
 position = Vector2(639, 717)
 scale = Vector2(2.8, 0.5)
 shape = SubResource("RectangleShape2D_q24mn")
 
-[node name="Wall_Top" type="StaticBody2D" parent="WorldBounds"]
+[node name="Wall_Top" type="StaticBody2D" parent="World/Bounds"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds/Wall_Top"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Bounds/Wall_Top"]
 position = Vector2(641, 6)
 scale = Vector2(2.8, 0.5)
 shape = SubResource("RectangleShape2D_q24mn")
 
-[node name="Wall_Left" type="StaticBody2D" parent="WorldBounds"]
+[node name="Wall_Left" type="StaticBody2D" parent="World/Bounds"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds/Wall_Left"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Bounds/Wall_Left"]
 position = Vector2(-5, 359)
 rotation = 1.5707964
 scale = Vector2(1.6, 0.5)
 shape = SubResource("RectangleShape2D_q24mn")
 
-[node name="Wall_Right" type="StaticBody2D" parent="WorldBounds"]
+[node name="Wall_Right" type="StaticBody2D" parent="World/Bounds"]
 position = Vector2(-47, 73)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds/Wall_Right"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Bounds/Wall_Right"]
 position = Vector2(1332, 285)
 rotation = 1.5707964
 scale = Vector2(1.6, 0.5)
 shape = SubResource("RectangleShape2D_q24mn")
 
-[node name="WordVisuals" type="Node2D" parent="."]
+[node name="Visuals" type="Node2D" parent="."]
 
-[node name="Floor" type="ColorRect" parent="WordVisuals"]
-custom_minimum_size = Vector2(1280, 720)
-offset_right = 424.0
-offset_bottom = 245.0
-color = Color(0.36499706, 0.46011692, 0.44878465, 1)
+[node name="Street" type="Area2D" parent="Visuals"]
+z_index = 1
 
-[node name="Frame" type="Node2D" parent="WordVisuals"]
-
-[node name="Line2D" type="Line2D" parent="WordVisuals/Frame"]
-points = PackedVector2Array(0, 0, 1280, 0, 1280, 720, 0, 720, 0, 0)
-
-[node name="Street" type="Area2D" parent="WordVisuals"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WordVisuals/Street"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Street"]
 position = Vector2(640, 360)
 shape = SubResource("RectangleShape2D_15kd6")
 
-[node name="Node2D" type="Node2D" parent="WordVisuals/Street"]
+[node name="Node2D" type="Node2D" parent="Visuals/Street"]
 
-[node name="ColorRect" type="ColorRect" parent="WordVisuals/Street/Node2D"]
+[node name="ColorRect" type="ColorRect" parent="Visuals/Street/Node2D"]
 offset_left = 140.0
 offset_right = 1140.0
 offset_bottom = 720.0
 color = Color(0.2357319, 0.23573193, 0.2357319, 1)
 
+[node name="Floor" type="ColorRect" parent="Visuals"]
+custom_minimum_size = Vector2(1280, 720)
+offset_right = 424.0
+offset_bottom = 245.0
+color = Color(0.36499706, 0.46011692, 0.44878465, 1)
+
+[node name="Frame" type="Node2D" parent="Visuals"]
+
+[node name="Line2D" type="Line2D" parent="Visuals/Frame"]
+points = PackedVector2Array(0, 0, 1280, 0, 1280, 720, 0, 720, 0, 0)
+
 [node name="Player" parent="." instance=ExtResource("1_q24mn")]
+z_index = 2
 position = Vector2(1005, 361)
 script = ExtResource("2_gyg6b")
 
-[node name="LeftBlock" type="Node2D" parent="."]
-light_mask = 2
-position = Vector2(2, 26)
+[node name="Gameplay" type="Node2D" parent="."]
 
-[node name="Store" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
-position = Vector2(73, 87)
-color = 0
-
-[node name="Store2" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
-position = Vector2(73, 209)
-color = 1
-
-[node name="Store3" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
-position = Vector2(73, 337)
-color = 2
-
-[node name="Store4" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
-position = Vector2(73, 465)
-
-[node name="Store5" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
-position = Vector2(73, 593)
-color = 4
-
-[node name="RightBlock" type="Node2D" parent="."]
+[node name="RightBlock" type="Node2D" parent="Gameplay"]
 light_mask = 2
 position = Vector2(1122, 26)
-metadata/_edit_group_ = true
 
-[node name="Store" parent="RightBlock" instance=ExtResource("4_gyg6b")]
+[node name="Store" parent="Gameplay/RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 88)
 color = 5
 
-[node name="Store2" parent="RightBlock" instance=ExtResource("4_gyg6b")]
+[node name="Store2" parent="Gameplay/RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 209)
 color = 6
 
-[node name="Store3" parent="RightBlock" instance=ExtResource("4_gyg6b")]
+[node name="Store3" parent="Gameplay/RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 337)
 color = 7
 
-[node name="Store4" parent="RightBlock" instance=ExtResource("4_gyg6b")]
+[node name="Store4" parent="Gameplay/RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 465)
 color = 8
 
-[node name="Store5" parent="RightBlock" instance=ExtResource("4_gyg6b")]
+[node name="Store5" parent="Gameplay/RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 593)
 color = 9
+
+[node name="LeftBlock" type="Node2D" parent="Gameplay"]
+light_mask = 2
+position = Vector2(2, 26)
+
+[node name="Store" parent="Gameplay/LeftBlock" instance=ExtResource("4_gyg6b")]
+position = Vector2(73, 87)
+color = 0
+
+[node name="Store2" parent="Gameplay/LeftBlock" instance=ExtResource("4_gyg6b")]
+position = Vector2(73, 209)
+color = 1
+
+[node name="Store3" parent="Gameplay/LeftBlock" instance=ExtResource("4_gyg6b")]
+position = Vector2(73, 337)
+color = 2
+
+[node name="Store4" parent="Gameplay/LeftBlock" instance=ExtResource("4_gyg6b")]
+position = Vector2(73, 465)
+
+[node name="Store5" parent="Gameplay/LeftBlock" instance=ExtResource("4_gyg6b")]
+position = Vector2(73, 593)
+color = 4

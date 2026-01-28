@@ -5,6 +5,9 @@ const ASSIGNMENTS_TO_WIN := 5
 var completed_assignments := 0
 var level_completed := false
 
+@export var crowd_scene: PackedScene
+@export var crowd_count := 10
+
 
 @onready var player = $Player
 
@@ -19,6 +22,14 @@ func _ready():
 	add_to_group("game")
 	stores = get_tree().get_nodes_in_group("stores")
 	generate_assignment()
+	for i in crowd_count:
+		var npc = crowd_scene.instantiate()
+		npc.global_position = Vector2(
+			randf_range(100, 800),
+			randf_range(100, 500)
+		)
+		add_child(npc)
+
 
 func on_assignment_completed():
 	if level_completed:
@@ -58,3 +69,4 @@ func end_level():
 	level_completed = true
 	print("🎄 LEVEL COMPLETED 🎄")
 	player.clear_goal()
+	SceneManager.go_to_end_screen()
