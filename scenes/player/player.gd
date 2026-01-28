@@ -1,7 +1,6 @@
 extends CharacterBody2D
 
-@export var  speed := 200.0
-var goal_shape: GameTypes.ShapeType
+@export var  speed := 500.0
 var goal_color: GameTypes.ColorType
 var has_goal := false
 
@@ -27,14 +26,17 @@ func _physics_process(_delta: float) -> void:
 
 func _ready() -> void:
 	thought_bubble.set_icon(
-		GameTypes.ShapeType.TRIANGLE,
 		GameTypes.ColorType.BLUE
 	)
 	
 
-func set_goal(shape: GameTypes.ShapeType, color: GameTypes.ColorType):
-	goal_shape = shape
+func set_goal(color: GameTypes.ColorType):
 	goal_color = color
 	has_goal = true
 
-	thought_bubble.set_icon(shape, color)
+	thought_bubble.show()
+	thought_bubble.set_icon(color)
+
+func clear_goal():
+	has_goal = false
+	thought_bubble.hide()

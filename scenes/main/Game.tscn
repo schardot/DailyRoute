@@ -11,7 +11,7 @@ size = Vector2(455, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_15kd6"]
 size = Vector2(1000, 720)
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" groups=["game"]]
 script = ExtResource("1_15kd6")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -87,27 +87,23 @@ light_mask = 2
 position = Vector2(2, 26)
 
 [node name="Store" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
-position = Vector2(73, 88)
-shape = 2
+position = Vector2(73, 87)
+color = 0
 
 [node name="Store2" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 209)
-shape = 1
 color = 1
 
 [node name="Store3" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 337)
-shape = 2
 color = 2
 
 [node name="Store4" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 465)
-shape = 3
-color = 2
 
 [node name="Store5" parent="LeftBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 593)
-color = 0
+color = 4
 
 [node name="RightBlock" type="Node2D" parent="."]
 light_mask = 2
@@ -116,22 +112,20 @@ metadata/_edit_group_ = true
 
 [node name="Store" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 88)
-shape = 1
-color = 2
+color = 5
 
 [node name="Store2" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 209)
-shape = 1
-color = 0
+color = 6
 
 [node name="Store3" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 337)
+color = 7
 
 [node name="Store4" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 465)
-shape = 3
-color = 1
+color = 8
 
 [node name="Store5" parent="RightBlock" instance=ExtResource("4_gyg6b")]
 position = Vector2(73, 593)
-shape = 4
+color = 9
