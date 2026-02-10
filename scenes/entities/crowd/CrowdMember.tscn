@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dnchrhae8ay0m"]
 
-[ext_resource type="Script" uid="uid://dwbr10qtc8i5h" path="res://scenes/ui/CrowdMember.gd" id="1_g3vus"]
+[ext_resource type="Script" uid="uid://dwbr10qtc8i5h" path="res://scenes/entities/crowd/CrowdMember.gd" id="1_g3vus"]
 [ext_resource type="Texture2D" uid="uid://81ry5p5m50iv" path="res://assets/sprites/Crowd.png" id="2_oc416"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oc416"]
