@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://cgq5apkln5flv"]
+
+[ext_resource type="PackedScene" uid="uid://c7mt612o4cb6b" path="res://scenes/app/World.tscn" id="1_10wk3"]
+[ext_resource type="Script" uid="uid://d1n0ypxcdvg2i" path="res://scenes/app/Tutorial.gd" id="1_h0jlu"]
+[ext_resource type="Script" uid="uid://bitdd0tndlkn0" path="res://systems/TutorialController.gd" id="2_4m1gl"]
+[ext_resource type="AudioStream" uid="uid://ds3db3fujy650" path="res://assets/sounds/dragon-studio-bell-ring-390294.mp3" id="3_h0jlu"]
+
+[node name="Tutorial" type="Node2D"]
+script = ExtResource("1_h0jlu")
+
+[node name="TutorialController" type="Node" parent="."]
+script = ExtResource("2_4m1gl")
+
+[node name="World" parent="." instance=ExtResource("1_10wk3")]
+
+[node name="BellSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_h0jlu")
