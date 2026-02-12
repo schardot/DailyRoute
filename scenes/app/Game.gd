@@ -8,9 +8,11 @@ const ASSIGNMENTS_TO_WIN := 5
 var completed_assignments := 0
 var level_completed := false
 
-@onready var player: Node = $Entities/Player
-@onready var street: Area2D = $Environment/Street
-@onready var crowd_container: Node2D = $Entities/Crowd
+#@onready var player: Node = $World/Entities/Player
+@onready var world: Node2D  = $World
+@onready var player: Node = world.get_player()
+@onready var street: Area2D = $World/Environment/Street
+@onready var crowd_container: Node2D = $World/Entities/Crowd
 
 var stores: Array = []
 
