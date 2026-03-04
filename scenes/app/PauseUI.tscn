@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://dd5g501s26125"]
+
+[ext_resource type="Script" uid="uid://cgpfaherwo0jm" path="res://scenes/app/PauseUI.gd" id="1_6cosq"]
+
+[node name="PauseUi" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_6cosq")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PauseButton" type="Button" parent="Control"]
+process_mode = 3
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Pause"

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameTypes="*res://systems/GameTypes.gd"
 SceneManager="*res://systems/SceneManager.gd"
+PauseManager="*res://systems/PauseManager.gd"
 
 [display]
 
