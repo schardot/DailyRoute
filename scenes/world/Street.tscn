@@ -1,10 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bljngtx2b4nxw"]
+[gd_scene load_steps=3 format=3 uid="uid://bljngtx2b4nxw"]
+
+[ext_resource type="Script" uid="uid://c2sbxm08le80o" path="res://scenes/world/Street.gd" id="1_sbfnq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_15kd6"]
 size = Vector2(1000, 720)
 
 [node name="Street" type="Area2D"]
 z_index = 1
+script = ExtResource("1_sbfnq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(640, 360)
