@@ -32,7 +32,3 @@ func go_to_game():
 func go_to_end_screen():
 	set_pause(false)
 	get_tree().change_scene_to_file("res://scenes/app/EndScreen.tscn")
-
-func go_to_menu():
-	set_pause(false)
-	get_tree().change_scene_to_file("res://scenes/app/MainMenu.tscn")
