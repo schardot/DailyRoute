@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://csj40w0frqsjc"]
+
+[ext_resource type="Script" uid="uid://bxmvoo4rx22pv" path="res://SkipTutorialUI.gd" id="1_3kcx3"]
+
+[node name="SkipTutorialUi" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_3kcx3")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_right = -60.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="SkipTutorialButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Skip tutorial"
