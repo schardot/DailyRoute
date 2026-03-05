@@ -1,20 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://dd5g501s26125"]
+[gd_scene load_steps=3 format=3 uid="uid://dd5g501s26125"]
 
-[ext_resource type="Script" uid="uid://cgpfaherwo0jm" path="res://scenes/app/PauseUI.gd" id="1_6cosq"]
+[ext_resource type="PackedScene" uid="uid://bu7mvxhcgrjvj" path="res://scenes/app/PauseMenu.tscn" id="1_6cosq"]
+
+[sub_resource type="GDScript" id="GDScript_8swkg"]
+script/source = "extends CanvasLayer
+
+@onready var pause_button: Button = $PauseButton
+@onready var pause_menu = $PauseMenu
+
+func _ready():
+	pause_button.pressed.connect(_on_pause_pressed)
+	pause_menu.visible = false
+
+func _on_pause_pressed():
+	PauseManager.pause()
+	pause_menu.visible = true
+"
 
 [node name="PauseUi" type="CanvasLayer"]
 process_mode = 3
-script = ExtResource("1_6cosq")
+script = SubResource("GDScript_8swkg")
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="PauseButton" type="Button" parent="Control"]
+[node name="PauseButton" type="Button" parent="."]
 process_mode = 3
-layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 text = "Pause"
+
+[node name="PauseMenu" parent="." instance=ExtResource("1_6cosq")]

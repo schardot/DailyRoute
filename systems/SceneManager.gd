@@ -1,7 +1,5 @@
 extends Node
 
-var is_paused := false
-
 func _ready():
 	print("SceneManager READY")
 
@@ -10,11 +8,9 @@ func _ready():
 # -----------------
 
 func toggle_pause():
-	is_paused = !is_paused
-	get_tree().paused = is_paused
+	get_tree().paused = !get_tree().paused
 
 func set_pause(value: bool):
-	is_paused = value
 	get_tree().paused = value
 	
 # -----------------

@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://bu7mvxhcgrjvj"]
+
+[ext_resource type="Script" uid="uid://bdrik8mkrgs4q" path="res://scenes/app/PauseMenu.gd" id="1_mj2gd"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_mj2gd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -58.5
+offset_top = -33.0
+offset_right = 58.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResumeButton" type="Button" parent="VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+text = "Resume game"
+
+[node name="RestartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Restart game"

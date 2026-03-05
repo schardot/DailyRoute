@@ -13,4 +13,4 @@ crowd_scene = ExtResource("2_6736c")
 
 [node name="World" parent="." instance=ExtResource("4_clw2w")]
 
-[node name="PauseUi" parent="." instance=ExtResource("4_mtytu")]
+[node name="PauseUI" parent="." instance=ExtResource("4_mtytu")]
