@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bx3oguwcxqllf"]
+[gd_scene load_steps=6 format=3 uid="uid://bx3oguwcxqllf"]
 
 [ext_resource type="Script" uid="uid://br4nwm45o4d25" path="res://scenes/app/Game.gd" id="1_fyan7"]
 [ext_resource type="PackedScene" uid="uid://dnchrhae8ay0m" path="res://scenes/entities/crowd/CrowdMember.tscn" id="2_6736c"]
 [ext_resource type="PackedScene" uid="uid://c7mt612o4cb6b" path="res://scenes/app/World.tscn" id="4_clw2w"]
 [ext_resource type="PackedScene" uid="uid://dd5g501s26125" path="res://scenes/app/PauseUI.tscn" id="4_mtytu"]
+[ext_resource type="Script" uid="uid://cgpfaherwo0jm" path="res://scenes/app/PauseUI.gd" id="5_clw2w"]
 
 [node name="Game" type="Node2D" groups=["game"]]
 script = ExtResource("1_fyan7")
@@ -13,4 +14,5 @@ crowd_scene = ExtResource("2_6736c")
 
 [node name="World" parent="." instance=ExtResource("4_clw2w")]
 
-[node name="PauseUI" parent="." instance=ExtResource("4_mtytu")]
+[node name="PauseUi" parent="." instance=ExtResource("4_mtytu")]
+script = ExtResource("5_clw2w")
