@@ -81,7 +81,3 @@ func end_level() -> void:
 	player.clear_goal()
 	print("🎄 LEVEL COMPLETED 🎄")
 	SceneManager.go_to_end_screen()
-
-func _unhandled_input(event):
-	if event.is_action_pressed("ui_quit"):
-		get_tree().quit()

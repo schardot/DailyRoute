@@ -6,7 +6,14 @@ extends CanvasLayer
 func _ready():
 	pause_button.pressed.connect(_on_pause_pressed)
 	pause_menu.visible = false
+	PauseManager.pause_toggled.connect(_on_pause_toggled)
 
 func _on_pause_pressed():
-	PauseManager.pause()
-	pause_menu.visible = true
+	PauseManager.toggle_pause()
+
+func _input(event):
+	if event.is_action_pressed("pause"):
+		PauseManager.toggle_pause()
+
+func _on_pause_toggled(is_paused: bool):
+	pause_menu.visible = is_paused
