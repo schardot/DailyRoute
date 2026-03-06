@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://brwopraptvbiv"]
+[gd_scene load_steps=5 format=3 uid="uid://brwopraptvbiv"]
 
+[ext_resource type="Script" uid="uid://y1oufkpstn01" path="res://scenes/entities/player/Player.gd" id="1_afppm"]
 [ext_resource type="Script" uid="uid://bio3afoxa4838" path="res://scenes/entities/player/ThoughtBubble.gd" id="2_4kuee"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wr5hl"]
@@ -11,7 +12,8 @@ height = 48.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
-collision_mask = 5
+collision_mask = 13
+script = ExtResource("1_afppm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("CompressedTexture2D_wr5hl")
