@@ -2,16 +2,13 @@ extends Node2D
 
 const ASSIGNMENTS_TO_WIN := 5
 
-@export var crowd_scene: PackedScene
-@export var crowd_count := 100
-
 var completed_assignments := 0
 var level_completed := false
 
 @onready var world: Node2D  = $World
 @onready var player: Node = world.get_player()
+@onready var crowd_container: CrowdManager = $World/Entities/Crowd
 @onready var street: Area2D = $World/Environment/Street
-@onready var crowd_container: Node2D = $World/Entities/Crowd
 
 var stores: Array = []
 
@@ -28,18 +25,10 @@ func _ready() -> void:
 		
 	assert(stores.size() > 0)
 
-	_spawn_crowd()
+	crowd_container.street = street
+	crowd_container.spawn_crowd()
 
 	generate_assignment()
-
-
-func _spawn_crowd() -> void:
-	for i in range(crowd_count):
-		var npc = crowd_scene.instantiate()
-		npc.global_position = street.get_random_point()
-		npc.street = street
-
-		crowd_container.add_child(npc)
 
 func generate_assignment() -> void:
 	if level_completed:
