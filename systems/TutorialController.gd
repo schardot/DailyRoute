@@ -64,6 +64,7 @@ func tutorial_complete() -> void:
 	player.clear_goal()
 	reset_stores()
 	print("Tutorial completed")
+	SceneManager.player_position = player.global_position
 	SceneManager.go_to_game()
 
 func reset_stores():

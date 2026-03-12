@@ -15,7 +15,8 @@ var stores: Array = []
 
 func _ready() -> void:
 	randomize()
-
+	if SceneManager.player_position != Vector2.ZERO:
+		player.global_position = SceneManager.player_position
 	add_to_group("game")
 
 	stores = get_tree().get_nodes_in_group("stores")
