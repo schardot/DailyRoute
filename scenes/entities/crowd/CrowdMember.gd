@@ -12,6 +12,7 @@ var arrived := false
 var street: Area2D
 var direction := Vector2.ZERO
 var push_offset: Vector2 = Vector2.ZERO
+var was_pushed := false
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 func _ready():
@@ -20,6 +21,9 @@ func _ready():
 func _physics_process(_delta):
 	if has_target:
 		set_tutorial_npc()
+	elif was_pushed and direction == Vector2.ZERO:
+		_pick_new_direction()
+		was_pushed = false
 	apply_velocity()
 	move_and_slide()
 
@@ -34,9 +38,9 @@ func apply_velocity():
 		push_offset = Vector2.ZERO
 
 func apply_push(dir: Vector2):
+	was_pushed = true
 	push_offset += dir * 3000
 
-	
 func _pick_new_direction():
 	direction = Vector2(0, [-1, 1].pick_random())
 
@@ -62,10 +66,9 @@ func get_world_radius() -> float:
 
 func set_tutorial_npc():
 	var dir = target_position - global_position
-		
+	
 	if dir.length() < 5:
 		direction = Vector2.ZERO
 		has_target = false
-		speed = 0
 	else:
 		direction = dir.normalized()
