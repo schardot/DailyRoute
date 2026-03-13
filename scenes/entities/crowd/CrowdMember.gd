@@ -20,17 +20,18 @@ func _ready():
 func _physics_process(_delta):
 	if has_target:
 		set_tutorial_npc()
-			
-	velocity = direction * speed
-	if push_offset != Vector2.ZERO:
-		velocity += push_offset
-		push_offset = Vector2.ZERO
-		
+	apply_velocity()
 	move_and_slide()
 
 	if street:
 		var radius := get_world_radius()
 		global_position = street.clamp_point_to_street(global_position, radius)
+
+func apply_velocity():
+	velocity = direction * speed
+	if push_offset != Vector2.ZERO:
+		velocity += push_offset
+		push_offset = Vector2.ZERO
 
 func apply_push(dir: Vector2):
 	push_offset += dir * 3000
