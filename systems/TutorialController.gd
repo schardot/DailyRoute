@@ -63,6 +63,9 @@ func tutorial_complete():
 	player.clear_goal()
 	reset_stores()
 	SceneManager.player_position = player.global_position
+	SceneManager.crowd_positions = []
+	for npc in crowd_container.get_children():
+		SceneManager.crowd_positions.append(npc.global_position)
 	SceneManager.go_to_game()
 
 func reset_stores():

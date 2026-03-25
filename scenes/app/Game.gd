@@ -48,6 +48,7 @@ func on_assignment_completed() -> void:
 	if completed_assignments >= ASSIGNMENTS_TO_WIN:
 		end_level()
 	else:
+		crowd_container.spawn_npc()
 		generate_assignment()
 
 func end_level() -> void:
@@ -70,4 +71,9 @@ func init_stores():
 
 func init_npcs():
 	crowd_container.street = street
-	crowd_container.spawn_crowd()
+	if SceneManager.crowd_positions.size() > 0:
+		for pos in SceneManager.crowd_positions:
+			crowd_container.spawn_npc(pos)
+		SceneManager.crowd_positions.clear()
+	else:
+		crowd_container.spawn_crowd_staggered()
