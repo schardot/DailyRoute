@@ -25,7 +25,7 @@ func go_to_tutorial():
 
 func go_to_game():
 	set_pause(false)
-	get_tree().change_scene_to_file("res://scenes/app/Game.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/app/Game.tscn")
 
 func go_to_end_screen():
 	set_pause(false)

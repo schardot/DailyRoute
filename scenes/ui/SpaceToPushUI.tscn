@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://6ts3rrvmo3op"]
+
+[node name="SpaceToPushUi" type="CanvasLayer"]
+visible = false
+offset = Vector2(900, 600)
+transform = Transform2D(1, 0, 0, 1, 900, 600)
+
+[node name="TutorialPrompt" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Press SPACE to push"
+horizontal_alignment = 1
+vertical_alignment = 2

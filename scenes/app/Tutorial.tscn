@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cgq5apkln5flv"]
+[gd_scene load_steps=9 format=3 uid="uid://cgq5apkln5flv"]
 
 [ext_resource type="PackedScene" uid="uid://c7mt612o4cb6b" path="res://scenes/app/World.tscn" id="1_10wk3"]
 [ext_resource type="Script" uid="uid://d1n0ypxcdvg2i" path="res://scenes/app/Tutorial.gd" id="1_h0jlu"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://ds3db3fujy650" path="res://assets/sounds/dragon-studio-bell-ring-390294.mp3" id="3_h0jlu"]
 [ext_resource type="PackedScene" uid="uid://dd5g501s26125" path="res://scenes/ui/PauseUI.tscn" id="5_ygm5a"]
 [ext_resource type="PackedScene" uid="uid://csj40w0frqsjc" path="res://scenes/ui/SkipTutorialUI.tscn" id="6_gui1c"]
+[ext_resource type="PackedScene" uid="uid://6ts3rrvmo3op" path="res://scenes/ui/SpaceToPushUI.tscn" id="7_f0llu"]
 [ext_resource type="PackedScene" uid="uid://dnchrhae8ay0m" path="res://scenes/entities/crowd/CrowdMember.tscn" id="7_gui1c"]
 
 [node name="Tutorial" type="Node2D"]
@@ -23,18 +24,21 @@ stream = ExtResource("3_h0jlu")
 
 [node name="SkipTutorialUi" parent="." instance=ExtResource("6_gui1c")]
 
+[node name="SpaceToPushUi" parent="." instance=ExtResource("7_f0llu")]
+
 [node name="TutorialActors" type="Node2D" parent="."]
 
 [node name="CrowdMember" parent="TutorialActors" instance=ExtResource("7_gui1c")]
+collision_mask = 2
 
 [node name="Map" type="Node2D" parent="."]
 
 [node name="StoreEntrance" type="Node2D" parent="Map"]
 
 [node name="NpcStopPoint" type="Marker2D" parent="Map/StoreEntrance"]
-position = Vector2(1112, 496)
+position = Vector2(1116, 619)
 
 [node name="SpawnPoint" type="Node2D" parent="Map"]
 
 [node name="NpcSpawnPoint" type="Marker2D" parent="Map/SpawnPoint"]
-position = Vector2(1098, -23)
+position = Vector2(1113, 749)

@@ -10,7 +10,8 @@ load_path = "res://.godot/imported/Sprite.png-a901a61a4c444e2afb20edd32cb15947.c
 resource_local_to_scene = true
 height = 48.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_afppm"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_afppm"]
+radius = 15.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 scale = Vector2(1.5, 1.5)
@@ -32,7 +33,7 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PushArea"]
 scale = Vector2(2.4, 2.4)
-shape = SubResource("RectangleShape2D_afppm")
+shape = SubResource("CircleShape2D_afppm")
 
 [node name="ThoughtBubble" type="Node2D" parent="."]
 position = Vector2(-20, -92)

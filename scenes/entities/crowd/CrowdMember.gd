@@ -7,12 +7,16 @@ var speed := 40.0
 var has_target := false
 var target_position: Vector2
 var arrived := false
+signal pushed
 # ----------------------------
 
 var street: Area2D
 var direction := Vector2.ZERO
 var push_offset: Vector2 = Vector2.ZERO
+var separation_velocity: Vector2 = Vector2.ZERO
 var was_pushed := false
+
+const SEPARATION_STRENGTH = 60.0
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 func _ready():
@@ -26,6 +30,7 @@ func _physics_process(_delta):
 		was_pushed = false
 	apply_velocity()
 	move_and_slide()
+	_resolve_npc_collisions()
 
 	if street:
 		var radius := get_world_radius()
@@ -36,10 +41,23 @@ func apply_velocity():
 	if push_offset != Vector2.ZERO:
 		velocity += push_offset
 		push_offset = Vector2.ZERO
+	if separation_velocity != Vector2.ZERO:
+		velocity += separation_velocity
+		separation_velocity = Vector2.ZERO
+
+func _resolve_npc_collisions():
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider is CrowdMember:
+			var diff = global_position.x - collider.global_position.x
+			var side = sign(diff) if abs(diff) > 0.5 else (1.0 if randf() > 0.5 else -1.0)
+			separation_velocity.x += side * SEPARATION_STRENGTH
 
 func apply_push(dir: Vector2):
 	was_pushed = true
 	push_offset += dir * 3000
+	emit_signal("pushed")
 
 func _pick_new_direction():
 	direction = Vector2(0, [-1, 1].pick_random())
