@@ -1,86 +1,116 @@
-extends CharacterBody2D
+extends Node2D
 
-@export var speed: float = 300.0
+@export var target_speed: float = 300.0
+@export var accel: float = 900.0
+@export var brake_decel: float = 1600.0
+@export var brake_window_ahead_y: float = 260.0
+@export var brake_window_behind_y: float = 0.0
 
-var street: Area2D
+var street
 var direction: Vector2 = Vector2.DOWN
+var current_speed: float = 0.0
+var velocity: Vector2 = Vector2.ZERO
+var world_radius: float = 0.0
+var world_half_height: float = 0.0
 
 @onready var hitbox: Area2D = $Hitbox
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 func _ready() -> void:
+	world_radius = Globals.get_collision_shape_world_radius(collision_shape)
+	world_half_height = _compute_world_half_height()
 	if hitbox and not hitbox.body_entered.is_connected(_on_hitbox_body_entered):
 		hitbox.body_entered.connect(_on_hitbox_body_entered)
-
-func spawn_car(street_ref: Area2D) -> void:
+ 
+func spawn_car(street_ref) -> void:
 	street = street_ref
 
-	var spawn_pos: Vector2 = street.call("get_spawn_point")
+	var spawn_pos: Vector2 = street.get_spawn_point()
+	spawn_pos.x = street.pick_lane_x_for_cars(world_radius)
 	global_position = spawn_pos
 
-	var street_center: Vector2 = street.call("get_center")
+	var street_center: Vector2 = street.get_center()
 	direction = Vector2.DOWN if spawn_pos.y < street_center.y else Vector2.UP
 	_nudge_inside_street()
+	current_speed = target_speed
 
-func _physics_process(_delta: float) -> void:
-	velocity = direction * speed
-	move_and_slide()
+func _physics_process(delta: float) -> void:
+	var should_brake: bool = _should_brake_for_crossing_npc()
+	var desired_speed: float = 0.0 if should_brake else target_speed
+	var rate: float = brake_decel if should_brake else accel
+	current_speed = move_toward(current_speed, desired_speed, rate * delta)
+
+	velocity = direction * current_speed
+	global_position += velocity * delta
 
 	_clamp_to_street()
 	_check_recycle()
+
+func _should_brake_for_crossing_npc() -> bool:
+	if not street:
+		return false
+
+	var my_lane: int = street.get_lane_index_for_world_x(global_position.x, world_radius)
+	var candidates: Array = get_tree().get_nodes_in_group("crossing_npcs")
+
+	for n in candidates:
+		if not (n is Node2D):
+			continue
+		var npc: Node2D = n
+		if npc.has_method("is_crossing_active") and not npc.call("is_crossing_active"):
+			continue
+
+		# Brake only for crossers ahead of us (in our movement direction), not behind.
+		var dir_sign: float = sign(direction.y)
+		if dir_sign == 0.0:
+			dir_sign = 1.0
+		var ahead_dist: float = (npc.global_position.y - global_position.y) * dir_sign
+		if ahead_dist < -brake_window_behind_y:
+			continue
+		if ahead_dist > brake_window_ahead_y:
+			continue
+
+		var npc_lane: int = street.get_lane_index_for_world_x(npc.global_position.x, world_radius)
+		if npc_lane == my_lane:
+			return true
+
+	return false
 
 func _check_recycle() -> void:
 	if not street:
 		return
 
-	var margin: float = _get_world_margin()
-	var exit: int = street.call("get_y_exit", global_position, margin)
+	var exit: int = street.get_y_exit(global_position, world_half_height)
 	if exit == 0:
 		return
 
 	var spawn_top: bool = exit == 1
-	global_position = street.call("get_spawn_line", spawn_top)
+	global_position = street.get_spawn_line(spawn_top)
+	global_position.x = street.pick_lane_x_for_cars(world_radius)
 	direction = Vector2.DOWN if spawn_top else Vector2.UP
 	_nudge_inside_street()
 
 func _nudge_inside_street() -> void:
 	# Spawn lines are exactly on the street edge; nudge inside by our half-height
 	# to avoid interacting with world bounds/colliders at the edges.
-	var margin: float = _get_world_margin()
 	if direction.y > 0.0:
-		global_position.y += margin
+		global_position.y += world_half_height
 	else:
-		global_position.y -= margin
+		global_position.y -= world_half_height
 
-func _get_world_margin() -> float:
-	var cs: CollisionShape2D = get_node_or_null("CollisionShape2D")
-	if not cs:
-		return 0.0
-	var shape := cs.shape
-	if shape is RectangleShape2D:
-		var world_scale: Vector2 = cs.global_transform.get_scale()
-		return (shape.size.y * 0.5) * abs(world_scale.y)
-	return 0.0
-
-func _get_world_radius() -> float:
+func _compute_world_half_height() -> float:
 	if not collision_shape:
 		return 0.0
 	var shape := collision_shape.shape
-	var local_radius := 0.0
-	if shape is CircleShape2D:
-		local_radius = shape.radius
-	elif shape is CapsuleShape2D:
-		local_radius = shape.radius
-	elif shape is RectangleShape2D:
-		local_radius = max(shape.size.x, shape.size.y) * 0.5
-	var s: Vector2 = collision_shape.global_transform.get_scale()
-	return local_radius * max(abs(s.x), abs(s.y))
+	if shape is RectangleShape2D:
+		var world_scale: Vector2 = collision_shape.global_transform.get_scale()
+		return (shape.size.y * 0.5) * abs(world_scale.y)
+	return world_radius
 
 func _clamp_to_street() -> void:
 	if not street:
 		return
-	var radius: float = _get_world_radius()
-	global_position = street.call("clamp_point_to_street", global_position, radius)
+	global_position = street.clamp_point_to_street(global_position, world_radius)
 
 func _on_hitbox_body_entered(body: Node) -> void:
 	if body and body.is_in_group("player") and body.has_method("die"):
