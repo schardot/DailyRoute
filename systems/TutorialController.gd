@@ -1,5 +1,7 @@
 extends Node
 
+const CROSSING_NPC_SCN: PackedScene = preload("res://scenes/entities/crossing/CrossingNpc.tscn")
+
 @onready var world: Node2D = $"../World"
 var player: CharacterBody2D
 @onready var crowd_member = $"../TutorialActors/CrowdMember"
@@ -44,12 +46,34 @@ func on_assignment_completed() -> void:
 		tutorial_complete()
 		return
 	
+	call_deferred("_spawn_crossing_npc")
+
 	if crowd_growth_started:
 		crowd_container.street = street
 		crowd_container.call_deferred("spawn_npc")
 		crowd_container.call_deferred("spawn_npc")
 		
 	generate_assignment()
+
+func _spawn_crossing_npc() -> void:
+	if not world:
+		return
+
+	var pair: Array = world.get_random_store_pair()
+	if pair.size() < 2:
+		return
+
+	var from_store: Node2D = pair[0]
+	var to_store: Node2D = pair[1]
+	if randf() < 0.5:
+		var tmp: Node2D = from_store
+		from_store = to_store
+		to_store = tmp
+
+	var npc: CrossingNpc = CROSSING_NPC_SCN.instantiate() as CrossingNpc
+	world.get_entities_root().add_child(npc)
+	npc.z_index = 3
+	npc.spawn_from_stores(from_store, to_store)
 
 func apply_phase_movement_rules():
 	match current_phase:
