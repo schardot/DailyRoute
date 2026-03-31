@@ -30,6 +30,8 @@ func _get_collision_shape() -> CollisionShape2D:
 func _physics_process(_delta):
 	if has_target:
 		set_tutorial_npc()
+	elif arrived:
+		direction = Vector2.ZERO
 	else:
 		direction = MOVE_DIR
 	apply_velocity()
@@ -88,5 +90,7 @@ func set_tutorial_npc():
 	if dir.length() < 5:
 		direction = Vector2.ZERO
 		has_target = false
+		arrived = true
 	else:
+		arrived = false
 		direction = dir.normalized()
