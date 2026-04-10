@@ -15,6 +15,21 @@ func get_screen_size() -> Vector2:
 	return get_viewport().get_visible_rect().size
 
 # -----------------
+# WAIT HELPERS
+# -----------------
+
+func wait(seconds: float) -> void:
+	await get_tree().create_timer(seconds).timeout
+	
+func wait_short():
+	await wait(2)
+
+func wait_medium():
+	await wait(3)
+
+func wait_long():
+	await wait(20)
+# -----------------
 # RANDOM HELPERS
 # -----------------
 

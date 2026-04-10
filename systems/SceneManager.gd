@@ -3,9 +3,6 @@ extends Node
 var player_position: Vector2 = Vector2.ZERO
 var crowd_positions: Array = []
 
-func _ready():
-	print("SceneManager READY")
-
 # -----------------
 # PAUSE
 # -----------------

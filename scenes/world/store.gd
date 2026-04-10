@@ -40,16 +40,11 @@ func _on_store_body_entered(body):
 
 	if body.goal_color == color:
 		_correct_feedback()
-	else:
-		_wrong_feedback()
 
 func _correct_feedback():
-	print("CORRECT STORE")
 	completed = true
 	emit_signal("player_entered")
 
-func _wrong_feedback():
-	print("WRONG STORE")
 
 func _setup_area():
 	monitoring = true
