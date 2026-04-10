@@ -12,6 +12,7 @@ var current_speed: float = 0.0
 var velocity: Vector2 = Vector2.ZERO
 var world_radius: float = 0.0
 var world_half_height: float = 0.0
+var lane : LaneStruct
 
 @onready var hitbox: Area2D = $Hitbox
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
@@ -26,7 +27,7 @@ func spawn_car(street_ref) -> void:
 	street = street_ref
 
 	var spawn_pos: Vector2 = street.get_spawn_point()
-	spawn_pos.x = street.pick_lane_x_for_cars(world_radius)
+	spawn_pos.x = LaneManager.get_random_lane_x(LaneManager.LaneType.CAR)
 	global_position = spawn_pos
 
 	var street_center: Vector2 = street.get_center()
@@ -35,9 +36,13 @@ func spawn_car(street_ref) -> void:
 	current_speed = target_speed
 
 func _physics_process(delta: float) -> void:
-	var should_brake: bool = _should_brake_for_crossing_npc()
-	var desired_speed: float = 0.0 if should_brake else target_speed
-	var rate: float = brake_decel if should_brake else accel
+	#var should_brake: bool = _should_brake_for_crossing_npc()
+	#var desired_speed: float = 0.0 if should_brake else target_speed
+	#var rate: float = brake_decel if should_brake else accel
+	
+	var desired_speed: float = target_speed
+	var rate: float =  accel
+	
 	current_speed = move_toward(current_speed, desired_speed, rate * delta)
 
 	velocity = direction * current_speed
@@ -50,8 +55,8 @@ func _should_brake_for_crossing_npc() -> bool:
 	if not street:
 		return false
 
-	var my_lane: int = street.get_lane_index_for_world_x(global_position.x, world_radius)
-	var candidates: Array = get_tree().get_nodes_in_group("crossing_npcs")
+	var my_lane := LaneManager.get_nearest_lane_by_type(global_position.x, LaneManager.LaneType.CAR)
+	var candidates:= get_tree().get_nodes_in_group("crossing_npcs")
 
 	for n in candidates:
 		if not (n is Node2D):
@@ -70,7 +75,7 @@ func _should_brake_for_crossing_npc() -> bool:
 		if ahead_dist > brake_window_ahead_y:
 			continue
 
-		var npc_lane: int = street.get_lane_index_for_world_x(npc.global_position.x, world_radius)
+		var npc_lane := LaneManager.get_nearest_lane_by_type(npc.global_position.x, LaneManager.LaneType.CAR)
 		if npc_lane == my_lane:
 			return true
 
@@ -86,7 +91,7 @@ func _check_recycle() -> void:
 
 	var spawn_top: bool = exit == 1
 	global_position = street.get_spawn_line(spawn_top)
-	global_position.x = street.pick_lane_x_for_cars(world_radius)
+	global_position.x = LaneManager.get_random_lane_x(LaneManager.LaneType.CAR)
 	direction = Vector2.DOWN if spawn_top else Vector2.UP
 	_nudge_inside_street()
 

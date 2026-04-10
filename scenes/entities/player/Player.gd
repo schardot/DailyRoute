@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 
 	# 2. Blend input with existing velocity
 	velocity = velocity.move_toward(desired_velocity, speed * 6 * delta)
-
+	#push_npcs()
 	# 3. Move
 	move_and_slide()
 

@@ -1,10 +1,6 @@
 extends Node2D
 
-const ASSIGNMENTS_TO_WIN := 5
 const CROSSING_NPC_SCN: PackedScene = preload("res://scenes/entities/crossing/CrossingNpc.tscn")
-
-var completed_assignments := 0 
-var level_completed := false
 
 @onready var world: Node2D  = $World
 @onready var player: Node = world.get_player()
@@ -13,51 +9,38 @@ var level_completed := false
 @onready var car: Node2D = world.get_car()
 
 var stores: Array = []
+var current_assignment_store: Area2D
 
 func _ready() -> void:
 	add_to_group("game")
-	
+
 	init_player()
 	init_stores()
-	init_npcs()
-	init_car()
+	init_lanes()
 
 	generate_assignment()
 
 func generate_assignment() -> void:
-	if level_completed:
+	if stores.is_empty():
 		return
 
 	var available_stores: Array = []
-
 	for store in stores:
-		if not store.completed:
+		if store != current_assignment_store:
 			available_stores.append(store)
 
 	if available_stores.is_empty():
-		end_level()
-		return
+		available_stores = stores.duplicate()
 
-	var store = available_stores.pick_random()
-	player.set_goal(store.color)
+	current_assignment_store = available_stores.pick_random()
+	player.set_goal(current_assignment_store.color)
 
 func on_assignment_completed(_completed_store: Area2D) -> void:
-	if level_completed:
-		return
-
-	completed_assignments += 1
+	_completed_store.completed = false
+	_completed_store.unblock_store()
 	call_deferred("spawn_crossing_npc")
-
-	if completed_assignments >= ASSIGNMENTS_TO_WIN:
-		end_level()
-	else:
-		crowd_container.call_deferred("spawn_npc")
-		generate_assignment()
-
-func end_level() -> void:
-	level_completed = true
-	player.clear_goal()
-	SceneManager.go_to_end_screen()
+	crowd_container.call_deferred("spawn_npc")
+	generate_assignment()
 
 # ---- INIT FUNCTIONS
 
@@ -72,18 +55,30 @@ func init_stores():
 		store.player_entered.connect(func() -> void: on_assignment_completed(store))
 	assert(stores.size() > 0)
 
-func init_npcs():
+func init_npcs(lane: LaneStruct):
 	crowd_container.street = street
 	if SceneManager.crowd_positions.size() > 0:
 		for pos in SceneManager.crowd_positions:
-			crowd_container.spawn_npc(pos)
+			lane = LaneManager.get_nearest_lane_by_type(pos.x, LaneManager.LaneType.CROWD_MEMBER)
+			crowd_container.spawn_npc(lane, pos)
 		SceneManager.crowd_positions.clear()
 	else:
-		crowd_container.spawn_crowd_staggered()
+		crowd_container.spawn_line(lane.line, lane)
 
-func init_car() -> void:
+func init_lanes():
+	var i := 0
+	for lane in LaneManager.LanesArray:	
+		match lane.type:
+			LaneManager.LaneType.CROWD_MEMBER:
+					init_npcs(lane)
+			LaneManager.LaneType.CAR:
+					init_car(lane)
+		i += 1
+
+func init_car(lane: LaneStruct) -> void:
 	if not car:
 		return
+	car.lane = lane
 	car.spawn_car(street)
 
 func spawn_crossing_npc() -> void:

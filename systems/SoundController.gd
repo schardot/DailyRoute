@@ -1,8 +1,8 @@
 extends Node
 
 @export var bell_stream: AudioStream = preload("res://assets/sounds/BellRing.mp3")
-@export var car_crash_stream_1: AudioStream
-@export var car_crash_stream_2: AudioStream
+@export var car_crash_stream_1: AudioStream = preload("res://assets/sounds/CarCrash1.mp3")
+@export var car_crash_stream_2: AudioStream = preload("res://assets/sounds/CarCrash2.mp3")
 
 var bell_player: AudioStreamPlayer
 var car_crash_player_1: AudioStreamPlayer
@@ -40,7 +40,6 @@ func play_car_crash_2() -> void:
 	car_crash_player_2.play()
 
 func play_car_crash_random() -> void:
-	# If only one stream is set, this still works.
 	if car_crash_stream_1 and car_crash_stream_2:
 		if Globals.random_bool():
 			play_car_crash_1()
