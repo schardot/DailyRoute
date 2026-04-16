@@ -8,10 +8,18 @@ var can_move_left := true
 var can_move_right := true
 var can_move_up := true
 var can_move_down := true
+var time := 0.0
 
 @onready var push_area := $PushArea
 @onready var thought_bubble := $ThoughtBubble
 
+
+func _process(delta):
+	time += delta    
+	var squash = sin(time * 4.0) * 0.05
+	scale.x = 1.0 + squash
+	scale.y = 1.0 - squash
+	
 func _physics_process(delta: float) -> void:
 	var input_dir := Vector2.ZERO
 	if Input.is_action_pressed("ui_right") && can_move_right:

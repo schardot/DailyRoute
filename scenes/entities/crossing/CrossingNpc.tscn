@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d4h2q6qj0p6y1"]
 
 [ext_resource type="Script" uid="uid://d4h2q6qj0p6y2" path="res://scenes/entities/crossing/CrossingNpc.gd" id="1_crossing"]
-[ext_resource type="Texture2D" uid="uid://81ry5p5m50iv" path="res://assets/sprites/Crowd.png" id="2_ld2lh"]
+[ext_resource type="Texture2D" uid="uid://dbvpfckgqmqmm" path="res://assets/sprites/Crowd member.png" id="2_ld2lh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ld2lh"]
 height = 48.0
@@ -16,6 +16,8 @@ script = ExtResource("1_crossing")
 shape = SubResource("CapsuleShape2D_ld2lh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 0.99999666)
-scale = Vector2(1, 1.3)
+modulate = Color(1, 0.8392157, 1, 1)
+position = Vector2(-1.9073486e-06, 0.66666675)
+rotation = -6.2831855
+scale = Vector2(0.11940808, 0.09253629)
 texture = ExtResource("2_ld2lh")

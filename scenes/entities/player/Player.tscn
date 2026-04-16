@@ -2,9 +2,7 @@
 
 [ext_resource type="Script" uid="uid://y1oufkpstn01" path="res://scenes/entities/player/Player.gd" id="1_afppm"]
 [ext_resource type="Script" uid="uid://bio3afoxa4838" path="res://scenes/entities/player/ThoughtBubble.gd" id="2_4kuee"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wr5hl"]
-load_path = "res://.godot/imported/Sprite.png-a901a61a4c444e2afb20edd32cb15947.ctex"
+[ext_resource type="Texture2D" uid="uid://dhre3w733f56k" path="res://assets/sprites/Play.png" id="2_n1xdv"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o8nba"]
 resource_local_to_scene = true
@@ -20,8 +18,9 @@ collision_mask = 13
 script = ExtResource("1_afppm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(1, 1.3)
-texture = SubResource("CompressedTexture2D_wr5hl")
+position = Vector2(-2.2500253, -0.6770791)
+scale = Vector2(0.13250007, 0.117291674)
+texture = ExtResource("2_n1xdv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_o8nba")
@@ -40,5 +39,7 @@ position = Vector2(-20, -92)
 script = ExtResource("2_4kuee")
 
 [node name="ColorRect" type="ColorRect" parent="ThoughtBubble"]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 8.666666
+offset_top = 88.66667
+offset_right = 24.0
+offset_bottom = 102.0

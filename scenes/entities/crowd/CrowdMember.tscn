@@ -1,7 +1,9 @@
 [gd_scene load_steps=4 format=3 uid="uid://dnchrhae8ay0m"]
 
 [ext_resource type="Script" uid="uid://dwbr10qtc8i5h" path="res://scenes/entities/crowd/CrowdMember.gd" id="1_g3vus"]
-[ext_resource type="Texture2D" uid="uid://81ry5p5m50iv" path="res://assets/sprites/Crowd.png" id="2_oc416"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kbb3h"]
+load_path = "res://.godot/imported/Crowd member.png-9b4f4854f7d3fb12871aa5ad3a0d55b3.ctex"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oc416"]
 height = 48.0
@@ -14,8 +16,10 @@ collision_mask = 0
 script = ExtResource("1_g3vus")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(1, 1.3)
-texture = ExtResource("2_oc416")
+modulate = Color(1, 0.92261726, 0.8162595, 1)
+position = Vector2(-0.6666651, 0)
+scale = Vector2(0.14611112, 0.09600001)
+texture = SubResource("CompressedTexture2D_kbb3h")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_oc416")

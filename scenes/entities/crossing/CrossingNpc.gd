@@ -6,6 +6,7 @@ signal crossing_ended(row_y: float)
 
 @export var speed: float = 180.0
 
+var time := 0.0
 var target_x: float = 0.0
 var row_y: float = 0.0
 var _active: bool = false
@@ -15,6 +16,17 @@ func _ready() -> void:
 
 func is_crossing_active() -> bool:
 	return _active
+	
+func _process(delta):
+	time += delta
+	
+	# Lean forward (depends on direction)
+	var dir : float = sign(velocity.x) # -1 left, +1 right
+	rotation = dir * 0.15
+	
+	# Vertical bob (walking feel)
+	var bob = sin(time * 10.0) * 0.05
+	position.y += bob
 
 func spawn_from_stores(left_store: Node2D, right_store: Node2D) -> void:
 	if not is_in_group("crossing_npcs"):

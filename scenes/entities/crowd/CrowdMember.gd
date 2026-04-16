@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name CrowdMember
 
 var speed := 40.0
+var time := 0.0
 
 # ---- TUTORIAL SETTINGS ONLY
 var has_target := false
@@ -17,6 +18,7 @@ var street: Area2D
 #var was_pushed := false
 var lane : LaneStruct
 
+
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 func _ready():
@@ -28,6 +30,12 @@ func _get_collision_shape() -> CollisionShape2D:
 	collision_shape = get_node_or_null("CollisionShape2D") as CollisionShape2D
 	return collision_shape
 
+func _process(delta):
+	time += delta    
+	var squash = sin(time * 4.0) * 0.05
+	scale.x = 1.0 + squash
+	scale.y = 1.0 - squash
+		
 func _physics_process(_delta):
 	if lane == null:
 		return
