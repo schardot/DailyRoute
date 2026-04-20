@@ -2,7 +2,6 @@ extends  Node2D
 
 func _ready():
 	$TutorialController.store_opened.connect(_on_store_opened)
-	#init_car()
 	_disable_car_for_tutorial()
 
 func _on_store_opened():

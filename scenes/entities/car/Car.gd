@@ -36,12 +36,12 @@ func spawn_car(street_ref) -> void:
 	current_speed = target_speed
 
 func _physics_process(delta: float) -> void:
-	#var should_brake: bool = _should_brake_for_crossing_npc()
-	#var desired_speed: float = 0.0 if should_brake else target_speed
-	#var rate: float = brake_decel if should_brake else accel
+	var should_brake: bool = _should_brake_for_crossing_npc()
+	var desired_speed: float = 0.0 if should_brake else target_speed
+	var rate: float = brake_decel if should_brake else accel
 	
-	var desired_speed: float = target_speed
-	var rate: float =  accel
+	#var desired_speed: float = target_speed
+	#var rate: float =  accel
 	
 	current_speed = move_toward(current_speed, desired_speed, rate * delta)
 
@@ -54,14 +54,11 @@ func _physics_process(delta: float) -> void:
 func _should_brake_for_crossing_npc() -> bool:
 	if not street:
 		return false
-
 	var my_lane := LaneManager.get_nearest_lane_by_type(global_position.x, LaneManager.LaneType.CAR)
 	var candidates:= get_tree().get_nodes_in_group("crossing_npcs")
 
 	for n in candidates:
-		if not (n is Node2D):
-			continue
-		var npc: Node2D = n
+		var npc:= n
 		if npc.has_method("is_crossing_active") and not npc.call("is_crossing_active"):
 			continue
 
@@ -75,8 +72,9 @@ func _should_brake_for_crossing_npc() -> bool:
 		if ahead_dist > brake_window_ahead_y:
 			continue
 
-		var npc_lane := LaneManager.get_nearest_lane_by_type(npc.global_position.x, LaneManager.LaneType.CAR)
-		if npc_lane == my_lane:
+		var half_lane_w : float = LaneManager.lane_width / 2
+		if (npc.global_position.x > my_lane.center.x - half_lane_w &&
+			npc.global_position.x < my_lane.center.x + half_lane_w):		
 			return true
 
 	return false
