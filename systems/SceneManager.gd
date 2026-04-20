@@ -19,7 +19,7 @@ func set_pause(value: bool):
 
 func go_to_tutorial():
 	set_pause(false)
-	get_tree().change_scene_to_file("res://scenes/app/Tutorial.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/app/Tutorial.tscn")
 
 func go_to_game():
 	set_pause(false)
@@ -27,8 +27,8 @@ func go_to_game():
 
 func go_to_end_screen():
 	set_pause(false)
-	get_tree().change_scene_to_file("res://scenes/ui/EndScreen.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/ui/EndScreen.tscn")
 
 func go_to_lose_screen():
 	set_pause(false)
-	get_tree().change_scene_to_file("res://scenes/ui/LoseScreen.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/ui/LoseScreen.tscn")

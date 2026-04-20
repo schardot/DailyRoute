@@ -6,6 +6,7 @@
 
 [node name="Game" type="Node2D" groups=["game"]]
 script = ExtResource("1_fyan7")
+crossing_spawn_chance = 0.9
 
 [node name="Systems" type="Node2D" parent="."]
 
