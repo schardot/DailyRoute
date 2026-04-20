@@ -7,6 +7,7 @@ var player: CharacterBody2D
 @onready var crowd_member = $"../TutorialActors/CrowdMember"
 @onready var stop_point = $"../Map/StoreEntrance/NpcStopPoint"
 @onready var spawn_point = $"../Map/SpawnPoint/NpcSpawnPoint"
+@onready var hint = $"../BoostHintUi"
 var street: Area2D
 var crowd_container: CrowdManager
 @onready var prompt := $"../SpaceToPushUi/TutorialPrompt"
@@ -24,8 +25,10 @@ func _ready() -> void:
 	player = world.get_player()
 	street = world.get_street()
 	crowd_container = world.get_crowd()
-	crowd_member.pushed.connect(_on_crowd_member_pushed)
-	
+	hint.set_target(player)
+	if player.has_signal("boost_used"):
+		player.boost_used.connect(_on_player_boost_used)
+
 	init_stores()
 	init_npc()
 	generate_assignment()
@@ -33,47 +36,28 @@ func _ready() -> void:
 func generate_assignment():
 	var currentStoreNum : int = assignment_order[current_phase]
 	var currentStoreNode : Node = store_map[currentStoreNum]
-	
+
 	player.set_goal(currentStoreNode.color)
 	currentStoreNode.unblock_store()
 	emit_signal("store_opened")
 	apply_phase_movement_rules()
+	if currentStoreNum == 0:
+		hint.show_hint()
 
 func on_assignment_completed() -> void:
 	current_phase += 1
-	print("current phase: ", current_phase)
 	if current_phase >= assignment_order.size():
 		tutorial_complete()
 		return
-	
+
 	call_deferred("_spawn_crossing_npc")
 
 	if crowd_growth_started:
 		crowd_container.street = street
 		crowd_container.call_deferred("spawn_npc")
 		crowd_container.call_deferred("spawn_npc")
-		
+
 	generate_assignment()
-
-func _spawn_crossing_npc() -> void:
-	if not world:
-		return
-
-	var pair: Array = world.get_random_store_pair()
-	if pair.size() < 2:
-		return
-
-	var from_store: Node2D = pair[0]
-	var to_store: Node2D = pair[1]
-	if randf() < 0.5:
-		var tmp: Node2D = from_store
-		from_store = to_store
-		to_store = tmp
-
-	var npc: CrossingNpc = CROSSING_NPC_SCN.instantiate() as CrossingNpc
-	world.get_entities_root().add_child(npc)
-	npc.z_index = 3
-	npc.spawn_from_stores(from_store, to_store)
 
 func apply_phase_movement_rules():
 	match current_phase:
@@ -102,17 +86,19 @@ func reset_stores():
 func init_stores():
 	stores = get_tree().get_nodes_in_group("stores")
 	assert(stores.size() > 0)
-	
+
 	for store in stores:
 		store_map[store.store_id] = store
 		store.player_entered.connect(on_assignment_completed)
-	
+
 func init_npc():
-	crowd_member.target_position = stop_point.global_position
-	crowd_member.has_target = true
-	crowd_member.speed = 70
-	crowd_member.global_position = spawn_point.global_position
-	crowd_member.street = street
+	crowd_member.visible = false
+	crowd_member.set_physics_process(false)
+	#crowd_member.lane.direction = Vector2.ZERO
+	crowd_member.velocity = Vector2.ZERO
 
 func _on_crowd_member_pushed():
-	crowd_growth_started = true	
+	crowd_growth_started = true
+
+func _on_player_boost_used() -> void:
+	hint.hide_hint()

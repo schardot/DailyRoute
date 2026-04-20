@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var  speed := 300.0
+signal boost_used
 
 var goal_color: GameTypes.ColorType
 var has_goal := false
@@ -32,6 +33,7 @@ func _physics_process(delta: float) -> void:
 		input_dir.y -= 1
 
 	if Input.is_action_just_pressed("push"):
+		boost_used.emit()
 		var boost_dir: Vector2 = input_dir.normalized()
 		if boost_dir == Vector2.ZERO:
 			boost_dir = velocity.normalized()
