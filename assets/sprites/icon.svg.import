@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://sdkopqd4scr2"
-path="res://.godot/imported/Crowd member.png-9b4f4854f7d3fb12871aa5ad3a0d55b3.ctex"
+uid="uid://cy0nye0c5e82a"
+path="res://.godot/imported/icon.svg-00a55f41757400f7387d4069be498893.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/Crowd member.png"
-dest_files=["res://.godot/imported/Crowd member.png-9b4f4854f7d3fb12871aa5ad3a0d55b3.ctex"]
+source_file="res://assets/sprites/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-00a55f41757400f7387d4069be498893.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

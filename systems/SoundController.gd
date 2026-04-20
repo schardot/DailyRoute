@@ -15,10 +15,12 @@ func _ready() -> void:
 
 	car_crash_player_1 = AudioStreamPlayer.new()
 	car_crash_player_1.name = "CarCrashPlayer1"
+	car_crash_player_1.volume_db = -25
 	add_child(car_crash_player_1)
 
 	car_crash_player_2 = AudioStreamPlayer.new()
 	car_crash_player_2.name = "CarCrashPlayer2"
+	car_crash_player_2.volume_db = -25
 	add_child(car_crash_player_2)
 
 func play_bell() -> void:
