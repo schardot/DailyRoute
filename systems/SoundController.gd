@@ -1,8 +1,9 @@
 extends Node
 
-@export var bell_stream: AudioStream = preload("res://assets/sounds/BellRing.mp3")
-@export var car_crash_stream_1: AudioStream = preload("res://assets/sounds/CarCrash1.mp3")
-@export var car_crash_stream_2: AudioStream = preload("res://assets/sounds/CarCrash2.mp3")
+var bell_stream: AudioStream = preload("res://assets/sounds/BellRing.mp3")
+var car_crash_stream_1: AudioStream = preload("res://assets/sounds/CarCrash1.mp3")
+var car_crash_stream_2: AudioStream = preload("res://assets/sounds/CarCrash2.mp3")
+const CAR_CRASH_VOLUME_DB := -25.0
 
 var bell_player: AudioStreamPlayer
 var car_crash_player_1: AudioStreamPlayer
@@ -15,12 +16,12 @@ func _ready() -> void:
 
 	car_crash_player_1 = AudioStreamPlayer.new()
 	car_crash_player_1.name = "CarCrashPlayer1"
-	car_crash_player_1.volume_db = -25
+	car_crash_player_1.volume_db = CAR_CRASH_VOLUME_DB
 	add_child(car_crash_player_1)
 
 	car_crash_player_2 = AudioStreamPlayer.new()
 	car_crash_player_2.name = "CarCrashPlayer2"
-	car_crash_player_2.volume_db = -25
+	car_crash_player_2.volume_db = CAR_CRASH_VOLUME_DB
 	add_child(car_crash_player_2)
 
 func play_bell() -> void:
