@@ -16,7 +16,7 @@ This project is part of the Ubisoft Mentorship program submission.
 ## How to Run
 
 ### Option 1 – Play in Browser
-Use the browser build: https://schardot.itch.io/release-060
+Use the browser build: https://schardot.itch.io/release-090
 
 ### Option 2 – Run Locally
 1. Install **Godot 4**
