@@ -4,7 +4,8 @@ class_name Street
 @onready var collision_shape : CollisionShape2D = $CollisionShape2D
 
 func _ready():
-	LaneManager.set_street_width($CollisionShape2D.shape.size.x) #so i can use it for calculating lanes instead of hardcoding size
+	var rect := _get_rect_shape()
+	LaneManager.set_street_bounds(rect.size.x, collision_shape.global_position.x)
 
 func get_spawn_point() -> Vector2:
 	return get_spawn_line(randf() < 0.5)
