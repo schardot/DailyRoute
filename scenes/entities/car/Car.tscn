@@ -1,34 +1,134 @@
-[gd_scene load_steps=5 format=3 uid="uid://5k71qukanrs8"]
+[gd_scene load_steps=18 format=3 uid="uid://5k71qukanrs8"]
 
 [ext_resource type="Script" uid="uid://bspjj3oxerehp" path="res://scenes/entities/car/Car.gd" id="1_brmlv"]
-[ext_resource type="Texture2D" uid="uid://cn7e3yhxpsqos" path="res://assets/sprites/car.png" id="2_r5e7o"]
+[ext_resource type="Texture2D" uid="uid://cdfg1x8oq4nbv" path="res://assets/sprites/car/Car_2_complete_32x32_1.png" id="3_r5e7o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ny80"]
-size = Vector2(53, 77)
+size = Vector2(53, 96.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_brmlv"]
 size = Vector2(58, 83)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ny80"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(2654, 165, 64, 155)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nlhma"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(2718, 165, 64, 155)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_722as"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(2782, 165, 64, 155)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86w3w"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(2846, 165, 64, 155)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0h0ev"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(2910, 165, 64, 155)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45ort"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(2974, 165, 64, 155)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwm3i"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(1152, 160, 64, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8rhpq"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(1216, 160, 64, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5h7e"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(1280, 160, 64, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vgu10"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(1344, 160, 64, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v41ee"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(1408, 160, 64, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mrqk"]
+atlas = ExtResource("3_r5e7o")
+region = Rect2(1472, 160, 64, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n6wxd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ny80")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nlhma")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_722as")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86w3w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h0ev")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_45ort")
+}],
+"loop": true,
+"name": &"car_blue_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwm3i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8rhpq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l5h7e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vgu10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v41ee")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5mrqk")
+}],
+"loop": true,
+"name": &"car_blue_up",
+"speed": 5.0
+}]
+
 [node name="Car" type="Node2D"]
+scale = Vector2(0.8, 0.8)
 script = ExtResource("1_brmlv")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_r5e7o")
-region_enabled = true
-region_rect = Rect2(605.704, 441.02795, 103.711975, 103.5)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 1.5)
+position = Vector2(0.4999999, -15.75)
+scale = Vector2(0.99999994, 0.99999994)
 shape = SubResource("RectangleShape2D_0ny80")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(-13, -24)
-rect = Rect2(-13, -13, 53, 78)
+position = Vector2(-10, -31.249998)
+rect = Rect2(-13, -37.5, 53, 102.5)
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 16
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(1, 2.5)
+position = Vector2(3.7499998, -23.749998)
 shape = SubResource("RectangleShape2D_brmlv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -22.5)
+scale = Vector2(1, 0.7096774)
+sprite_frames = SubResource("SpriteFrames_n6wxd")
+animation = &"car_blue_down"
