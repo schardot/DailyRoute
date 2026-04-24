@@ -6,3 +6,6 @@
 .vscode/
 GameExecutable/*
 export_presets.cfg
+
+# Keep all local assets out of git
+assets/**
