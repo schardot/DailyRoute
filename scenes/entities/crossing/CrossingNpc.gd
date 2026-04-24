@@ -56,7 +56,6 @@ func play_anim(name: StringName) -> void:
 	if sprite.animation != name:
 		sprite.play(name)
 	elif not sprite.is_playing():
-		# Ensure the current animation resumes if it got stopped.
 		sprite.play()
 
 func _update_anim_for_direction(dir_x: float) -> void:

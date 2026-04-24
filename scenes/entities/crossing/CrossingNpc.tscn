@@ -1,21 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4h2q6qj0p6y1"]
+[gd_scene load_steps=5 format=3 uid="uid://d4h2q6qj0p6y1"]
 
 [ext_resource type="Script" uid="uid://d4h2q6qj0p6y2" path="res://scenes/entities/crossing/CrossingNpc.gd" id="1_crossing"]
 [ext_resource type="Texture2D" uid="uid://dbvpfckgqmqmm" path="res://assets/sprites/Crowd member.png" id="2_ld2lh"]
+[ext_resource type="SpriteFrames" uid="uid://b85mdnpcek1dn" path="res://scenes/entities/crossing/CrossingNpc.tres" id="2_x1wh5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ld2lh"]
-height = 48.0
+height = 36.0
 
 [node name="CrossingNpc" type="CharacterBody2D"]
-scale = Vector2(1.5, 1.5)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_crossing")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2.6666665, -9.333333)
+sprite_frames = ExtResource("2_x1wh5")
+animation = &"crossing_left"
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, -1)
 shape = SubResource("CapsuleShape2D_ld2lh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(1, 0.8392157, 1, 1)
 position = Vector2(-1.9073486e-06, 0.66666675)
 rotation = -6.2831855
