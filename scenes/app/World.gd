@@ -5,8 +5,8 @@ class_name World
 @onready var stores_container = $Entities/Stores
 @onready var car = $Entities/Car
 @onready var crowd = $Entities/Crowd
-@onready var street = $Environment/Street
 @onready var entities_root = $Entities
+@onready var tilemap = $Environment/TileMapLayer
 
 const STORE_ROW_PAIRS: Array[Array] = [
 	[0, 5],
@@ -19,8 +19,12 @@ var store_pair_map: Dictionary = {}
 var stores_by_id: Dictionary = {}
 
 func _ready() -> void:
+	LaneManager.set_tilemap(tilemap)
+	LaneManager.generate_lanes()
 	_build_store_pair_map()
 	_cache_stores()
+	for store in get_tree().get_nodes_in_group("stores"):
+		store.set_colors(Color.RED, Color.BEIGE)
 
 func _build_store_pair_map() -> void:
 	for pair in STORE_ROW_PAIRS:
@@ -48,9 +52,6 @@ func get_car():
 
 func get_crowd():
 	return crowd
-
-func get_street():
-	return street
 
 func get_entities_root():
 	return entities_root
@@ -81,3 +82,6 @@ func get_random_store_pair() -> Array:
 	if pairs.is_empty():
 		return []
 	return pairs.pick_random()
+
+func get_tilemap() -> TileMapLayer:
+	return tilemap

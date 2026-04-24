@@ -3,7 +3,6 @@ extends Node2D
 @onready var world: Node2D  = $World
 @onready var player: CharacterBody2D = world.get_player()
 @onready var crowd_container: CrowdManager = world.get_crowd()
-@onready var street = world.get_street()
 @onready var car: Node2D = world.get_car()
 
 @export var crossing_spawn_chance: float = 0.2
@@ -64,7 +63,6 @@ func init_stores():
 	assert(stores.size() > 0)
 
 func init_npcs(lane: LaneStruct):
-	crowd_container.street = street
 	crowd_container.player = player
 	if SceneManager.crowd_positions.size() > 0:
 		for pos in SceneManager.crowd_positions:
@@ -90,7 +88,7 @@ func init_car(lane: LaneStruct) -> void:
 	if not car:
 		return
 	car.lane = lane
-	car.spawn_car(street)
+	car.spawn_car()
 
 func init_tilemap():
 	LaneManager.set_tilemap(world.get_tilemap())

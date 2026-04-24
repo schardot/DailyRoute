@@ -2,7 +2,6 @@ extends CharacterBody2D
 class_name CrowdMember
 
 var speed := 40.0
-var street: Area2D
 var lane : LaneStruct:
 	set(value):
 		lane = value

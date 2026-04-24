@@ -6,7 +6,6 @@ extends Node2D
 @export var brake_window_ahead_y: float = 260.0
 @export var brake_window_behind_y: float = 0.0
 
-var street
 var direction: Vector2 = Vector2.DOWN
 var current_speed: float = 0.0
 var velocity: Vector2 = Vector2.ZERO
@@ -24,8 +23,7 @@ func _ready() -> void:
 	if hitbox and not hitbox.body_entered.is_connected(_on_hitbox_body_entered):
 		hitbox.body_entered.connect(_on_hitbox_body_entered)
  
-func spawn_car(street_ref) -> void:
-	street = street_ref
+func spawn_car(_street_ref = null) -> void:
 	if lane == null:
 		lane = _resolve_lane()
 		if lane == null:
@@ -55,9 +53,9 @@ func _physics_process(delta: float) -> void:
 	_check_recycle()
 
 func _should_brake_for_crossing_npc() -> bool:
-	if not street:
-		return false
 	var my_lane := LaneManager.get_nearest_lane_by_type(global_position.x, LaneManager.LaneType.CAR)
+	if my_lane == null:
+		return false
 	var candidates:= get_tree().get_nodes_in_group("crossing_npcs")
 
 	for n in candidates:
@@ -65,7 +63,6 @@ func _should_brake_for_crossing_npc() -> bool:
 		if npc.has_method("is_crossing_active") and not npc.call("is_crossing_active"):
 			continue
 
-		# Brake only for crossers ahead of us (in our movement direction), not behind.
 		var dir_sign: float = sign(direction.y)
 		if dir_sign == 0.0:
 			dir_sign = 1.0
@@ -75,7 +72,8 @@ func _should_brake_for_crossing_npc() -> bool:
 		if ahead_dist > brake_window_ahead_y:
 			continue
 
-		var half_lane_w : float = LaneManager.lane_width / 2
+		var lane_width_px: float = LaneManager.get_car_lane_width_px()
+		var half_lane_w : float = lane_width_px * 0.5
 		if (npc.global_position.x > my_lane.center.x - half_lane_w &&
 			npc.global_position.x < my_lane.center.x + half_lane_w):		
 			return true

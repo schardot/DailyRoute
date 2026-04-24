@@ -2,7 +2,6 @@ extends Node
 
 const SCRIPTED_EVENT_STORE_ID: int = 1
 const SCRIPTED_EVENT_FROM_STORE_ID: int = 2
-const SCRIPTED_EVENT_CAR_LANE_INDEX: int = 2
 const SCRIPTED_EVENT_CAR_SPAWN_DELAY_SEC: float = 0.9
 const TUTORIAL_CROSSING_SPAWN_CHANCE: float = 0.2
 const TUTORIAL_CROSSING_TRY_INTERVAL: float = 5.0
@@ -12,7 +11,6 @@ const TUTORIAL_CROSSING_MEMORY_SIZE: int = 2
 var player: CharacterBody2D
 @onready var crowd_member = $"../TutorialActors/CrowdMember"
 @onready var hint = $"../BoostHintUi"
-var street: Area2D
 var crowd_container: CrowdManager
 signal store_opened
 
@@ -28,7 +26,6 @@ var scripted_car_waiting_start: bool = false
 func _ready() -> void:
 	await get_tree().process_frame
 	player = world.get_player()
-	street = world.get_street()
 	crowd_container = world.get_crowd()
 	hint.set_target(player)
 	crossing_manager = CrossingManager.new()
@@ -148,19 +145,15 @@ func _spawn_scripted_tutorial_car() -> void:
 	if hitbox:
 		hitbox.monitoring = true
 
-	if SCRIPTED_EVENT_CAR_LANE_INDEX < 0 or SCRIPTED_EVENT_CAR_LANE_INDEX >= LaneManager.LanesArray.size():
+	var lane: LaneStruct = _get_preferred_car_lane()
+	if lane == null:
 		return
-	var lane: LaneStruct = LaneManager.LanesArray[SCRIPTED_EVENT_CAR_LANE_INDEX]
-	if lane.type != LaneManager.LaneType.CAR:
-		return
-	var spawn_top: bool = lane.direction.y > 0.0
-	var spawn_pos: Vector2 = street.get_spawn_line(spawn_top)
-	spawn_pos.x = lane.center.x
-	car.set("global_position", spawn_pos)
-
-	car.set("street", street)
-	car.set("direction", lane.direction)
 	scripted_tutorial_car_original_speed = car.get("target_speed")
+	car.set("lane", lane)
+	if car.has_method("spawn_car"):
+		car.call("spawn_car")
+		return
+	car.set("direction", lane.direction)
 	car.set("current_speed", scripted_tutorial_car_original_speed)
 
 func _start_scripted_car_for_crossing(_row_y: float) -> void:
@@ -177,3 +170,27 @@ func _on_scripted_crossing_ended(_row_y: float) -> void:
 	if car == null:
 		return
 	car.set("target_speed", scripted_tutorial_car_original_speed)
+
+func _get_preferred_car_lane() -> LaneStruct:
+	var car_lanes: Array[LaneStruct] = []
+	for lane: LaneStruct in LaneManager.LanesArray:
+		if lane.type == LaneManager.LaneType.CAR:
+			car_lanes.append(lane)
+
+	if car_lanes.is_empty():
+		return null
+
+	var center_x: float = get_viewport().get_visible_rect().size.x * 0.5
+	var best: LaneStruct = car_lanes[0]
+	var best_width: int = best.line.size()
+	var best_dist: float = absf(best.center.x - center_x)
+
+	for lane: LaneStruct in car_lanes:
+		var lane_width: int = lane.line.size()
+		var dist: float = absf(lane.center.x - center_x)
+		if lane_width > best_width or (lane_width == best_width and dist < best_dist):
+			best = lane
+			best_width = lane_width
+			best_dist = dist
+
+	return best

@@ -7,17 +7,12 @@ enum LaneType {
 	GROUP
 }
 
+const TILE_SIZE_PX: float = 32.0
+const CAR_LANE_WIDTH_TILES: int = 3
+
 var LanesArray = []
 var tilemap: TileMapLayer
 
-#func set_street_bounds(w: float, center_x: float):
-	#var used = tilemap.get_used_rect()
-	#street_width = w
-	#street_center = center_x
-	#lane_width = street_width / LANE_COUNT
-	#populate_lanes_array()
-
-##	return street_center - street_width / 2 + (i + 0.5) * lane_width
 
 #func populate_lanes_array():
 	#LanesArray.clear()
@@ -51,6 +46,9 @@ func get_random_lane_by_type(type: LaneType) -> LaneStruct:
 
 func get_random_lane_x(type: LaneType) -> float:
 	return get_random_lane_by_type(type).center.x
+
+func get_car_lane_width_px() -> float:
+	return float(CAR_LANE_WIDTH_TILES) * TILE_SIZE_PX
 
 func get_nearest_lane_by_type(world_x: float, lane_type: LaneType) -> LaneStruct:
 	var best: LaneStruct = null
@@ -132,7 +130,6 @@ func _collect_columns() -> Dictionary:
 		var is_driveable = bool(column_data.get_custom_data("driveable"))
 		var is_walkable = bool(column_data.get_custom_data("walkable"))
 
-		# non_walkable excludes sidewalks from both cars and crowd lanes.
 		if is_non_walkable:
 			continue
 

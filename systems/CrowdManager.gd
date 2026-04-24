@@ -2,7 +2,6 @@ extends Node2D
 class_name CrowdManager
 
 @export var crowd_count := 10
-@onready var street: Area2D
 @onready var player: CharacterBody2D
 var is_spawning := false
 
@@ -20,7 +19,6 @@ func spawn_npc(lane: LaneStruct, pos: Vector2 = Vector2.ZERO):
 		spawn = pos
 	 
 	npc.global_position = spawn
-	npc.street = street
 	npc.player = player
 	npc.lane = lane
 	add_child(npc)

@@ -14,9 +14,8 @@ func init_car() -> void:
 	var car: Node = world.get_car() if world and world.has_method("get_car") else null
 	if not car:
 		return
-	var street: Node = world.get_street() if world and world.has_method("get_street") else null
-	if street and car.has_method("spawn_car"):
-		car.call("spawn_car", street)
+	if car.has_method("spawn_car"):
+		car.call("spawn_car")
 
 func _disable_car_for_tutorial() -> void:
 	var world: Node = $World
