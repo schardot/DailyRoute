@@ -5,6 +5,8 @@ extends Node2D
 @onready var crowd_container: CrowdManager = world.get_crowd()
 @onready var car: Node2D = world.get_car()
 
+const CAR_SCENE: PackedScene = preload("res://scenes/entities/car/Car.tscn")
+
 @export var crossing_spawn_chance: float = 0.2
 @export var crossing_try_interval: float = 5.0
 @export var crossing_row_memory_size: int = 2
@@ -82,28 +84,24 @@ func init_lanes():
 				car_lanes.append(lane)
 	
 	if not car_lanes.is_empty():
-		init_car(_get_central_car_lane(car_lanes))
+		init_cars(car_lanes)
 
-func init_car(lane: LaneStruct) -> void:
-	if not car:
+func init_cars(car_lanes: Array[LaneStruct]) -> void:
+	if not car or car_lanes.is_empty():
 		return
-	car.lane = lane
+
+	# Reuse the scene car for the first lane, then instantiate one per remaining car lane.
+	car.lane = car_lanes[0]
 	car.spawn_car()
+
+	var parent_node: Node = car.get_parent()
+	for i in range(1, car_lanes.size()):
+		var extra_car: Node2D = CAR_SCENE.instantiate()
+		extra_car.lane = car_lanes[i]
+		parent_node.add_child(extra_car)
+		extra_car.spawn_car()
 
 func init_tilemap():
 	LaneManager.set_tilemap(world.get_tilemap())
 	LaneManager.generate_lanes()
 
-func _get_central_car_lane(car_lanes: Array[LaneStruct]) -> LaneStruct:
-	var center_x: float = get_viewport().get_visible_rect().size.x * 0.5
-	var best: LaneStruct = car_lanes[0]
-	var best_width: int = best.line.size()
-	var best_dist: float = absf(best.center.x - center_x)
-	for lane: LaneStruct in car_lanes:
-		var lane_width: int = lane.line.size()
-		var dist: float = absf(lane.center.x - center_x)
-		if lane_width > best_width or (lane_width == best_width and dist < best_dist):
-			best = lane
-			best_width = lane_width
-			best_dist = dist
-	return best
