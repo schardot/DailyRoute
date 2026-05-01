@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1vm5fu64tcxp"]
+[gd_scene load_steps=7 format=3 uid="uid://b1vm5fu64tcxp"]
 
 [ext_resource type="Script" uid="uid://cb1wl2nbiav7n" path="res://scenes/world/store.gd" id="1_oflbb"]
 [ext_resource type="Shader" uid="uid://cqibbpkjlco22" path="res://scenes/world/Store.gdshader" id="2_nm48x"]
@@ -16,7 +16,7 @@ resource_local_to_scene = true
 shader = ExtResource("2_nm48x")
 shader_parameter/mask_texture = ExtResource("3_50jip")
 shader_parameter/roof_color = Color(0.78431374, 0.78431374, 0.84705883, 1)
-shader_parameter/wall_color = Color(0.38464656, 2.851747e-06, 0.2012113, 1)
+shader_parameter/wall_color = Color(1, 0.7019608, 0.8, 1)
 shader_parameter/door_color = Color(0.9713355, 0.9713355, 0.9713355, 1)
 
 [node name="Store" type="Area2D" groups=["stores"]]
@@ -41,14 +41,5 @@ texture_repeat = 1
 material = SubResource("ShaderMaterial_50jip")
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_ukavp")
-
-[node name="Icon" type="Node2D" parent="Visuals"]
-position = Vector2(-21, -20)
-
-[node name="ColorRect" type="ColorRect" parent="Visuals/Icon"]
-visible = false
-offset_right = 40.0
-offset_bottom = 40.0
-color = Color(1, 0, 0, 1)
 
 [connection signal="body_entered" from="." to="." method="_on_store_body_entered"]

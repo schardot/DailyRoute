@@ -60,11 +60,14 @@ func _ready() -> void:
 		GameTypes.ColorType.BLUE
 	)
 
-func set_goal(color: GameTypes.ColorType):
+func set_goal(color: GameTypes.ColorType, store_for_display: Node = null) -> void:
 	goal_color = color
 	has_goal = true
 	thought_bubble.show()
-	thought_bubble.set_icon(color)
+	if store_for_display != null and store_for_display.has_method("get_wall_color"):
+		thought_bubble.set_bubble_color(store_for_display.get_wall_color())
+	else:
+		thought_bubble.set_icon(color)
 
 func clear_goal():
 	has_goal = false

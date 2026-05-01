@@ -42,7 +42,7 @@ func generate_assignment():
 	var currentStoreNum : int = assignment_order[current_phase]
 	var currentStoreNode : Node = store_map[currentStoreNum]
 
-	player.set_goal(currentStoreNode.color)
+	player.set_goal(currentStoreNode.color, currentStoreNode)
 	currentStoreNode.unblock_store()
 	emit_signal("store_opened")
 	apply_phase_movement_rules()

@@ -43,7 +43,7 @@ func generate_assignment() -> void:
 		available_stores = stores.duplicate()
 
 	current_assignment_store = available_stores.pick_random()
-	player.set_goal(current_assignment_store.color)
+	player.set_goal(current_assignment_store.color, current_assignment_store)
 
 func on_assignment_completed(_completed_store: Area2D) -> void:
 	_completed_store.completed = false

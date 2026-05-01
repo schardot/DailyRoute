@@ -1,4 +1,4 @@
-[gd_scene load_steps=117 format=4 uid="uid://c7mt612o4cb6b"]
+[gd_scene load_steps=116 format=4 uid="uid://c7mt612o4cb6b"]
 
 [ext_resource type="Script" uid="uid://cuats8koek3qw" path="res://scenes/app/World.gd" id="1_jdyhp"]
 [ext_resource type="PackedScene" uid="uid://cescocnbuiapm" path="res://scenes/world/WallBound.tscn" id="2_jdyhp"]
