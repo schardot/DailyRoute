@@ -12,12 +12,12 @@ size = Vector2(103, 120)
 size = Vector2(70, 100)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_50jip"]
+resource_local_to_scene = true
 shader = ExtResource("2_nm48x")
 shader_parameter/mask_texture = ExtResource("3_50jip")
-shader_parameter/roof_color = Color(0, 0, 0, 1)
-shader_parameter/wall_color = Color(0, 0, 0, 1)
-shader_parameter/door_color = Color(0, 0, 0, 1)
-shader_parameter/baseline = Vector3(0, 0, 0)
+shader_parameter/roof_color = Color(0.78431374, 0.78431374, 0.84705883, 1)
+shader_parameter/wall_color = Color(0.38464656, 2.851747e-06, 0.2012113, 1)
+shader_parameter/door_color = Color(0.9713355, 0.9713355, 0.9713355, 1)
 
 [node name="Store" type="Area2D" groups=["stores"]]
 collision_mask = 2
