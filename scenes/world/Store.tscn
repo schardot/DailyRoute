@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1vm5fu64tcxp"]
+[gd_scene load_steps=8 format=3 uid="uid://b1vm5fu64tcxp"]
 
 [ext_resource type="Script" uid="uid://cb1wl2nbiav7n" path="res://scenes/world/store.gd" id="1_oflbb"]
 [ext_resource type="Shader" uid="uid://cqibbpkjlco22" path="res://scenes/world/Store.gdshader" id="2_nm48x"]
@@ -15,9 +15,9 @@ size = Vector2(70, 100)
 resource_local_to_scene = true
 shader = ExtResource("2_nm48x")
 shader_parameter/mask_texture = ExtResource("3_50jip")
-shader_parameter/roof_color = Color(0.78431374, 0.78431374, 0.84705883, 1)
+shader_parameter/roof_color = Color(0.9098039, 0.83137256, 0.65882355, 1)
 shader_parameter/wall_color = Color(1, 0.7019608, 0.8, 1)
-shader_parameter/door_color = Color(0.9713355, 0.9713355, 0.9713355, 1)
+shader_parameter/door_color = Color(0.78431374, 0.65882355, 0.47058824, 1)
 
 [node name="Store" type="Area2D" groups=["stores"]]
 collision_mask = 2

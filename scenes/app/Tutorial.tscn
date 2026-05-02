@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cgq5apkln5flv"]
+[gd_scene load_steps=10 format=3 uid="uid://cgq5apkln5flv"]
 
 [ext_resource type="PackedScene" uid="uid://c7mt612o4cb6b" path="res://scenes/app/World.tscn" id="1_10wk3"]
 [ext_resource type="Script" uid="uid://d1n0ypxcdvg2i" path="res://scenes/app/Tutorial.gd" id="1_h0jlu"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://6ts3rrvmo3op" path="res://scenes/ui/SpaceToPushUI.tscn" id="7_f0llu"]
 [ext_resource type="PackedScene" uid="uid://dnchrhae8ay0m" path="res://scenes/entities/crowd/CrowdMember.tscn" id="7_gui1c"]
 [ext_resource type="PackedScene" uid="uid://d48ttl5blu4e" path="res://scenes/ui/BoostHintUI.tscn" id="7_oycd7"]
+[ext_resource type="PackedScene" uid="uid://b8i6nf5av6xyi" path="res://scenes/entities/delivery truck/DeliveryTruck.tscn" id="8_truck"]
 
 [node name="Tutorial" type="Node2D"]
 script = ExtResource("1_h0jlu")
@@ -16,6 +17,11 @@ script = ExtResource("1_h0jlu")
 script = ExtResource("2_4m1gl")
 
 [node name="World" parent="." instance=ExtResource("1_10wk3")]
+
+[node name="DeliveryTruck" parent="." instance=ExtResource("8_truck")]
+position = Vector2(564, -102)
+move_speed = 50.0
+stop_global_y = 70.0
 
 [node name="PauseUi" parent="." instance=ExtResource("5_ygm5a")]
 

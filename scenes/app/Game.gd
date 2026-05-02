@@ -4,6 +4,7 @@ extends Node2D
 @onready var player: CharacterBody2D = world.get_player()
 @onready var crowd_container: CrowdManager = world.get_crowd()
 @onready var car: Node2D = world.get_car()
+@onready var delivery_truck: Node2D = $DeliveryTruck
 
 const CAR_SCENE: PackedScene = preload("res://scenes/entities/car/Car.tscn")
 
@@ -25,6 +26,7 @@ func _ready() -> void:
 	init_stores()
 	init_tilemap()
 	init_lanes()
+	init_delivery_truck()
 	crossing_manager.configure(world, crossing_spawn_chance, crossing_try_interval, crossing_row_memory_size)
 	crossing_manager.start_auto_spawn()
 
@@ -104,4 +106,10 @@ func init_cars(car_lanes: Array[LaneStruct]) -> void:
 func init_tilemap():
 	LaneManager.set_tilemap(world.get_tilemap())
 	LaneManager.generate_lanes()
+
+func init_delivery_truck() -> void:
+	if not delivery_truck:
+		return
+	if delivery_truck.has_method("park_idle"):
+		delivery_truck.park_idle()
 

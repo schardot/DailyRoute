@@ -3,6 +3,7 @@ extends  Node2D
 func _ready():
 	$TutorialController.store_opened.connect(_on_store_opened)
 	_disable_car_for_tutorial()
+	_start_delivery_truck_intro()
 
 func _on_store_opened():
 	var sound: Node = get_node_or_null("/root/SoundController")
@@ -32,3 +33,10 @@ func _disable_car_for_tutorial() -> void:
 	var hitbox: Node = car.get_node_or_null("Hitbox")
 	if hitbox and hitbox.has_method("set"):
 		hitbox.call("set", "monitoring", false)
+
+func _start_delivery_truck_intro() -> void:
+	var truck: Node = $DeliveryTruck
+	if not truck:
+		return
+	if truck.has_method("start_intro"):
+		truck.call("start_intro")
