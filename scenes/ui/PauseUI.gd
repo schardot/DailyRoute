@@ -1,19 +1,16 @@
 extends CanvasLayer
 
-@onready var pause_button: Button = $PauseButton
-@onready var pause_menu = $PauseMenu
+@onready var pause_hud: HudAnimatedIconButton = $TopBar/PauseHud
 
-func _ready():
-	pause_button.pressed.connect(_on_pause_pressed)
-	pause_menu.visible = false
-	PauseManager.pause_toggled.connect(_on_pause_toggled)
 
-func _on_pause_pressed():
+func _ready() -> void:
+	pause_hud.interacted.connect(_on_pause_pressed)
+
+
+func _on_pause_pressed() -> void:
 	PauseManager.toggle_pause()
 
-func _input(event):
+
+func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		PauseManager.toggle_pause()
-
-func _on_pause_toggled(is_paused: bool):
-	pause_menu.visible = is_paused

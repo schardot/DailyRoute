@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3 uid="uid://c174n7cjg3p7i"]
+
+[ext_resource type="PackedScene" uid="uid://dl4031ynrv61a" path="res://scenes/ui/HudAnimatedIconButton.tscn" id="1_hud_anim"]
+[ext_resource type="Texture2D" uid="uid://bboagio1cl3se" path="res://assets/ui/Modern_UI_Style_1_32x32.png" id="2_3h5xh"]
+[ext_resource type="Texture2D" uid="uid://bjr6l2ywisefy" path="res://scenes/ui/UI Sheet.tres" id="2_rckyo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dihgy"]
+atlas = ExtResource("2_rckyo")
+region = Rect2(1216, 512, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rckyo"]
+atlas = ExtResource("2_3h5xh")
+region = Rect2(768, 1312, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vgyp3"]
+atlas = ExtResource("2_3h5xh")
+region = Rect2(800, 1312, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibrul"]
+atlas = ExtResource("2_3h5xh")
+region = Rect2(832, 1312, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dihgy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rckyo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vgyp3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibrul")
+}],
+"loop": true,
+"name": &"when_pressed",
+"speed": 5.0
+}]
+
+[node name="PauseHud" instance=ExtResource("1_hud_anim")]
+idle_texture = SubResource("AtlasTexture_dihgy")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_dihgy")
+animation = &"when_pressed"

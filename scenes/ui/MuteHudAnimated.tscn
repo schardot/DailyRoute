@@ -1,0 +1,75 @@
+[gd_scene load_steps=13 format=3 uid="uid://bfep2muwsall3"]
+
+[ext_resource type="PackedScene" uid="uid://dl4031ynrv61a" path="res://scenes/ui/HudAnimatedIconButton.tscn" id="1_hud_anim"]
+[ext_resource type="Script" uid="uid://c36io2s753e87" path="res://scenes/ui/MuteHudIcon.gd" id="2_mute"]
+[ext_resource type="Texture2D" uid="uid://bjr6l2ywisefy" path="res://scenes/ui/UI Sheet.tres" id="3_nhy8k"]
+[ext_resource type="Texture2D" uid="uid://bboagio1cl3se" path="res://assets/ui/Modern_UI_Style_1_32x32.png" id="4_bwmcn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nhy8k"]
+atlas = ExtResource("4_bwmcn")
+region = Rect2(1312, 512, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruxbo"]
+atlas = ExtResource("3_nhy8k")
+region = Rect2(1280, 512, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g881e"]
+atlas = ExtResource("4_bwmcn")
+region = Rect2(1056, 1312, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_53oqw"]
+atlas = ExtResource("4_bwmcn")
+region = Rect2(1088, 1312, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kxcue"]
+atlas = ExtResource("4_bwmcn")
+region = Rect2(1184, 1312, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_baag7"]
+atlas = ExtResource("4_bwmcn")
+region = Rect2(1216, 1312, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mute_only"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g881e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_53oqw")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_unmute_only"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kxcue")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_baag7")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="MuteHud" instance=ExtResource("1_hud_anim")]
+script = ExtResource("2_mute")
+idle_texture_muted = SubResource("AtlasTexture_nhy8k")
+idle_texture = SubResource("AtlasTexture_ruxbo")
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+scale = Vector2(0.9, 0.9)
+sprite_frames = SubResource("SpriteFrames_mute_only")
+animation = &"default"
+
+[node name="OverlayUnmute" type="AnimatedSprite2D" parent="." index="2"]
+visible = false
+position = Vector2(16, 16)
+scale = Vector2(0.9, 0.9)
+sprite_frames = SubResource("SpriteFrames_unmute_only")
+animation = &"default"

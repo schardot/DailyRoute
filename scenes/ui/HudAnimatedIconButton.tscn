@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://dl4031ynrv61a"]
+
+[ext_resource type="Script" uid="uid://c3vuk5b27yaww" path="res://scenes/ui/HudAnimatedIconButton.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bjr6l2ywisefy" path="res://scenes/ui/UI Sheet.tres" id="2_hwynh"]
+[ext_resource type="SpriteFrames" uid="uid://c16lq8v1k5gra" path="res://scenes/ui/ButtonAnimations.tres" id="3_ok73k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ok73k"]
+atlas = ExtResource("2_hwynh")
+region = Rect2(1088, 480, 32, 32)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hit"]
+
+[node name="HudAnimatedIconButton" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="IdleTexture" type="TextureRect" parent="."]
+visible = false
+z_index = -1
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_ok73k")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(16, 16)
+sprite_frames = ExtResource("3_ok73k")
+animation = &"pressed_unmute"
+
+[node name="HitArea" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hit")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hit")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_hit")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_hit")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hit")
+flat = true

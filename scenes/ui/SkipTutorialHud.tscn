@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://bjcnag4uru7lx"]
+
+[ext_resource type="PackedScene" uid="uid://dl4031ynrv61a" path="res://scenes/ui/HudAnimatedIconButton.tscn" id="1_hud_anim"]
+[ext_resource type="Script" uid="uid://c6mm8rosmqsb" path="res://scenes/ui/SkipHudIcon.gd" id="2_skip"]
+[ext_resource type="Texture2D" uid="uid://bboagio1cl3se" path="res://assets/ui/Modern_UI_Style_1_32x32.png" id="3_ofcpi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x8g6b"]
+atlas = ExtResource("3_ofcpi")
+region = Rect2(1152, 480, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofcpi"]
+atlas = ExtResource("3_ofcpi")
+region = Rect2(1024, 1120, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74ofh"]
+atlas = ExtResource("3_ofcpi")
+region = Rect2(1056, 1120, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_csady"]
+atlas = ExtResource("3_ofcpi")
+region = Rect2(1088, 1120, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5jo1v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofcpi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_74ofh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_csady")
+}],
+"loop": true,
+"name": &"when_pressed",
+"speed": 5.0
+}]
+
+[node name="SkipTutorialUi" instance=ExtResource("1_hud_anim")]
+script = ExtResource("2_skip")
+idle_texture = SubResource("AtlasTexture_x8g6b")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_5jo1v")
+animation = &"when_pressed"

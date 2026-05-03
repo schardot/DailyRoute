@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://bi20f4xakdy5k"]
+
+[ext_resource type="Script" uid="uid://b7hudt0pr1ght" path="res://scenes/ui/HudTopRight.gd" id="1_hud"]
+[ext_resource type="Script" uid="uid://cgpfaherwo0jm" path="res://scenes/ui/PauseUI.gd" id="2_pause"]
+[ext_resource type="PackedScene" uid="uid://c174n7cjg3p7i" path="res://scenes/ui/PauseHudAnimated.tscn" id="4_pause"]
+[ext_resource type="PackedScene" uid="uid://c8yf0s5uv7rp8" path="res://scenes/ui/ScoreCounterUI.tscn" id="5_score"]
+[ext_resource type="PackedScene" uid="uid://bjcnag4uru7lx" path="res://scenes/ui/SkipTutorialHud.tscn" id="6_skip"]
+[ext_resource type="PackedScene" uid="uid://bfep2muwsall3" path="res://scenes/ui/MuteHudAnimated.tscn" id="7_mute"]
+[ext_resource type="PackedScene" uid="uid://b2qtq3xf6ilfv" path="res://scenes/ui/RestartHudAnimated.tscn" id="8_restart"]
+
+[node name="HudTopRight" type="Node"]
+script = ExtResource("1_hud")
+
+[node name="HudCanvas" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 30
+script = ExtResource("2_pause")
+
+[node name="TopBar" type="HBoxContainer" parent="HudCanvas"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -430.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 56.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="PauseHud" parent="HudCanvas/TopBar" instance=ExtResource("4_pause")]
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="ScoreCounterUi" parent="HudCanvas/TopBar" instance=ExtResource("5_score")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="SkipTutorialUi" parent="HudCanvas/TopBar" instance=ExtResource("6_skip")]
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="MuteHud" parent="HudCanvas/TopBar" instance=ExtResource("7_mute")]
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="RestartHud" parent="HudCanvas/TopBar" instance=ExtResource("8_restart")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3

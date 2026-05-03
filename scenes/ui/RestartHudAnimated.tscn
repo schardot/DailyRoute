@@ -1,0 +1,47 @@
+[gd_scene load_steps=10 format=3 uid="uid://b2qtq3xf6ilfv"]
+
+[ext_resource type="PackedScene" uid="uid://dl4031ynrv61a" path="res://scenes/ui/HudAnimatedIconButton.tscn" id="1_hud_anim"]
+[ext_resource type="Script" uid="uid://c60xluah8mqul" path="res://scenes/ui/RestartHudIcon.gd" id="2_restart"]
+[ext_resource type="Texture2D" uid="uid://bjr6l2ywisefy" path="res://scenes/ui/UI Sheet.tres" id="3_5nv3m"]
+[ext_resource type="Texture2D" uid="uid://bboagio1cl3se" path="res://assets/ui/Modern_UI_Style_1_32x32.png" id="4_5nv3m"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_meqmd"]
+atlas = ExtResource("3_5nv3m")
+region = Rect2(1088, 480, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wo74k"]
+atlas = ExtResource("4_5nv3m")
+region = Rect2(768, 1120, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ilajc"]
+atlas = ExtResource("4_5nv3m")
+region = Rect2(800, 1120, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j5401"]
+atlas = ExtResource("4_5nv3m")
+region = Rect2(832, 1120, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hkoe3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wo74k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ilajc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j5401")
+}],
+"loop": true,
+"name": &"pressed",
+"speed": 5.0
+}]
+
+[node name="RestartHud" instance=ExtResource("1_hud_anim")]
+script = ExtResource("2_restart")
+idle_texture = SubResource("AtlasTexture_meqmd")
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_hkoe3")
+animation = &"pressed"
