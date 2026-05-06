@@ -100,9 +100,7 @@ func _update_walk_animation():
 		$AnimatedSprite2D.play("walk_up")
 
 func _on_personal_space_body_entered(body: Node2D) -> void:
-	print(body.name)
 	if body.is_in_group("player"):
-		print("player")
 		player_in_area = true
 
 func _on_personal_space_body_exited(body: Node2D) -> void:
