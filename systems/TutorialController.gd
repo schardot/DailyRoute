@@ -8,6 +8,7 @@ const TUTORIAL_CROSSING_TRY_INTERVAL: float = 5.0
 const TUTORIAL_CROSSING_MEMORY_SIZE: int = 2
 
 @onready var world: World = $"../World"
+@onready var systems: Node = $"../Systems"
 var player: CharacterBody2D
 @onready var crowd_member = $"../TutorialActors/CrowdMember"
 @onready var hint = $"../BoostHintUi"
@@ -34,7 +35,7 @@ func _ready() -> void:
 	crowd_container = world.get_crowd()
 	hint.set_target(player)
 	crossing_manager = CrossingManager.new()
-	add_child(crossing_manager)
+	(systems if systems != null else self).add_child(crossing_manager)
 	crossing_manager.configure(world, TUTORIAL_CROSSING_SPAWN_CHANCE, TUTORIAL_CROSSING_TRY_INTERVAL, TUTORIAL_CROSSING_MEMORY_SIZE)
 	if player.has_signal("boost_used"):
 		player.boost_used.connect(_on_player_boost_used)
