@@ -1,7 +1,6 @@
 [gd_scene load_steps=138 format=4 uid="uid://c7mt612o4cb6b"]
 
 [ext_resource type="Script" uid="uid://cuats8koek3qw" path="res://scenes/app/World.gd" id="1_jdyhp"]
-[ext_resource type="PackedScene" uid="uid://bpsq6auy0kf62" path="res://scenes/world/LeftFence.tscn" id="3_4t2ey"]
 [ext_resource type="Texture2D" uid="uid://b4yqhdvnetsub" path="res://assets/sprites/street/ME_Singles_City_Terrains_32x32_Asphalt_1_Variation_8.png" id="3_bkdrh"]
 [ext_resource type="Texture2D" uid="uid://buj0av560euyw" path="res://assets/sprites/street/ME_Singles_City_Terrains_32x32_Asphalt_1_Variation_15.png" id="4_3vt6v"]
 [ext_resource type="PackedScene" uid="uid://brwopraptvbiv" path="res://scenes/entities/player/Player.tscn" id="4_rahhb"]
@@ -67,6 +66,7 @@
 [ext_resource type="Texture2D" uid="uid://bwee2nweq4wbi" path="res://assets/sprites/street/Non Driveable Right.png" id="56_ev6m3"]
 [ext_resource type="Texture2D" uid="uid://dlixvssvlwx0o" path="res://assets/sprites/street/Grass Left.png" id="56_ymoqh"]
 [ext_resource type="Texture2D" uid="uid://c1q1l0hk38hn1" path="res://assets/sprites/street/Grass Right.png" id="58_1t1pa"]
+[ext_resource type="PackedScene" uid="uid://blrrwlasucjwq" path="res://scenes/world/LeftFence.tscn" id="63_1t1pa"]
 [ext_resource type="PackedScene" uid="uid://c2g8kstcmlb8a" path="res://scenes/world/RightFence.tscn" id="64_1t1pa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3o7mw"]
@@ -660,20 +660,16 @@ shape = SubResource("RectangleShape2D_vert")
 
 [node name="Left Fences" type="Node2D" parent="Boundaries/Fences"]
 
-[node name="Fence" parent="Boundaries/Fences/Left Fences" instance=ExtResource("3_4t2ey")]
-z_index = 2
-position = Vector2(102, 159)
+[node name="Fence" parent="Boundaries/Fences/Left Fences" instance=ExtResource("63_1t1pa")]
+position = Vector2(100, 159)
 
-[node name="Fence2" parent="Boundaries/Fences/Left Fences" instance=ExtResource("3_4t2ey")]
-z_index = 2
-position = Vector2(101, 307)
+[node name="Fence2" parent="Boundaries/Fences/Left Fences" instance=ExtResource("63_1t1pa")]
+position = Vector2(100, 307)
 
-[node name="Fence3" parent="Boundaries/Fences/Left Fences" instance=ExtResource("3_4t2ey")]
-z_index = 2
-position = Vector2(101, 459)
+[node name="Fence3" parent="Boundaries/Fences/Left Fences" instance=ExtResource("63_1t1pa")]
+position = Vector2(100, 459)
 
-[node name="Fence4" parent="Boundaries/Fences/Left Fences" instance=ExtResource("3_4t2ey")]
-z_index = 2
+[node name="Fence4" parent="Boundaries/Fences/Left Fences" instance=ExtResource("63_1t1pa")]
 position = Vector2(100, 611)
 
 [node name="Right Fences" type="Node2D" parent="Boundaries/Fences"]
