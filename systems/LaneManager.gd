@@ -202,7 +202,7 @@ func _get_spawn_pattern(lane_type: LaneType, index: int) -> Array:
 
 func _get_center_y() -> int:
 	var used_ = tilemap.get_used_rect()
-	return used_.position.y + used_.size.y / 2
+	return int(used_.position.y + used_.size.y * 0.5)
 
 func _manual_car_line() -> Array:
 	var line: Array = []
@@ -215,6 +215,6 @@ func _append_manual_lane(lane_type: LaneType, line: Array, dir: Vector2, groups:
 		return
 	var idx: int = mini(group_index, groups.size() - 1)
 	var lane_cols: Array = groups[idx]
-	var center_x: int = lane_cols[lane_cols.size() / 2]
+	var center_x: int = lane_cols[int(lane_cols.size() * 0.5)]
 	var world_pos: Vector2 = tilemap.map_to_local(Vector2i(center_x, center_y))
 	LanesArray.append(LaneStruct.new(lane_type, line, dir, world_pos))

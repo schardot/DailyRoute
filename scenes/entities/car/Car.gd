@@ -17,6 +17,14 @@ const SPAWN_MARGIN_Y := 8.0
 @onready var hitbox: Area2D = $Hitbox
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
+func set_enabled(enabled: bool) -> void:
+	visible = enabled
+	set_process(enabled)
+	set_physics_process(enabled)
+	if hitbox:
+		hitbox.monitoring = enabled
+		hitbox.monitorable = enabled
+
 func _ready() -> void:
 	world_radius = Globals.get_collision_shape_world_radius(collision_shape)
 	world_half_height = _compute_world_half_height()

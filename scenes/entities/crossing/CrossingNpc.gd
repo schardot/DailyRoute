@@ -51,10 +51,10 @@ func _physics_process(_delta: float) -> void:
 		emit_signal("crossing_ended", row_y)
 		queue_free()
 
-func play_anim(name: StringName) -> void:
+func play_anim(anim_name: StringName) -> void:
 	var sprite: AnimatedSprite2D = $AnimatedSprite2D
-	if sprite.animation != name:
-		sprite.play(name)
+	if sprite.animation != anim_name:
+		sprite.play(anim_name)
 	elif not sprite.is_playing():
 		sprite.play()
 

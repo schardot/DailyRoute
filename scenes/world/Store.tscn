@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://b1vm5fu64tcxp"]
 
-[ext_resource type="Script" uid="uid://cb1wl2nbiav7n" path="res://scenes/world/Store.gd" id="1_oflbb"]
+[ext_resource type="Script" path="res://scenes/world/Store.gd" id="1_oflbb"]
 [ext_resource type="Shader" uid="uid://cqibbpkjlco22" path="res://scenes/world/Store.gdshader" id="2_nm48x"]
 [ext_resource type="Texture2D" uid="uid://dsgt7qchuv3rb" path="res://assets/sprites/shop/ME_Singles_Villas_32x32_Toy_House_5.png" id="2_ukavp"]
 [ext_resource type="Texture2D" uid="uid://rjr8qyacnm3k" path="res://assets/sprites/shop/storemask.png" id="3_50jip"]

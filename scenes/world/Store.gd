@@ -31,7 +31,6 @@ func _ready():
 
 	block_shape.disabled = false
 	add_to_group("stores")
-	
 
 func unblock_store():
 	block_shape.set_deferred("disabled", true)
@@ -39,7 +38,7 @@ func unblock_store():
 func _on_store_body_entered(body):
 	if not body.is_in_group("player"):
 		return
-	
+
 	if completed:
 		return
 	if not body.has_goal:
@@ -51,7 +50,6 @@ func _on_store_body_entered(body):
 func _correct_feedback():
 	completed = true
 	emit_signal("player_entered")
-
 
 func _setup_area():
 	monitoring = true

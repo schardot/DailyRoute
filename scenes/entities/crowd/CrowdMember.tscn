@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dnchrhae8ay0m"]
 
 [ext_resource type="Script" uid="uid://dwbr10qtc8i5h" path="res://scenes/entities/crowd/CrowdMember.gd" id="1_g3vus"]
-[ext_resource type="SpriteFrames" uid="uid://b85mdnpcek1dn" path="res://scenes/entities/crossing/CrossingNpc.tres" id="2_ofrjr"]
+[ext_resource type="SpriteFrames" path="res://scenes/entities/crossing/CrossingNpc.tres" id="2_ofrjr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oc416"]
 height = 48.0

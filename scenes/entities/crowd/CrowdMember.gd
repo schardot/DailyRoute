@@ -30,15 +30,15 @@ func _get_collision_shape() -> CollisionShape2D:
 func _physics_process(_delta):
 	if lane == null:
 		return
-	var final_velocity = get_base_velocity()
+	var final_velocity: Vector2 = get_base_velocity()
 	
 	if player_in_area:
 		var to_player = player.global_position - global_position
 
 		if not player.is_boosting:
-			open_corridor(final_velocity, to_player)
+			final_velocity = open_corridor(final_velocity, to_player)
 		if player.speed < 20:
-			avoid_like_obstacle(to_player)
+			final_velocity = avoid_like_obstacle(final_velocity, to_player)
 	
 	velocity = final_velocity
 	move_and_slide()
@@ -52,16 +52,17 @@ func _physics_process(_delta):
 func get_base_velocity() -> Vector2:
 	return Vector2(0, lane.direction.y) * speed
 
-func avoid_like_obstacle(to_player):
+func avoid_like_obstacle(base_velocity: Vector2, _to_player: Vector2) -> Vector2:
 	var away_dir = (global_position - player.global_position).normalized()
 	away_dir.y = 0
-	velocity.x = away_dir.x * 300.0
+	base_velocity.x = away_dir.x * 300.0
+	return base_velocity
 
-func open_corridor(velocity, to_player):
+func open_corridor(base_velocity: Vector2, _to_player: Vector2) -> Vector2:
 	var dx = global_position.x - player.global_position.x
 	var side = sign(dx)
-	velocity.x = side * 300.0
-	return velocity
+	base_velocity.x = side * 300.0
+	return base_velocity
 	
 func _check_recycle():
 	if not lane:

@@ -75,7 +75,7 @@ func deliver_box() -> void:
 	box.hide_box()
 	update_animation(_last_input_dir)
 
-func set_goal(color: GameTypes.ColorType, store_for_display: Node = null) -> void:
+func set_goal(color: GameTypes.ColorType, _store_for_display: Node = null) -> void:
 	goal_color = color
 	has_goal = true
 
@@ -89,14 +89,14 @@ func set_movement(left, right, up, down):
 	can_move_down = down
 	can_move_up = up
 
-func play_anim(name: StringName) -> void:
+func play_anim(anim_name: StringName) -> void:
 	var sprite: AnimatedSprite2D = $AnimatedSprite2D
 	if sprite.sprite_frames == null:
 		return
-	if not sprite.sprite_frames.has_animation(name):
+	if not sprite.sprite_frames.has_animation(anim_name):
 		return
-	if sprite.animation != name:
-		sprite.play(name)
+	if sprite.animation != anim_name:
+		sprite.play(anim_name)
 
 func _play_first_existing(names: Array) -> void:
 	var sprite: AnimatedSprite2D = $AnimatedSprite2D

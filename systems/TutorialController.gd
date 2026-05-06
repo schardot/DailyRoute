@@ -7,7 +7,7 @@ const TUTORIAL_CROSSING_SPAWN_CHANCE: float = 0.2
 const TUTORIAL_CROSSING_TRY_INTERVAL: float = 5.0
 const TUTORIAL_CROSSING_MEMORY_SIZE: int = 2
 
-@onready var world: Node2D = $"../World"
+@onready var world: Node2D = $"../GameplayCommon/World"
 var player: CharacterBody2D
 @onready var crowd_member = $"../TutorialActors/CrowdMember"
 @onready var hint = $"../BoostHintUi"
@@ -24,7 +24,7 @@ var crossing_manager: CrossingManager
 var scripted_car_waiting_start: bool = false
 
 var score: int = 0
-@onready var score_ui: ScoreCounterUI = $"../HudTopRight/HudCanvas/TopBar/ScoreCounterUi"
+@onready var score_ui: ScoreCounterUI = $"../GameplayCommon/HudTopRight/HudCanvas/TopBar/ScoreCounterUi"
 
 func _ready() -> void:
 	await get_tree().process_frame

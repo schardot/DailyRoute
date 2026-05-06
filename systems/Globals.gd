@@ -94,7 +94,9 @@ func color_type_to_color(c: GameTypes.ColorType) -> Color:
 # -----------------
 
 # Emitted when the player completes an assignment (reaches the correct store)
+@warning_ignore("unused_signal")
 signal assignment_completed
 
 # Emitted when the player dies (e.g. hit by a car)
+@warning_ignore("unused_signal")
 signal player_died
