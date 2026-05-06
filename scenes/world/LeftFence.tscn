@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=4 uid="uid://blrrwlasucjwq"]
+
+[ext_resource type="TileSet" uid="uid://du3vjwpvmfbf5" path="res://scenes/world/Fence.tres" id="1_bcgy0"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1sleb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7q3ed"]
+size = Vector2(220, 21)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_1sleb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-14, 21.5)
+shape = SubResource("RectangleShape2D_7q3ed")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAD+/wAACgAXAEgAAAD//wAACgAXAEgAAAAAAAAACgAXAEgAAAD9/wAACgAXAEgAAAABAAAACgAXAEgAAAACAAAACgAYAEgAAAD8/wAACgAXAEgAAAA=")
+tile_set = ExtResource("1_bcgy0")
