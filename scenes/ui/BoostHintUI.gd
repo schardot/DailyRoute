@@ -23,6 +23,8 @@ func show_hint():
 	if target and is_instance_valid(target):
 		global_position = target.global_position + follow_offset
 	$AnimationPlayer.play("press_loop")
+	await Globals.wait(0.2)
+	SoundController.play_key_press()
 
 func hide_hint():
 	visible = false
