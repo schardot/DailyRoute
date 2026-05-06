@@ -1,13 +1,11 @@
 extends Node2D
 
-@onready var common: Node2D = $GameplayCommon
-@onready var world: Node2D  = common.get_node("World")
+@onready var world: Node2D  = $World
 @onready var player: CharacterBody2D = world.get_player()
 @onready var crowd_container: CrowdManager = world.get_crowd()
 @onready var car: Node2D = world.get_car()
-@onready var delivery_truck: Node2D = common.get_node("DeliveryTruck")
-@onready var hud_top_right: Node = common.get_node("HudTopRight")
-@onready var score_ui: ScoreCounterUI = hud_top_right.get_node("HudCanvas/TopBar/ScoreCounterUi")
+@onready var delivery_truck: Node2D = $DeliveryTruck
+@onready var score_ui: ScoreCounterUI = $HudTopRight/HudCanvas/TopBar/ScoreCounterUi
 
 const CAR_SCENE: PackedScene = preload("res://scenes/entities/car/Car.tscn")
 
@@ -24,18 +22,12 @@ var score: int = 0
 func _ready() -> void:
 	add_to_group("game")
 	crossing_manager = CrossingManager.new()
-	var systems: Node = common.get_node_or_null("Systems")
+	var systems: Node = $Systems
 	(systems if systems != null else self).add_child(crossing_manager)
 
 	score = 0
 	if score_ui:
 		score_ui.reset()
-
-	# Scene overrides kept here so `GameplayCommon.tscn` stays reusable.
-	if delivery_truck is Node2D:
-		(delivery_truck as Node2D).position = Vector2(564, 70)
-	if hud_top_right and "show_skip_tutorial" in hud_top_right:
-		hud_top_right.set("show_skip_tutorial", false)
 
 	init_player()
 	init_stores()

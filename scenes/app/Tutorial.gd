@@ -11,7 +11,7 @@ func _on_store_opened():
 		sound.call("play_bell")
 
 func init_car() -> void:
-	var world: Node = $GameplayCommon/World
+	var world: Node = $World
 	var car: Node = world.get_car() if world and world.has_method("get_car") else null
 	if not car:
 		return
@@ -19,7 +19,7 @@ func init_car() -> void:
 		car.call("spawn_car")
 
 func _disable_car_for_tutorial() -> void:
-	var world: Node = $GameplayCommon/World
+	var world: Node = $World
 	var car: Node = world.get_car() if world and world.has_method("get_car") else null
 	if not car:
 		return
@@ -36,15 +36,8 @@ func _disable_car_for_tutorial() -> void:
 		(hitbox as Area2D).monitoring = false
 
 func _start_delivery_truck_intro() -> void:
-	var truck: Node = $GameplayCommon/DeliveryTruck
+	var truck: Node = $DeliveryTruck
 	if not truck:
 		return
-	# Tutorial-specific tuning (kept here so `GameplayCommon.tscn` stays reusable).
-	if truck is Node2D:
-		(truck as Node2D).position = Vector2(564, -102)
-	if "move_speed" in truck:
-		truck.set("move_speed", 50.0)
-	if "stop_global_y" in truck:
-		truck.set("stop_global_y", 70.0)
 	if truck.has_method("start_intro"):
 		truck.call("start_intro")

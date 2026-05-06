@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/entities/delivery truck/DeliveryTruck.tscn" id="2_truck"]
 [ext_resource type="PackedScene" path="res://scenes/ui/HudTopRight.tscn" id="3_hud"]
 
-[node name="GameplayCommon" type="Node2D"]
+[node name="BaseGameplay" type="Node2D"]
 
 [node name="Systems" type="Node2D" parent="."]
 

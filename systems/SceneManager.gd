@@ -15,6 +15,11 @@ func go_to_game():
 	PauseManager.set_paused(false)
 	get_tree().call_deferred("change_scene_to_file", "res://scenes/app/Game.tscn")
 
+func go_to_menu():
+	# Project currently has no separate main menu scene.
+	# Treat "menu" as "start/tutorial" to avoid broken UI flows.
+	go_to_tutorial()
+
 func go_to_end_screen():
 	PauseManager.set_paused(false)
 	get_tree().call_deferred("change_scene_to_file", "res://scenes/ui/EndScreen.tscn")
