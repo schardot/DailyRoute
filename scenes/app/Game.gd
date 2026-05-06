@@ -20,7 +20,6 @@ var current_assignment_store: Area2D
 var score: int = 0
 
 func _ready() -> void:
-	add_to_group("game")
 	crossing_manager = CrossingManager.new()
 	var systems: Node = $Systems
 	(systems if systems != null else self).add_child(crossing_manager)
