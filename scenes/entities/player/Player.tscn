@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://brwopraptvbiv"]
+[gd_scene load_steps=11 format=3 uid="uid://brwopraptvbiv"]
 
 [ext_resource type="Script" uid="uid://y1oufkpstn01" path="res://scenes/entities/player/Player.gd" id="1_afppm"]
-[ext_resource type="Script" uid="uid://bio3afoxa4838" path="res://scenes/entities/player/ThoughtBubble.gd" id="2_4kuee"]
+[ext_resource type="Script" uid="uid://bio3afoxa4838" path="res://scenes/entities/player/Box.gd" id="2_4kuee"]
 [ext_resource type="SpriteFrames" uid="uid://b0n2vbsc373nt" path="res://scenes/entities/player/Player.tres" id="2_n1xdv"]
+[ext_resource type="Texture2D" uid="uid://dku4nd0hg6f6f" path="res://assets/sprites/Postman 32x32.png" id="4_30dhn"]
+[ext_resource type="Shader" uid="uid://drjlnd52lyly3" path="res://scenes/entities/player/Box.gdshader" id="4_rqwkw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o8nba"]
 resource_local_to_scene = true
@@ -11,12 +13,27 @@ height = 48.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_afppm"]
 radius = 15.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hgjck"]
+shader = ExtResource("4_rqwkw")
+shader_parameter/tint = Color(1, 1, 1, 1)
+shader_parameter/outline_luminance_max = 0.12
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqwkw"]
+atlas = ExtResource("4_30dhn")
+region = Rect2(1409, 672, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hgjck"]
+atlas = SubResource("AtlasTexture_rqwkw")
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 collision_mask = 13
 script = ExtResource("1_afppm")
+box_hand_offset_left = Vector2(-20, 0)
+box_hand_offset_right = Vector2(20, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, 0)
 sprite_frames = ExtResource("2_n1xdv")
 animation = &"walk_down"
 
@@ -34,12 +51,10 @@ visible = false
 scale = Vector2(2.4, 2.4)
 shape = SubResource("CircleShape2D_afppm")
 
-[node name="ThoughtBubble" type="Node2D" parent="."]
-position = Vector2(-20, -92)
+[node name="Box" type="Node2D" parent="."]
 script = ExtResource("2_4kuee")
 
-[node name="ColorRect" type="ColorRect" parent="ThoughtBubble"]
-offset_left = -3.333334
-offset_top = 106.00001
-offset_right = 12.0
-offset_bottom = 119.333336
+[node name="Sprite2D" type="Sprite2D" parent="Box"]
+material = SubResource("ShaderMaterial_hgjck")
+position = Vector2(1, 20)
+texture = SubResource("AtlasTexture_hgjck")

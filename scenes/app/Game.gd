@@ -52,8 +52,10 @@ func generate_assignment() -> void:
 
 	current_assignment_store = available_stores.pick_random()
 	player.set_goal(current_assignment_store.color, current_assignment_store)
+	player.pick_up_box(current_assignment_store.color, current_assignment_store)
 
 func on_assignment_completed(_completed_store: Area2D) -> void:
+	player.deliver_box()
 	score += 1
 	if score_ui:
 		score_ui.set_value(score)

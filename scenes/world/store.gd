@@ -12,16 +12,16 @@ signal player_entered()
 const UNIVERSAL_ROOF_COLOR := Color("#E8D4A8")
 const UNIVERSAL_DOOR_COLOR := Color("#C8A878")
 const WALL_COLORS := [
-	Color("#FFB3CC"),  # Rosa chiclete
-	Color("#C9A8FF"),  # Roxo lavanda
-	Color("#F0F0F0"),  # Branco gelo
-	Color("#A8D8FF"),  # Azul céu
-	Color("#FFB87A"),  # Laranja pêssego
-	Color("#A8E8A8"),  # Verde menta
-	Color("#FFF0A0"),  # Amarelo limão
-	Color("#FF9090"),  # Vermelho salmão
-	Color("#90E8D8"),  # Turquesa
-	Color("#F0DEC0"),  # Bege areia
+	Color("#FFB3CC"),
+	Color("#C9A8FF"),
+	Color("#F0F0F0"),
+	Color("#A8D8FF"),
+	Color("#FFB87A"),
+	Color("#A8E8A8"),
+	Color("#FFF0A0"),
+	Color("#FF9090"),
+	Color("#90E8D8"),
+	Color("#F0DEC0"),
 ]
 
 func _ready():
@@ -69,14 +69,16 @@ func _ensure_unique_material() -> void:
 		return
 	sprite.material = mat.duplicate()
 
-func _get_wall_color_for_store() -> Color:
+static func wall_color_for_store_id(id: int) -> Color:
 	if WALL_COLORS.is_empty():
 		return Color.WHITE
-	if store_id >= 0 and store_id < WALL_COLORS.size():
-		return WALL_COLORS[store_id]
+	if id >= 0 and id < WALL_COLORS.size():
+		return WALL_COLORS[id]
 	return WALL_COLORS[0]
 
-## Same wall tint as the shader (for UI / thought bubble).
+func _get_wall_color_for_store() -> Color:
+	return wall_color_for_store_id(store_id)
+
 func get_wall_color() -> Color:
 	return _get_wall_color_for_store()
 

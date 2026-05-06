@@ -50,6 +50,7 @@ func generate_assignment():
 	var currentStoreNode : Node = store_map[currentStoreNum]
 
 	player.set_goal(currentStoreNode.color, currentStoreNode)
+	player.pick_up_box(currentStoreNode.color, currentStoreNode)
 	currentStoreNode.unblock_store()
 	emit_signal("store_opened")
 	apply_phase_movement_rules()
@@ -59,6 +60,7 @@ func generate_assignment():
 		call_deferred("_start_scripted_tutorial_crossing_event")
 
 func on_assignment_completed() -> void:
+	player.deliver_box()
 	score += 1
 	if score_ui:
 		score_ui.set_value(score)
