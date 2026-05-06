@@ -8,18 +8,9 @@ var lane : LaneStruct:
 		_update_walk_animation()
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
-# ---- TUTORIAL SETTINGS -----
-#var has_target := false
-#var target_position: Vector2
-#var arrived := false
-#var dir_override : Vector2 = Vector2.ZERO
-# ----------------------------
-
-# ---- PLAYER DETECTION ------
 var player: CharacterBody2D
 var player_in_area = false
 const SPAWN_MARGIN_Y := 8.0
-# ----------------------------
 
 func _get_collision_shape() -> CollisionShape2D:
 	if collision_shape:
@@ -74,13 +65,6 @@ func _check_recycle():
 		global_position = Vector2(lane.center.x, top_y)
 	elif lane.direction.y < 0.0 and global_position.y < top_y:
 		global_position = Vector2(lane.center.x, bottom_y)
-	#push_offset = Vector2.ZERO
-	#was_pushed = false
-
-#func apply_push(dir: Vector2):
-	#was_pushed = true
-	#push_offset += dir * 3000
-	#emit_signal("pushed")
 
 func get_world_radius() -> float:
 	var cs := _get_collision_shape()

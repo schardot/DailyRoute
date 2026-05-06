@@ -25,7 +25,6 @@ func _disable_car_for_tutorial() -> void:
 	var car: Node = world.get_car() if world and world.has_method("get_car") else null
 	if not car:
 		return
-	# Keep it in the scene for later, but disable it for now.
 	if car.has_method("set_enabled"):
 		car.call("set_enabled", false)
 		return

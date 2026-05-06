@@ -48,10 +48,7 @@ func _physics_process(delta: float) -> void:
 	var should_brake: bool = _should_brake_for_crossing_npc()
 	var desired_speed: float = 0.0 if should_brake else target_speed
 	var rate: float = brake_decel if should_brake else accel
-	
-	#var desired_speed: float = target_speed
-	#var rate: float =  accel
-	
+
 	current_speed = move_toward(current_speed, desired_speed, rate * delta)
 
 	velocity = direction * current_speed

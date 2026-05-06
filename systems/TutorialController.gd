@@ -113,7 +113,6 @@ func init_stores():
 func init_npc():
 	crowd_member.visible = false
 	crowd_member.set_physics_process(false)
-	#crowd_member.lane.direction = Vector2.ZERO
 	crowd_member.velocity = Vector2.ZERO
 
 func _on_crowd_member_pushed():

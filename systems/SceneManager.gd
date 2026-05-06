@@ -3,10 +3,6 @@ extends Node
 var player_position: Vector2 = Vector2.ZERO
 var crowd_positions: Array = []
 
-# -----------------
-# SCENES
-# -----------------
-
 func go_to_tutorial():
 	PauseManager.set_paused(false)
 	get_tree().call_deferred("change_scene_to_file", "res://scenes/app/Tutorial.tscn")
@@ -16,8 +12,6 @@ func go_to_game():
 	get_tree().call_deferred("change_scene_to_file", "res://scenes/app/Game.tscn")
 
 func go_to_menu():
-	# Project currently has no separate main menu scene.
-	# Treat "menu" as "start/tutorial" to avoid broken UI flows.
 	go_to_tutorial()
 
 func go_to_end_screen():

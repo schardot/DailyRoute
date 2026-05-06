@@ -23,7 +23,6 @@ func populate_lanes_array() -> void:
 	var car_groups: Array = _group_columns(columns_by_type.get("driveable", []))
 	var crowd_groups: Array = _group_columns(columns_by_type.get("walkable", []))
 
-	# Keep manual direction/spawn pattern, but use natural tilemap centers from grouped columns.
 	_append_manual_lane(LaneType.EMPTY, car_line, Vector2.DOWN, car_groups, 0, center_y)
 	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 2, 3], Vector2.DOWN, crowd_groups, 0, center_y)
 	_append_manual_lane(LaneType.CAR, car_line, Vector2.UP, car_groups, 1, center_y)
@@ -32,14 +31,8 @@ func populate_lanes_array() -> void:
 	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 3, 1], Vector2.UP, crowd_groups, 2, center_y)
 	_append_manual_lane(LaneType.CAR, car_line, Vector2.UP, car_groups, 3, center_y)
 
-# ----- tileset
-
 func set_tilemap(tm):
 	tilemap = tm
-
-# ----------------------------
-# PUBLIC API
-# ----------------------------
 
 func get_random_lane_by_type(type: LaneType) -> LaneStruct:
 	var options = []
@@ -73,10 +66,6 @@ func get_nearest_lane_by_type(world_x: float, lane_type: LaneType) -> LaneStruct
 
 	assert(best != null, "No lanes found for requested type")
 	return best
-
-# ----------------------------
-# LANE GENERATION
-# ----------------------------
 
 func generate_lanes():
 	if USE_MANUAL_LANE_LAYOUT:
@@ -112,10 +101,6 @@ func generate_lanes():
 					world_pos
 				)
 			)
-
-# ----------------------------
-# HELPERS
-# ----------------------------
 
 func _collect_columns() -> Dictionary:
 	var result := {
@@ -186,7 +171,7 @@ func _get_direction(lane_type: LaneType, index: int) -> Vector2:
 	if lane_type == LaneType.CAR:
 		return Vector2.DOWN if index % 2 == 0 else Vector2.UP
 	elif lane_type == LaneType.CROWD_MEMBER:
-		return Vector2.UP  # or random later
+		return Vector2.UP
 
 	return Vector2.ZERO
 
@@ -195,7 +180,7 @@ func _get_spawn_pattern(lane_type: LaneType, index: int) -> Array:
 	if lane_type == LaneType.CAR:
 		return [0] if index % 2 == 0 else [1]
 	elif lane_type == LaneType.CROWD_MEMBER:
-		return [1, 2, 3]  # tweak later
+		return [1, 2, 3]
 
 	return []
 

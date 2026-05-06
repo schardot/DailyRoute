@@ -60,10 +60,7 @@ func on_assignment_completed(_completed_store: Area2D) -> void:
 		score_ui.set_value(score)
 	_completed_store.completed = false
 	_completed_store.unblock_store()
-	#crowd_container.call_deferred("spawn_npc")
 	generate_assignment()
-
-# ---- INIT FUNCTIONS
 
 func init_player():
 	if SceneManager.player_position != Vector2.ZERO:
@@ -102,7 +99,6 @@ func init_cars(car_lanes: Array[LaneStruct]) -> void:
 	if not car or car_lanes.is_empty():
 		return
 
-	# Reuse the scene car for the first lane, then instantiate one per remaining car lane.
 	car.lane = car_lanes[0]
 	car.spawn_car()
 
