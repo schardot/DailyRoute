@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1vm5fu64tcxp"]
+[gd_scene load_steps=25 format=3 uid="uid://b1vm5fu64tcxp"]
 
-[ext_resource type="Script" path="res://scenes/world/Store.gd" id="1_oflbb"]
+[ext_resource type="Script" uid="uid://4gcdj16qrocp" path="res://scenes/world/Store.gd" id="1_oflbb"]
 [ext_resource type="Shader" uid="uid://cqibbpkjlco22" path="res://scenes/world/Store.gdshader" id="2_nm48x"]
 [ext_resource type="Texture2D" uid="uid://dsgt7qchuv3rb" path="res://assets/sprites/shop/ME_Singles_Villas_32x32_Toy_House_5.png" id="2_ukavp"]
 [ext_resource type="Texture2D" uid="uid://rjr8qyacnm3k" path="res://assets/sprites/shop/storemask.png" id="3_50jip"]
+[ext_resource type="Shader" uid="uid://b11vcqjmxnyqq" path="res://scenes/world/DoorAnimation.gdshader" id="5_far87"]
+[ext_resource type="Texture2D" uid="uid://dksmsmgiwsdmf" path="res://assets/sprites/shop/Door_Playhouse_32x32_1.png" id="6_7gu4g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oflbb"]
 size = Vector2(103, 120)
@@ -11,17 +13,129 @@ size = Vector2(103, 120)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j8nto"]
 size = Vector2(70, 100)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_50jip"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_far87"]
 resource_local_to_scene = true
 shader = ExtResource("2_nm48x")
 shader_parameter/mask_texture = ExtResource("3_50jip")
-shader_parameter/roof_color = Color(0.9098039, 0.83137256, 0.65882355, 1)
-shader_parameter/wall_color = Color(1, 0.7019608, 0.8, 1)
-shader_parameter/door_color = Color(0.78431374, 0.65882355, 0.47058824, 1)
+shader_parameter/roof_color = Color(0.6431373, 0.6117647, 0.57254905, 1)
+shader_parameter/wall_color = Color(0.66672635, 0.60552955, 0.7417886, 1)
+shader_parameter/door_color = Color(0.5597164, 0.5282756, 0.4889261, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tkci1"]
+shader = ExtResource("5_far87")
+shader_parameter/target_color = Color(0.40392157, 0.40392157, 0.40392157, 1)
+shader_parameter/threshold = 0.4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3sgb3"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(192, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_25m1m"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(224, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_in1uw"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(256, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ct2pr"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(288, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_th1og"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(320, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3v4i"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(352, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1yxk0"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtgw4"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6n8d"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8byu"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(96, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ahvv"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(128, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1vfs"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(160, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgkio"]
+atlas = ExtResource("6_7gu4g")
+region = Rect2(192, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cn1oi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3sgb3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_25m1m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_in1uw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ct2pr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_th1og")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3v4i")
+}],
+"loop": false,
+"name": &"door_close",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1yxk0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qtgw4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6n8d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8byu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ahvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1vfs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgkio")
+}],
+"loop": false,
+"name": &"door_open",
+"speed": 5.0
+}]
 
 [node name="Store" type="Area2D" groups=["stores"]]
 collision_mask = 2
 script = ExtResource("1_oflbb")
+roof_color = Color(0.34968925, 0.34968933, 0.34968922, 1)
+door_color = Color(0.40260392, 0.40260386, 0.40260386, 1)
+wall_color = Color(0.3019608, 0.3019608, 0.3019608, 1)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
@@ -30,6 +144,7 @@ position = Vector2(-0.5, 3)
 shape = SubResource("RectangleShape2D_oflbb")
 
 [node name="DetectionShape" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 13)
 shape = SubResource("RectangleShape2D_j8nto")
 debug_color = Color(0.6002131, 0.19424087, 0.5991998, 0.41960785)
 
@@ -38,8 +153,19 @@ debug_color = Color(0.6002131, 0.19424087, 0.5991998, 0.41960785)
 [node name="Sprite2D" type="Sprite2D" parent="Visuals"]
 texture_filter = 1
 texture_repeat = 1
-material = SubResource("ShaderMaterial_50jip")
+material = SubResource("ShaderMaterial_far87")
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_ukavp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
+visible = false
+texture_filter = 1
+material = SubResource("ShaderMaterial_tkci1")
+position = Vector2(12.8, 38.4)
+scale = Vector2(0.8, 0.8)
+sprite_frames = SubResource("SpriteFrames_cn1oi")
+animation = &"door_close"
+frame = 1
+frame_progress = 0.7087217
 
 [connection signal="body_entered" from="." to="." method="_on_store_body_entered"]

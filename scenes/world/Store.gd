@@ -6,31 +6,41 @@ signal player_entered()
 
 @onready var block_shape: CollisionShape2D = $StaticBody2D/BlockShape
 @onready var sprite: Sprite2D = $Visuals/Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = $Visuals/AnimatedSprite2D
 @export var store_id: int
 @export var color: GameTypes.ColorType = GameTypes.ColorType.RED
 
-const UNIVERSAL_ROOF_COLOR := Color("#E8D4A8")
-const UNIVERSAL_DOOR_COLOR := Color("#C8A878")
-const WALL_COLORS := [
-	Color("#FFB3CC"),
-	Color("#C9A8FF"),
-	Color("#F0F0F0"),
-	Color("#A8D8FF"),
-	Color("#FFB87A"),
-	Color("#A8E8A8"),
-	Color("#FFF0A0"),
-	Color("#FF9090"),
-	Color("#90E8D8"),
-	Color("#F0DEC0"),
-]
+@export var roof_color: Color = Color.WHITE
+@export var door_color: Color = Color.WHITE
+@export var wall_color: Color = Color.WHITE
 
 func _ready():
 	_ensure_unique_material()
 	_apply_store_palette()
 	_setup_area()
+	_setup_animations()
 
 	block_shape.disabled = false
 	add_to_group("stores")
+
+func _setup_animations() -> void:
+	if animated_sprite == null:
+		return
+	animated_sprite.visible = false
+	if not animated_sprite.animation_finished.is_connected(_on_animation_finished):
+		animated_sprite.animation_finished.connect(_on_animation_finished)
+
+func _on_animation_finished() -> void:
+	if animated_sprite == null or animated_sprite.sprite_frames == null:
+		return
+	var anim := animated_sprite.animation
+	if anim == "door_open":
+		var last: int = maxi(animated_sprite.sprite_frames.get_frame_count(anim) - 1, 0)
+		animated_sprite.frame = last
+		animated_sprite.pause()
+	elif anim == "door_close":
+		animated_sprite.pause()
+		animated_sprite.visible = false
 
 func unblock_store():
 	block_shape.set_deferred("disabled", true)
@@ -67,21 +77,14 @@ func _ensure_unique_material() -> void:
 		return
 	sprite.material = mat.duplicate()
 
-static func wall_color_for_store_id(id: int) -> Color:
-	if WALL_COLORS.is_empty():
-		return Color.WHITE
-	if id >= 0 and id < WALL_COLORS.size():
-		return WALL_COLORS[id]
-	return WALL_COLORS[0]
-
 func _get_wall_color_for_store() -> Color:
-	return wall_color_for_store_id(store_id)
+	return wall_color
 
 func get_wall_color() -> Color:
 	return _get_wall_color_for_store()
 
 func _apply_store_palette() -> void:
-	set_colors(UNIVERSAL_ROOF_COLOR, _get_wall_color_for_store(), UNIVERSAL_DOOR_COLOR)
+	set_colors(roof_color, _get_wall_color_for_store(), door_color)
 
 func set_colors(roof: Color, wall: Color, door: Color):
 	var mat = sprite.material as ShaderMaterial
@@ -90,3 +93,22 @@ func set_colors(roof: Color, wall: Color, door: Color):
 	mat.set_shader_parameter("roof_color", roof)
 	mat.set_shader_parameter("wall_color", wall)
 	mat.set_shader_parameter("door_color", door)
+
+func play_animation(anim_name: String) -> void:
+	if animated_sprite == null:
+		push_warning("Store.play_animation: missing Visuals/AnimatedSprite2D on %s" % name)
+		return
+	if animated_sprite.sprite_frames == null:
+		push_warning("Store.play_animation: missing sprite_frames on %s" % name)
+		return
+	if not animated_sprite.sprite_frames.has_animation(anim_name):
+		push_warning("Store.play_animation: animation '%s' not found on %s" % [anim_name, name])
+		return
+	
+	if anim_name == "door_open":
+		SoundController.play_door_open()
+	elif anim_name == "door_close":
+		SoundController.play_door_close()
+
+	animated_sprite.visible = true
+	animated_sprite.play(anim_name)
