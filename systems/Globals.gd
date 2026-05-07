@@ -65,9 +65,3 @@ func color_type_to_color(c: GameTypes.ColorType) -> Color:
 			return Color.WHITE
 		_:
 			return Color.BLACK
-
-@warning_ignore("unused_signal")
-signal assignment_completed
-
-@warning_ignore("unused_signal")
-signal player_died
