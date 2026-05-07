@@ -23,6 +23,7 @@ PauseManager="*res://systems/PauseManager.gd"
 Globals="*res://systems/Globals.gd"
 SoundController="*res://systems/SoundController.gd"
 LaneManager="*res://systems/LaneManager.gd"
+Crossings="*res://systems/CrossingManager.gd"
 
 [display]
 

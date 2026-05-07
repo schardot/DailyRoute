@@ -16,68 +16,42 @@ const CAR_SCENE: PackedScene = preload("res://scenes/entities/car/Car.tscn")
 var crossing_manager: CrossingManager
 
 var stores: Array = []
-var current_assignment_store: Area2D
-var score: int = 0
+var score_system: ScoreSystem
+var assignment_system: AssignmentSystem
 
 func _ready() -> void:
-	crossing_manager = CrossingManager.new()
 	var systems: Node = $Systems
-	(systems if systems != null else self).add_child(crossing_manager)
-
-	score = SceneManager.consume_pending_score()
-	SceneManager.set_current_score(score)
-	if score_ui:
-		score_ui.set_value(score)
+	score_system = ScoreSystem.create((systems if systems != null else self), score_ui)
+	score_system.init_from_pending_score()
 
 	init_player()
-	init_stores()
+	init_stores_and_assignments()
 	init_lanes()
 	init_delivery_truck()
-	crossing_manager.configure(world, crossing_spawn_chance, crossing_try_interval, crossing_row_memory_size)
-	crossing_manager.start_auto_spawn()
+	crossing_manager = Crossings
+	crossing_manager.activate(world, crossing_spawn_chance, crossing_try_interval, crossing_row_memory_size)
 
-	generate_assignment()
+	assignment_system.start_random_assignment()
 
-func generate_assignment() -> void:
-	if stores.is_empty():
-		return
-
-	var available_stores: Array = []
-	for store in stores:
-		if store != current_assignment_store:
-			available_stores.append(store)
-
-	if available_stores.is_empty():
-		available_stores = stores.duplicate()
-
-	current_assignment_store = available_stores.pick_random()
-	player.set_goal(current_assignment_store.color, current_assignment_store)
-	player.pick_up_box(current_assignment_store.color, current_assignment_store)
-	if current_assignment_store.has_method("play_animation"):
-		current_assignment_store.call("play_animation", "door_open")
+func _exit_tree() -> void:
+	if crossing_manager:
+		crossing_manager.deactivate()
 
 func on_assignment_completed(_completed_store: Area2D) -> void:
 	player.deliver_box()
-	score += 1
-	if score_ui:
-		score_ui.set_value(score)
-	SceneManager.set_current_score(score)
-	if _completed_store != null and _completed_store.has_method("play_animation"):
-		_completed_store.call("play_animation", "door_close")
-	_completed_store.completed = false
-	_completed_store.unblock_store()
-	generate_assignment()
+	score_system.add(1)
+	assignment_system.start_random_assignment()
 
 func init_player():
 	if SceneManager.player_position != Vector2.ZERO:
 		player.global_position = SceneManager.player_position
 
-func init_stores():
+func init_stores_and_assignments():
 	stores = get_tree().get_nodes_in_group("stores")
-	for store in stores:
-		store.unblock_store()
-		store.player_entered.connect(func() -> void: on_assignment_completed(store))
 	assert(stores.size() > 0)
+	var systems: Node = $Systems
+	assignment_system = AssignmentSystem.create((systems if systems != null else self), player, stores)
+	assignment_system.assignment_completed.connect(on_assignment_completed)
 
 func init_npcs(lane: LaneStruct):
 	crowd_container.player = player
@@ -97,7 +71,7 @@ func init_lanes():
 				init_npcs(lane)
 			LaneManager.LaneType.CAR:
 				car_lanes.append(lane)
-	
+
 	if not car_lanes.is_empty():
 		init_cars(car_lanes)
 

@@ -11,6 +11,28 @@ var crossing_row_memory_size: int = 2
 var crossing_spawn_timer: Timer
 var recent_crossing_rows: Array[int] = []
 
+func activate(world_ref: Node2D, spawn_chance: float, try_interval: float, row_memory_size: int) -> void:
+	configure(world_ref, spawn_chance, try_interval, row_memory_size)
+	start_auto_spawn()
+
+func deactivate() -> void:
+	stop_auto_spawn()
+	world = null
+	recent_crossing_rows.clear()
+
+static func create(
+		parent: Node,
+		world_ref: Node2D,
+		spawn_chance: float,
+		try_interval: float,
+		row_memory_size: int
+	) -> CrossingManager:
+	var mgr: CrossingManager = CrossingManager.new()
+	if parent != null:
+		parent.add_child(mgr)
+	mgr.activate(world_ref, spawn_chance, try_interval, row_memory_size)
+	return mgr
+
 func configure(world_ref: Node2D, spawn_chance: float, try_interval: float, row_memory_size: int) -> void:
 	world = world_ref
 	crossing_spawn_chance = spawn_chance
