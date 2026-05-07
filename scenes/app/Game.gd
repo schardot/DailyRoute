@@ -24,9 +24,10 @@ func _ready() -> void:
 	var systems: Node = $Systems
 	(systems if systems != null else self).add_child(crossing_manager)
 
-	score = 0
+	score = SceneManager.consume_pending_score()
+	SceneManager.set_current_score(score)
 	if score_ui:
-		score_ui.reset()
+		score_ui.set_value(score)
 
 	init_player()
 	init_stores()
@@ -52,12 +53,17 @@ func generate_assignment() -> void:
 	current_assignment_store = available_stores.pick_random()
 	player.set_goal(current_assignment_store.color, current_assignment_store)
 	player.pick_up_box(current_assignment_store.color, current_assignment_store)
+	if current_assignment_store.has_method("play_animation"):
+		current_assignment_store.call("play_animation", "door_open")
 
 func on_assignment_completed(_completed_store: Area2D) -> void:
 	player.deliver_box()
 	score += 1
 	if score_ui:
 		score_ui.set_value(score)
+	SceneManager.set_current_score(score)
+	if _completed_store != null and _completed_store.has_method("play_animation"):
+		_completed_store.call("play_animation", "door_close")
 	_completed_store.completed = false
 	_completed_store.unblock_store()
 	generate_assignment()
@@ -114,4 +120,3 @@ func init_delivery_truck() -> void:
 		return
 	if delivery_truck.has_method("park_idle"):
 		delivery_truck.park_idle()
-
