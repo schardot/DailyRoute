@@ -7,7 +7,7 @@ func _ready() -> void:
 
 
 func _on_interacted() -> void:
-	var tutorial_controller: Node = get_tree().current_scene.get_node_or_null("TutorialController")
-	if tutorial_controller != null and tutorial_controller.has_method("get_score"):
-		SceneManager.set_pending_score(tutorial_controller.call("get_score"))
+	var tutorial: Node = get_tree().current_scene
+	if tutorial != null and tutorial.has_method("get_score"):
+		SceneManager.set_pending_score(tutorial.call("get_score"))
 	SceneManager.go_to_game()
