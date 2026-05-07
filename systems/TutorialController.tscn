@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ck28sk10mu704"]
-
-[ext_resource type="Script" uid="uid://bitdd0tndlkn0" path="res://systems/TutorialController.gd" id="1_low01"]
-
-[node name="TutorialController" type="Node"]
-script = ExtResource("1_low01")

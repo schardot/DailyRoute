@@ -5,6 +5,7 @@ class_name World
 @onready var stores_container = $Entities/Stores
 @onready var car = $Entities/Car
 @onready var crowd = $Entities/Crowd
+@onready var delivery_truck = $Entities/DeliveryTruck
 @onready var entities_root = $Entities
 @onready var tilemap = $Environment/TileMapLayer
 
@@ -50,6 +51,9 @@ func get_car():
 
 func get_crowd():
 	return crowd
+
+func get_delivery_truck():
+	return delivery_truck
 
 func get_entities_root():
 	return entities_root
