@@ -3,17 +3,20 @@ extends Node
 const BELL_STREAM_PATH := "res://assets/sounds/BellRing.mp3"
 const CAR_CRASH_1_STREAM_PATH := "res://assets/sounds/CarCrash1.mp3"
 const CAR_CRASH_2_STREAM_PATH := "res://assets/sounds/CarCrash2.mp3"
+const BACKGROUND_MUSIC_STREAM_PATH := "res://assets/sounds/Background.mp3"
 const KEY_PRESS_STREAM_PATH := "res://assets/sounds/KeyPressed.mp3"
 const DOOR_SOUNDS_STREAM_PATH := "res://assets/sounds/DoorSounds.mp3"
 
 var bell_stream: AudioStream
 var car_crash_stream_1: AudioStream
 var car_crash_stream_2: AudioStream
+var background_music_stream: AudioStream
 var key_press_stream: AudioStream
 var door_sounds_stream: AudioStream
 const CAR_CRASH_VOLUME_DB := -25.0
 const KEY_PRESS_VOLUME_DB := -18.0
 const DOOR_VOLUME_DB := -18.0
+const BACKGROUND_MUSIC_VOLUME_DB := -12.0
 
 var door_open_start_sec: float = 0.0
 var door_open_len_sec: float = 1.99
@@ -24,6 +27,7 @@ var _door_play_seq: int = 0
 var bell_player: AudioStreamPlayer
 var car_crash_player_1: AudioStreamPlayer
 var car_crash_player_2: AudioStreamPlayer
+var background_music_player: AudioStreamPlayer
 var key_press_player: AudioStreamPlayer
 var door_player: AudioStreamPlayer
 
@@ -31,6 +35,7 @@ func _ready() -> void:
 	bell_stream = _try_load_stream(BELL_STREAM_PATH)
 	car_crash_stream_1 = _try_load_stream(CAR_CRASH_1_STREAM_PATH)
 	car_crash_stream_2 = _try_load_stream(CAR_CRASH_2_STREAM_PATH)
+	background_music_stream = _try_load_stream(BACKGROUND_MUSIC_STREAM_PATH)
 	key_press_stream = _try_load_stream(KEY_PRESS_STREAM_PATH)
 	door_sounds_stream = _try_load_stream(DOOR_SOUNDS_STREAM_PATH)
 
@@ -48,6 +53,11 @@ func _ready() -> void:
 	car_crash_player_2.volume_db = CAR_CRASH_VOLUME_DB
 	add_child(car_crash_player_2)
 
+	background_music_player = AudioStreamPlayer.new()
+	background_music_player.name = "BackgroundMusicPlayer"
+	background_music_player.volume_db = BACKGROUND_MUSIC_VOLUME_DB
+	add_child(background_music_player)
+
 	key_press_player = AudioStreamPlayer.new()
 	key_press_player.name = "KeyPressPlayer"
 	key_press_player.volume_db = KEY_PRESS_VOLUME_DB
@@ -57,6 +67,23 @@ func _ready() -> void:
 	door_player.name = "DoorPlayer"
 	door_player.volume_db = DOOR_VOLUME_DB
 	add_child(door_player)
+
+	_play_background_music()
+
+func _play_background_music() -> void:
+	if not background_music_stream:
+		return
+	if background_music_player.playing:
+		return
+	background_music_player.stream = background_music_stream
+	background_music_player.play()
+	if not background_music_player.finished.is_connected(_on_background_music_finished):
+		background_music_player.finished.connect(_on_background_music_finished)
+
+func _on_background_music_finished() -> void:
+	if not background_music_player or not background_music_stream:
+		return
+	background_music_player.play()
 
 func _try_load_stream(path: String) -> AudioStream:
 	if path.is_empty():
