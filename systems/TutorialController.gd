@@ -20,13 +20,14 @@ var current_phase = 0
 var assignment_order := [2, 7, 0, 9, 8, 1, 4, 3, 5, 6]
 var stores: Array
 var store_map := {}
+var crossing_manager: CrossingManager
+var current_assignment_store: Node = null
 var scripted_tutorial_event_done: bool = false
 var scripted_tutorial_car_original_speed: float = 0.0
-var crossing_manager: CrossingManager
 var scripted_car_waiting_start: bool = false
-var current_assignment_store: Node = null
 
-var score: int = 0
+var score_system: ScoreSystem
+var assignment_system: AssignmentSystem
 @onready var hud_top_right: Node = $"../HudTopRight"
 @onready var score_ui: ScoreCounterUI = hud_top_right.get_node("HudCanvas/TopBar/ScoreCounterUi")
 
@@ -35,31 +36,28 @@ func _ready() -> void:
 	player = world.get_player()
 	crowd_container = world.get_crowd()
 	hint.set_target(player)
-	crossing_manager = CrossingManager.new()
-	(systems if systems != null else self).add_child(crossing_manager)
-	crossing_manager.configure(world, TUTORIAL_CROSSING_SPAWN_CHANCE, TUTORIAL_CROSSING_TRY_INTERVAL, TUTORIAL_CROSSING_MEMORY_SIZE)
+	crossing_manager = Crossings
+	crossing_manager.activate(world, TUTORIAL_CROSSING_SPAWN_CHANCE, TUTORIAL_CROSSING_TRY_INTERVAL, TUTORIAL_CROSSING_MEMORY_SIZE)
 	if player.has_signal("boost_used"):
 		player.boost_used.connect(_on_player_boost_used)
 
-	score = 0
-	if score_ui:
-		score_ui.reset()
+	score_system = ScoreSystem.create((systems if systems != null else self), score_ui)
+	score_system.reset()
 
 	init_stores()
 	init_npc()
 	generate_assignment()
+
+func _exit_tree() -> void:
+	if crossing_manager:
+		crossing_manager.deactivate()
 
 func generate_assignment():
 	var currentStoreNum : int = assignment_order[current_phase]
 	var currentStoreNode : Node = store_map[currentStoreNum]
 	current_assignment_store = currentStoreNode
 
-	player.set_goal(currentStoreNode.color, currentStoreNode)
-	player.pick_up_box(currentStoreNode.color, currentStoreNode)
-	currentStoreNode.unblock_store()
-	if currentStoreNode != null and currentStoreNode.has_method("play_animation"):
-		currentStoreNode.call("play_animation", "door_open")
-	emit_signal("store_opened")
+	assignment_system.start_assignment(currentStoreNode)
 	apply_phase_movement_rules()
 	if currentStoreNum == 0:
 		hint.show_hint()
@@ -67,12 +65,8 @@ func generate_assignment():
 		call_deferred("_start_scripted_tutorial_crossing_event")
 
 func on_assignment_completed() -> void:
-	if current_assignment_store != null and current_assignment_store.has_method("play_animation"):
-		current_assignment_store.call("play_animation", "door_close")
 	player.deliver_box()
-	score += 1
-	if score_ui:
-		score_ui.set_value(score)
+	score_system.add(1)
 	current_phase += 1
 	if current_phase >= assignment_order.size():
 		tutorial_complete()
@@ -96,8 +90,7 @@ func apply_phase_movement_rules():
 			player.set_movement(true, true, true, true)
 
 func tutorial_complete():
-	player.clear_goal()
-	SceneManager.set_pending_score(score)
+	SceneManager.set_pending_score(score_system.score)
 	reset_stores()
 	SceneManager.player_position = player.global_position
 	SceneManager.crowd_positions = []
@@ -110,7 +103,7 @@ func reset_stores():
 		store.completed = false
 
 func get_score() -> int:
-	return score
+	return score_system.score
 
 func init_stores():
 	stores = get_tree().get_nodes_in_group("stores")
@@ -118,15 +111,15 @@ func init_stores():
 
 	for store in stores:
 		store_map[store.store_id] = store
-		store.player_entered.connect(on_assignment_completed)
+
+	assignment_system = AssignmentSystem.create((systems if systems != null else self), player, stores)
+	assignment_system.assignment_started.connect(func(_s: Area2D) -> void: emit_signal("store_opened"))
+	assignment_system.assignment_completed.connect(func(_s: Area2D) -> void: on_assignment_completed())
 
 func init_npc():
 	crowd_member.visible = false
 	crowd_member.set_physics_process(false)
 	crowd_member.velocity = Vector2.ZERO
-
-func _on_crowd_member_pushed():
-	pass
 
 func _on_player_boost_used() -> void:
 	hint.hide_hint()
@@ -136,6 +129,8 @@ func _try_spawn_crossing_npc_with_chance() -> void:
 		return
 	crossing_manager.try_spawn_with_chance()
 
+## Kept temporarily for compatibility with older references.
+## Can be deleted once no one calls it.
 func _start_scripted_tutorial_crossing_event() -> void:
 	if scripted_tutorial_event_done:
 		return
@@ -159,7 +154,9 @@ func _spawn_scripted_tutorial_car() -> void:
 	if car == null:
 		return
 
-	if car is Node2D:
+	if car.has_method("set_enabled"):
+		car.call("set_enabled", true)
+	elif car is Node2D:
 		(car as Node2D).visible = true
 	car.set_process(true)
 	car.set_physics_process(true)
@@ -171,7 +168,7 @@ func _spawn_scripted_tutorial_car() -> void:
 	var lane: LaneStruct = _get_preferred_car_lane()
 	if lane == null:
 		return
-	scripted_tutorial_car_original_speed = car.get("target_speed")
+	scripted_tutorial_car_original_speed = float(car.get("target_speed"))
 	car.set("lane", lane)
 	if car.has_method("spawn_car"):
 		car.call("spawn_car")

@@ -18,7 +18,7 @@ func is_crossing_active() -> bool:
 	
 
 func spawn_from_stores(left_store: Node2D, right_store: Node2D) -> void:
-	row_y = left_store.global_position.y
+	row_y = left_store.global_position.y + 40
 	global_position = Vector2(left_store.global_position.x, row_y)
 	target_x = right_store.global_position.x
 
