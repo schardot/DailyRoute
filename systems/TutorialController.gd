@@ -24,6 +24,7 @@ var scripted_tutorial_event_done: bool = false
 var scripted_tutorial_car_original_speed: float = 0.0
 var crossing_manager: CrossingManager
 var scripted_car_waiting_start: bool = false
+var current_assignment_store: Node = null
 
 var score: int = 0
 @onready var hud_top_right: Node = $"../HudTopRight"
@@ -51,10 +52,13 @@ func _ready() -> void:
 func generate_assignment():
 	var currentStoreNum : int = assignment_order[current_phase]
 	var currentStoreNode : Node = store_map[currentStoreNum]
+	current_assignment_store = currentStoreNode
 
 	player.set_goal(currentStoreNode.color, currentStoreNode)
 	player.pick_up_box(currentStoreNode.color, currentStoreNode)
 	currentStoreNode.unblock_store()
+	if currentStoreNode != null and currentStoreNode.has_method("play_animation"):
+		currentStoreNode.call("play_animation", "door_open")
 	emit_signal("store_opened")
 	apply_phase_movement_rules()
 	if currentStoreNum == 0:
@@ -63,6 +67,8 @@ func generate_assignment():
 		call_deferred("_start_scripted_tutorial_crossing_event")
 
 func on_assignment_completed() -> void:
+	if current_assignment_store != null and current_assignment_store.has_method("play_animation"):
+		current_assignment_store.call("play_animation", "door_close")
 	player.deliver_box()
 	score += 1
 	if score_ui:
@@ -91,6 +97,7 @@ func apply_phase_movement_rules():
 
 func tutorial_complete():
 	player.clear_goal()
+	SceneManager.set_pending_score(score)
 	reset_stores()
 	SceneManager.player_position = player.global_position
 	SceneManager.crowd_positions = []
@@ -101,6 +108,9 @@ func tutorial_complete():
 func reset_stores():
 	for store in stores:
 		store.completed = false
+
+func get_score() -> int:
+	return score
 
 func init_stores():
 	stores = get_tree().get_nodes_in_group("stores")

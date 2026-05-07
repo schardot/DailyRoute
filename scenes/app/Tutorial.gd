@@ -11,8 +11,8 @@ func _ready():
 
 func _on_store_opened():
 	var sound: Node = get_node_or_null("/root/SoundController")
-	if sound and sound.has_method("play_bell"):
-		sound.call("play_bell")
+	# if sound and sound.has_method("play_bell"):
+	# 	sound.call("play_bell")
 
 func init_car() -> void:
 	var car: Node = world.get_car() if world and world.has_method("get_car") else null
