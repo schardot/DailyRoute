@@ -1,11 +1,4 @@
-extends Node2D
-
-@onready var world: Node2D  = $World
-@onready var player: CharacterBody2D = world.get_player()
-@onready var crowd_container: CrowdManager = world.get_crowd()
-@onready var car: Node2D = world.get_car()
-@onready var delivery_truck: Node2D = $DeliveryTruck
-@onready var score_ui: ScoreCounterUI = $HudTopRight/HudCanvas/TopBar/ScoreCounterUi
+extends BaseGameplay
 
 const CAR_SCENE: PackedScene = preload("res://scenes/entities/car/Car.tscn")
 
@@ -15,43 +8,29 @@ const CAR_SCENE: PackedScene = preload("res://scenes/entities/car/Car.tscn")
 
 var crossing_manager: CrossingManager
 
-var stores: Array = []
-var score_system: ScoreSystem
-var assignment_system: AssignmentSystem
-
-func _ready() -> void:
-	var systems: Node = $Systems
-	score_system = ScoreSystem.create((systems if systems != null else self), score_ui)
+func setup_run() -> void:
+	create_score_system()
 	score_system.init_from_pending_score()
 
-	init_player()
-	init_stores_and_assignments()
-	init_lanes()
-	init_delivery_truck()
-	crossing_manager = Crossings
-	crossing_manager.activate(world, crossing_spawn_chance, crossing_try_interval, crossing_row_memory_size)
+	_init_player_from_handoff()
+	var stores_ref := init_stores()
+	create_assignment_system(stores_ref)
+	assignment_system.assignment_completed.connect(on_assignment_completed)
 
+	_init_lanes()
+	init_delivery_truck_idle()
+
+	activate_crossings(crossing_spawn_chance, crossing_try_interval, crossing_row_memory_size)
 	assignment_system.start_random_assignment()
-
-func _exit_tree() -> void:
-	if crossing_manager:
-		crossing_manager.deactivate()
 
 func on_assignment_completed(_completed_store: Area2D) -> void:
 	player.deliver_box()
 	score_system.add(1)
 	assignment_system.start_random_assignment()
 
-func init_player():
+func _init_player_from_handoff() -> void:
 	if SceneManager.player_position != Vector2.ZERO:
 		player.global_position = SceneManager.player_position
-
-func init_stores_and_assignments():
-	stores = get_tree().get_nodes_in_group("stores")
-	assert(stores.size() > 0)
-	var systems: Node = $Systems
-	assignment_system = AssignmentSystem.create((systems if systems != null else self), player, stores)
-	assignment_system.assignment_completed.connect(on_assignment_completed)
 
 func init_npcs(lane: LaneStruct):
 	crowd_container.player = player
@@ -63,7 +42,7 @@ func init_npcs(lane: LaneStruct):
 	else:
 		crowd_container.spawn_line(lane.line, lane)
 
-func init_lanes():
+func _init_lanes():
 	var car_lanes: Array[LaneStruct] = []
 	for lane in LaneManager.LanesArray:	
 		match lane.type:
@@ -88,9 +67,3 @@ func init_cars(car_lanes: Array[LaneStruct]) -> void:
 		extra_car.lane = car_lanes[i]
 		parent_node.add_child(extra_car)
 		extra_car.spawn_car()
-
-func init_delivery_truck() -> void:
-	if not delivery_truck:
-		return
-	if delivery_truck.has_method("park_idle"):
-		delivery_truck.park_idle()

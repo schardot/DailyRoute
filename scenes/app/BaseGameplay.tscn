@@ -1,16 +1,14 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://xgduifceryc4"]
 
-[ext_resource type="PackedScene" path="res://scenes/app/World.tscn" id="1_world"]
-[ext_resource type="PackedScene" path="res://scenes/entities/delivery truck/DeliveryTruck.tscn" id="2_truck"]
-[ext_resource type="PackedScene" path="res://scenes/ui/HudTopRight.tscn" id="3_hud"]
+[ext_resource type="Script" uid="uid://b6k4bq0ohj4u0" path="res://scenes/app/BaseGameplay.gd" id="1_basegameplay"]
+[ext_resource type="PackedScene" uid="uid://c7mt612o4cb6b" path="res://scenes/app/World.tscn" id="1_world"]
+[ext_resource type="PackedScene" uid="uid://bi20f4xakdy5k" path="res://scenes/ui/HudTopRight.tscn" id="3_hud"]
 
 [node name="BaseGameplay" type="Node2D"]
+script = ExtResource("1_basegameplay")
 
 [node name="Systems" type="Node2D" parent="."]
 
 [node name="World" parent="." instance=ExtResource("1_world")]
 
-[node name="DeliveryTruck" parent="." instance=ExtResource("2_truck")]
-
 [node name="HudTopRight" parent="." instance=ExtResource("3_hud")]
-
