@@ -23,8 +23,6 @@ func _ready() -> void:
 	LaneManager.generate_lanes()
 	_build_store_pair_map()
 	_cache_stores()
-	#for store in get_tree().get_nodes_in_group("stores"):
-		#store.set_colors(Color.RED, Color.BEIGE)
 
 func _build_store_pair_map() -> void:
 	for pair in STORE_ROW_PAIRS:

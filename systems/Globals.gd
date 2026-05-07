@@ -1,22 +1,10 @@
 extends Node
 
-# -----------------
-# LIFECYCLE
-# -----------------
-
 func _ready() -> void:
 	randomize()
 
-# -----------------
-# SCREEN HELPERS
-# -----------------
-
 func get_screen_size() -> Vector2:
 	return get_viewport().get_visible_rect().size
-
-# -----------------
-# WAIT HELPERS
-# -----------------
 
 func wait(seconds: float) -> void:
 	await get_tree().create_timer(seconds).timeout
@@ -29,19 +17,12 @@ func wait_medium():
 
 func wait_long():
 	await wait(20)
-# -----------------
-# RANDOM HELPERS
-# -----------------
 
 func random_bool() -> bool:
 	return randf() < 0.5
 
 func random_sign() -> float:
 	return 1.0 if random_bool() else -1.0
-
-# -----------------
-# COLLISION HELPERS
-# -----------------
 
 func get_collision_shape_world_radius(collision_shape: CollisionShape2D) -> float:
 	if not collision_shape:
@@ -59,10 +40,6 @@ func get_collision_shape_world_radius(collision_shape: CollisionShape2D) -> floa
 
 	var scale: Vector2 = collision_shape.global_transform.get_scale()
 	return local_radius * max(abs(scale.x), abs(scale.y))
-
-# -----------------
-# COLOR HELPERS
-# -----------------
 
 func color_type_to_color(c: GameTypes.ColorType) -> Color:
 	match c:
@@ -89,12 +66,8 @@ func color_type_to_color(c: GameTypes.ColorType) -> Color:
 		_:
 			return Color.BLACK
 
-# -----------------
-# GLOBAL SIGNALS
-# -----------------
-
-# Emitted when the player completes an assignment (reaches the correct store)
+@warning_ignore("unused_signal")
 signal assignment_completed
 
-# Emitted when the player dies (e.g. hit by a car)
+@warning_ignore("unused_signal")
 signal player_died

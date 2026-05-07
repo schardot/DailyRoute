@@ -709,26 +709,31 @@ position = Vector2(2, 26)
 
 [node name="Store" parent="Entities/Stores/LeftBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(110, 54)
+wall_color = Color(0.9438195, 0.51131684, 0.81456184, 1)
 
 [node name="Store1" parent="Entities/Stores/LeftBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(110, 206)
 store_id = 1
 color = 1
+wall_color = Color(0.3080512, 0.6823695, 0.85773534, 1)
 
 [node name="Store2" parent="Entities/Stores/LeftBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(110, 358)
 store_id = 2
 color = 2
+wall_color = Color(0.8129227, 0.59027594, 0.13725433, 1)
 
 [node name="Store3" parent="Entities/Stores/LeftBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(110, 510)
 store_id = 3
 color = 3
+wall_color = Color(0.15448868, 0.74161494, 0.546803, 1)
 
 [node name="Store4" parent="Entities/Stores/LeftBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(110, 662)
 store_id = 4
 color = 4
+wall_color = Color(0.9869693, 0.45066655, 0.26743212, 1)
 
 [node name="RightBlock" type="Node2D" parent="Entities/Stores"]
 light_mask = 2
@@ -738,23 +743,28 @@ position = Vector2(1122, 26)
 position = Vector2(-80, 54)
 store_id = 5
 color = 5
+wall_color = Color(0.52324194, 0.7068709, 0.14993078, 1)
 
 [node name="Store6" parent="Entities/Stores/RightBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(-80, 206)
 store_id = 6
 color = 6
+wall_color = Color(0.5647087, 0.6541798, 0.67287505, 1)
 
 [node name="Store7" parent="Entities/Stores/RightBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(-80, 358)
 store_id = 7
 color = 7
+wall_color = Color(1.5641807, 0.84386694, 0.20592023, 1)
 
 [node name="Store8" parent="Entities/Stores/RightBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(-80, 510)
 store_id = 8
 color = 8
+wall_color = Color(0.90099996, 0.82, 1, 1)
 
 [node name="Store9" parent="Entities/Stores/RightBlock" instance=ExtResource("6_rrmlc")]
 position = Vector2(-80, 662)
 store_id = 9
 color = 9
+wall_color = Color(0.59006125, 0.9867645, 1.540184e-06, 1)

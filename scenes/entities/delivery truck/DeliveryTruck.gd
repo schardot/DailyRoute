@@ -22,7 +22,6 @@ func start_intro() -> void:
 func _ready() -> void:
 	set_process(false)
 
-## Parked state for Game scene: visible, truck motion stopped, door held open on last frame.
 func park_idle() -> void:
 	if not animated_truck or not animated_door:
 		return
@@ -48,7 +47,6 @@ func _process(delta: float) -> void:
 	global_position.y = stop_global_y
 	_is_entering = false
 	set_process(false)
-	# Keep the truck idle-motion animation running after it parks.
 	animated_truck.play("walk_down")
 	_play_door_once()
 

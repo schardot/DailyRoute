@@ -18,8 +18,6 @@ func is_crossing_active() -> bool:
 	
 
 func spawn_from_stores(left_store: Node2D, right_store: Node2D) -> void:
-	if not is_in_group("crossing_npcs"):
-		add_to_group("crossing_npcs")
 	row_y = left_store.global_position.y
 	global_position = Vector2(left_store.global_position.x, row_y)
 	target_x = right_store.global_position.x
@@ -51,10 +49,10 @@ func _physics_process(_delta: float) -> void:
 		emit_signal("crossing_ended", row_y)
 		queue_free()
 
-func play_anim(name: StringName) -> void:
+func play_anim(anim_name: StringName) -> void:
 	var sprite: AnimatedSprite2D = $AnimatedSprite2D
-	if sprite.animation != name:
-		sprite.play(name)
+	if sprite.animation != anim_name:
+		sprite.play(anim_name)
 	elif not sprite.is_playing():
 		sprite.play()
 

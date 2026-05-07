@@ -20,7 +20,7 @@ func set_box_from_store(store: Node) -> void:
 	if store.has_method("get_wall_color"):
 		set_box_color(store.get_wall_color())
 	else:
-		push_warning("Box.set_box_from_store: store has no get_wall_color()")
+		return
 
 func hide_box() -> void:
 	visible = false

@@ -1,7 +1,11 @@
-extends  Node2D
+extends Node2D
+
+@onready var world: World = $World
+@onready var tutorial_controller: Node = $TutorialController
+@onready var delivery_truck: Node = $DeliveryTruck
 
 func _ready():
-	$TutorialController.store_opened.connect(_on_store_opened)
+	tutorial_controller.store_opened.connect(_on_store_opened)
 	_disable_car_for_tutorial()
 	_start_delivery_truck_intro()
 
@@ -11,7 +15,6 @@ func _on_store_opened():
 		sound.call("play_bell")
 
 func init_car() -> void:
-	var world: Node = $World
 	var car: Node = world.get_car() if world and world.has_method("get_car") else null
 	if not car:
 		return
@@ -19,24 +22,22 @@ func init_car() -> void:
 		car.call("spawn_car")
 
 func _disable_car_for_tutorial() -> void:
-	var world: Node = $World
 	var car: Node = world.get_car() if world and world.has_method("get_car") else null
 	if not car:
 		return
-	# Keep it in the scene for later, but disable it for now.
+	if car.has_method("set_enabled"):
+		car.call("set_enabled", false)
+		return
 	if car is Node2D:
 		(car as Node2D).visible = false
-	if car.has_method("set_physics_process"):
-		car.call("set_physics_process", false)
-	if car.has_method("set_process"):
-		car.call("set_process", false)
+	car.set_physics_process(false)
+	car.set_process(false)
 	var hitbox: Node = car.get_node_or_null("Hitbox")
-	if hitbox and hitbox.has_method("set"):
-		hitbox.call("set", "monitoring", false)
+	if hitbox and hitbox is Area2D:
+		(hitbox as Area2D).monitoring = false
 
 func _start_delivery_truck_intro() -> void:
-	var truck: Node = $DeliveryTruck
-	if not truck:
+	if not delivery_truck:
 		return
-	if truck.has_method("start_intro"):
-		truck.call("start_intro")
+	if delivery_truck.has_method("start_intro"):
+		delivery_truck.call("start_intro")

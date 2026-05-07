@@ -20,9 +20,9 @@ var current_assignment_store: Area2D
 var score: int = 0
 
 func _ready() -> void:
-	add_to_group("game")
 	crossing_manager = CrossingManager.new()
-	add_child(crossing_manager)
+	var systems: Node = $Systems
+	(systems if systems != null else self).add_child(crossing_manager)
 
 	score = 0
 	if score_ui:
@@ -30,7 +30,6 @@ func _ready() -> void:
 
 	init_player()
 	init_stores()
-	init_tilemap()
 	init_lanes()
 	init_delivery_truck()
 	crossing_manager.configure(world, crossing_spawn_chance, crossing_try_interval, crossing_row_memory_size)
@@ -61,10 +60,7 @@ func on_assignment_completed(_completed_store: Area2D) -> void:
 		score_ui.set_value(score)
 	_completed_store.completed = false
 	_completed_store.unblock_store()
-	#crowd_container.call_deferred("spawn_npc")
 	generate_assignment()
-
-# ---- INIT FUNCTIONS
 
 func init_player():
 	if SceneManager.player_position != Vector2.ZERO:
@@ -103,7 +99,6 @@ func init_cars(car_lanes: Array[LaneStruct]) -> void:
 	if not car or car_lanes.is_empty():
 		return
 
-	# Reuse the scene car for the first lane, then instantiate one per remaining car lane.
 	car.lane = car_lanes[0]
 	car.spawn_car()
 
@@ -113,10 +108,6 @@ func init_cars(car_lanes: Array[LaneStruct]) -> void:
 		extra_car.lane = car_lanes[i]
 		parent_node.add_child(extra_car)
 		extra_car.spawn_car()
-
-func init_tilemap():
-	LaneManager.set_tilemap(world.get_tilemap())
-	LaneManager.generate_lanes()
 
 func init_delivery_truck() -> void:
 	if not delivery_truck:
