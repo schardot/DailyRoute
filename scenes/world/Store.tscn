@@ -17,9 +17,9 @@ size = Vector2(70, 100)
 resource_local_to_scene = true
 shader = ExtResource("2_nm48x")
 shader_parameter/mask_texture = ExtResource("3_50jip")
-shader_parameter/roof_color = Color(0.6431373, 0.6117647, 0.57254905, 1)
-shader_parameter/wall_color = Color(0.66672635, 0.60552955, 0.7417886, 1)
-shader_parameter/door_color = Color(0.5597164, 0.5282756, 0.4889261, 1)
+shader_parameter/roof_color = Color(0.34968925, 0.34968933, 0.34968922, 1)
+shader_parameter/wall_color = Color(0.3019608, 0.3019608, 0.3019608, 1)
+shader_parameter/door_color = Color(0.40260392, 0.40260386, 0.40260386, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tkci1"]
 shader = ExtResource("5_far87")
