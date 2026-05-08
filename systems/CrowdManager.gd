@@ -26,7 +26,8 @@ func spawn_npc(lane: LaneStruct, pos: Vector2 = Vector2.ZERO):
 func _get_lane_spawn_position(npc: CrowdMember, lane: LaneStruct) -> Vector2:
 	var radius := npc.get_world_radius()
 	var viewport_h := get_viewport().get_visible_rect().size.y
-	var spawn_y := -radius - SPAWN_MARGIN_Y if lane.direction.y > 0.0 else viewport_h + radius + SPAWN_MARGIN_Y
+	# Spawn within the visible bounds so boundary walls don't block NPCs from entering.
+	var spawn_y := (radius + SPAWN_MARGIN_Y) if lane.direction.y > 0.0 else (viewport_h - radius - SPAWN_MARGIN_Y)
 	return Vector2(lane.center.x, spawn_y)
 
 func _spawn_group(num: int, lane: LaneStruct):

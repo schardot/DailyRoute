@@ -59,8 +59,9 @@ func _check_recycle():
 	if not lane:
 		return
 	var npc_half_height := get_world_radius()
-	var top_y := -npc_half_height - SPAWN_MARGIN_Y
-	var bottom_y := get_viewport_rect().size.y + npc_half_height + SPAWN_MARGIN_Y
+	# Keep recycled NPCs within bounds so boundary walls don't block them.
+	var top_y := npc_half_height + SPAWN_MARGIN_Y
+	var bottom_y := get_viewport_rect().size.y - npc_half_height - SPAWN_MARGIN_Y
 	if lane.direction.y > 0.0 and global_position.y > bottom_y:
 		global_position = Vector2(lane.center.x, top_y)
 	elif lane.direction.y < 0.0 and global_position.y < top_y:
