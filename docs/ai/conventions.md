@@ -149,6 +149,20 @@ The code relies on Godot groups for discovery:
 - **Do**: `await get_tree().process_frame` when you need nodes ready before wiring (tutorial controller does this).
 - **Don’t**: call `Globals.wait(...)` without `await` if you expect it to actually pause execution.
 
+## UI composition: owner vs internal wiring
+
+Prefer splitting HUD/UI scenes into two layers when it improves clarity and pause/input behavior:
+
+- **Owner node script (external API + configuration)**:
+  - attach a lightweight script to the root of the UI scene to expose configuration to the rest of the game (exported flags, stable node paths, small public methods).
+  - keep this layer free of per-frame logic and input where possible.
+
+- **Canvas/input layer script (internal wiring + behavior)**:
+  - put runtime UI behavior and input handling on the `CanvasLayer` (or the specific `Control`) that owns the widgets.
+  - set `process_mode = PROCESS_MODE_ALWAYS` when the UI must remain responsive while the game is paused (e.g. pause toggles).
+
+Example: `scenes/ui/HudTopRight.tscn` uses a root owner script (`HudTopRight.gd`) for configuration (e.g. `show_skip_tutorial`) and a `CanvasLayer` child (`HudCanvas` with `PauseUI.gd`) for pause button wiring and `"pause"` input handling.
+
 ## Commit message conventions
 
 Rules:
