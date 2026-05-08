@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b8i6nf5av6xyi"]
+[gd_scene load_steps=27 format=3 uid="uid://b8i6nf5av6xyi"]
 
 [ext_resource type="Texture2D" uid="uid://lxhtapf3icv2" path="res://assets/sprites/delivery truck/Delivery_Truck_32x32.png" id="1_jl8hp"]
 [ext_resource type="Texture2D" uid="uid://cng06n7dm8d8u" path="res://assets/sprites/delivery truck/Delivery_Truck_Door_32x32.png" id="2_qv7li"]
@@ -160,6 +160,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qv7li"]
+size = Vector2(74, 154)
+
 [node name="Delivery Truck" type="Node2D"]
 script = ExtResource("3_5wsk7")
 
@@ -174,3 +177,13 @@ position = Vector2(9.499999, 70)
 scale = Vector2(0.8046875, 0.64583325)
 sprite_frames = SubResource("SpriteFrames_h1oym")
 animation = &"door_open"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+show_behind_parent = true
+top_level = true
+position = Vector2(12, 24)
+shape = SubResource("RectangleShape2D_qv7li")

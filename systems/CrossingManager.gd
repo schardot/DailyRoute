@@ -98,12 +98,19 @@ func _pick_store_pair_with_memory() -> Array:
 
 	var candidate_rows: Array[int] = []
 	for i in range(pairs.size()):
+		if i == 0:
+			continue
 		if not recent_crossing_rows.has(i):
 			candidate_rows.append(i)
 
 	if candidate_rows.is_empty():
 		for i in range(pairs.size()):
+			if i == 0:
+				continue
 			candidate_rows.append(i)
+
+	if candidate_rows.is_empty():
+		return []
 
 	var row_idx: int = candidate_rows.pick_random()
 	_remember_crossing_row(row_idx, pairs.size())
