@@ -17,12 +17,12 @@ func _get_collision_shape() -> CollisionShape2D:
 		return collision_shape
 	collision_shape = get_node_or_null("CollisionShape2D") as CollisionShape2D
 	return collision_shape
-		
+
 func _physics_process(_delta):
 	if lane == null:
 		return
 	var final_velocity: Vector2 = get_base_velocity()
-	
+
 	if player_in_area:
 		var to_player = player.global_position - global_position
 
@@ -30,7 +30,7 @@ func _physics_process(_delta):
 			final_velocity = open_corridor(final_velocity, to_player)
 		if player.speed < 20:
 			final_velocity = avoid_like_obstacle(final_velocity, to_player)
-	
+
 	velocity = final_velocity
 	move_and_slide()
 	if lane:
@@ -54,12 +54,11 @@ func open_corridor(base_velocity: Vector2, _to_player: Vector2) -> Vector2:
 	var side = sign(dx)
 	base_velocity.x = side * 300.0
 	return base_velocity
-	
+
 func _check_recycle():
 	if not lane:
 		return
-	var npc_half_height := get_world_radius()
-	# Keep recycled NPCs within bounds so boundary walls don't block them.
+	var npc_half_height := _get_world_half_height()
 	var top_y := npc_half_height + SPAWN_MARGIN_Y
 	var bottom_y := get_viewport_rect().size.y - npc_half_height - SPAWN_MARGIN_Y
 	if lane.direction.y > 0.0 and global_position.y > bottom_y:
@@ -72,6 +71,24 @@ func get_world_radius() -> float:
 	if not cs:
 		return 0.0
 	return Globals.get_collision_shape_world_radius(cs)
+
+func _get_world_half_height() -> float:
+	var cs := _get_collision_shape()
+	if not cs or cs.shape == null:
+		return 0.0
+
+	var shape := cs.shape
+	var local_half_h: float = 0.0
+	if shape is CapsuleShape2D:
+		# Capsule extents in Y are height/2 plus radius.
+		local_half_h = (shape.height * 0.5) + shape.radius
+	elif shape is RectangleShape2D:
+		local_half_h = shape.size.y * 0.5
+	elif shape is CircleShape2D:
+		local_half_h = shape.radius
+
+	var sy := abs(cs.global_transform.get_scale().y)
+	return local_half_h * sy
 
 func _ready():
 	_update_walk_animation()
