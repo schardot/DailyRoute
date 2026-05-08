@@ -1,7 +1,5 @@
 extends HudAnimatedIconButton
 
-const MASTER_BUS := "Master"
-
 @export var idle_texture_muted: Texture2D
 
 @onready var overlay_unmute: AnimatedSprite2D = $OverlayUnmute
@@ -13,15 +11,14 @@ func _ready() -> void:
 	overlay_unmute.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	overlay_unmute.visible = false
 	interacted.connect(_on_interacted)
+	if SoundController and SoundController.has_signal("muted_changed"):
+		SoundController.muted_changed.connect(func(_m: bool) -> void: _refresh_underlay_texture())
 	_refresh_underlay_texture()
 
 
 func _on_interacted() -> void:
-	var idx := AudioServer.get_bus_index(MASTER_BUS)
-	if idx < 0:
-		return
-	AudioServer.set_bus_mute(idx, not AudioServer.is_bus_mute(idx))
-	_refresh_underlay_texture()
+	if SoundController and SoundController.has_method("toggle_mute"):
+		SoundController.toggle_mute()
 
 
 func _refresh_underlay_texture() -> void:
@@ -29,8 +26,9 @@ func _refresh_underlay_texture() -> void:
 		return
 	if idle_texture == null and idle_texture_muted == null:
 		return
-	var idx := AudioServer.get_bus_index(MASTER_BUS)
-	var muted := idx >= 0 and AudioServer.is_bus_mute(idx)
+	var muted := false
+	if SoundController and SoundController.has_method("is_muted"):
+		muted = SoundController.is_muted()
 	if muted:
 		idle_rect.texture = idle_texture_muted if idle_texture_muted else idle_texture
 	else:
@@ -39,8 +37,9 @@ func _refresh_underlay_texture() -> void:
 
 
 func _press_down_override() -> bool:
-	var idx := AudioServer.get_bus_index(MASTER_BUS)
-	var muted := idx >= 0 and AudioServer.is_bus_mute(idx)
+	var muted := false
+	if SoundController and SoundController.has_method("is_muted"):
+		muted = SoundController.is_muted()
 	sprite.visible = false
 	overlay_unmute.visible = false
 	if muted:
@@ -76,8 +75,9 @@ func _center_sprite() -> void:
 
 
 func _reference_size_for_overlay() -> Vector2:
-	var idx := AudioServer.get_bus_index(MASTER_BUS)
-	var muted := idx >= 0 and AudioServer.is_bus_mute(idx)
+	var muted := false
+	if SoundController and SoundController.has_method("is_muted"):
+		muted = SoundController.is_muted()
 	if muted:
 		if idle_texture_muted:
 			return idle_texture_muted.get_size()

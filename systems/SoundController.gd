@@ -1,11 +1,16 @@
 extends Node
 
+signal muted_changed(is_muted: bool)
+
 const BELL_STREAM_PATH := "res://assets/sounds/BellRing.mp3"
 const CAR_CRASH_1_STREAM_PATH := "res://assets/sounds/CarCrash1.mp3"
 const CAR_CRASH_2_STREAM_PATH := "res://assets/sounds/CarCrash2.mp3"
 const BACKGROUND_MUSIC_STREAM_PATH := "res://assets/sounds/Background.mp3"
 const KEY_PRESS_STREAM_PATH := "res://assets/sounds/KeyPressed.mp3"
 const DOOR_SOUNDS_STREAM_PATH := "res://assets/sounds/DoorSounds.mp3"
+
+const MASTER_BUS := "Master"
+var _muted: bool = false
 
 var bell_stream: AudioStream
 var car_crash_stream_1: AudioStream
@@ -32,6 +37,8 @@ var key_press_player: AudioStreamPlayer
 var door_player: AudioStreamPlayer
 
 func _ready() -> void:
+	_sync_mute_from_audio_server()
+
 	bell_stream = _try_load_stream(BELL_STREAM_PATH)
 	car_crash_stream_1 = _try_load_stream(CAR_CRASH_1_STREAM_PATH)
 	car_crash_stream_2 = _try_load_stream(CAR_CRASH_2_STREAM_PATH)
@@ -69,6 +76,26 @@ func _ready() -> void:
 	add_child(door_player)
 
 	_play_background_music()
+
+func is_muted() -> bool:
+	return _muted
+
+func set_muted(value: bool) -> void:
+	value = bool(value)
+	var idx := AudioServer.get_bus_index(MASTER_BUS)
+	if idx >= 0:
+		AudioServer.set_bus_mute(idx, value)
+	var changed := _muted != value
+	_muted = value
+	if changed:
+		muted_changed.emit(_muted)
+
+func toggle_mute() -> void:
+	set_muted(not _muted)
+
+func _sync_mute_from_audio_server() -> void:
+	var idx := AudioServer.get_bus_index(MASTER_BUS)
+	_muted = idx >= 0 and AudioServer.is_bus_mute(idx)
 
 func _play_background_music() -> void:
 	if not background_music_stream:
