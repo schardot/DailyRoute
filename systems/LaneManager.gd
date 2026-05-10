@@ -121,15 +121,6 @@ func _group_columns(columns: Array) -> Array:
 	return lanes
 
 
-func _map_type(type_key: String) -> LaneType:
-	match type_key:
-		"driveable":
-			return LaneType.CAR
-		"walkable":
-			return LaneType.CROWD_MEMBER
-		_:
-			return LaneType.EMPTY
-
 func _get_center_y() -> int:
 	var used_ = tilemap.get_used_rect()
 	return int(used_.position.y + used_.size.y * 0.5)

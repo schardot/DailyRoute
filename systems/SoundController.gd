@@ -131,24 +131,6 @@ func play_key_press() -> void:
 	key_press_player.stream = key_press_stream
 	key_press_player.play()
 
-func set_key_press_stream(stream: AudioStream) -> void:
-	key_press_stream = stream
-
-func set_key_press_stream_path(path: String) -> void:
-	key_press_stream = _try_load_stream(path)
-
-func set_door_sounds_stream(stream: AudioStream) -> void:
-	door_sounds_stream = stream
-
-func set_door_sounds_stream_path(path: String) -> void:
-	door_sounds_stream = _try_load_stream(path)
-
-func set_door_segments(open_start_sec: float, open_len_sec: float, close_start_sec: float, close_len_sec: float) -> void:
-	door_open_start_sec = maxf(open_start_sec, 0.0)
-	door_open_len_sec = maxf(open_len_sec, 0.0)
-	door_close_start_sec = maxf(close_start_sec, 0.0)
-	door_close_len_sec = maxf(close_len_sec, 0.0)
-
 func play_door_open() -> void:
 	_play_door_segment(door_open_start_sec, door_open_len_sec)
 

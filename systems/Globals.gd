@@ -27,9 +27,6 @@ func wait_short():
 func wait_medium():
 	await wait(3)
 
-func wait_long():
-	await wait(20)
-
 func random_bool() -> bool:
 	return randf() < 0.5
 
