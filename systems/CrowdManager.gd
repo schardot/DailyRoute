@@ -1,8 +1,6 @@
 extends Node2D
 class_name CrowdManager
 
-var player: CharacterBody2D
-
 const CROWD_MEMBER_SCN: PackedScene = preload("res://scenes/entities/crowd/CrowdMember.tscn")
 const OFFSCREEN_MARGIN_Y := 48.0
 
@@ -17,7 +15,6 @@ func spawn_npc(lane: LaneStruct, pos: Vector2 = Vector2.ZERO):
 		spawn = pos
 
 	npc.global_position = spawn
-	npc.player = player
 	npc.lane = lane
 	add_child(npc)
 

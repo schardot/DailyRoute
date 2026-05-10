@@ -31,7 +31,7 @@ func _init_player_from_handoff() -> void:
 		player.global_position = SceneManager.player_position
 
 func init_npcs(lane: LaneStruct):
-	crowd_container.player = player
+
 	if SceneManager.crowd_positions.size() > 0:
 		for pos in SceneManager.crowd_positions:
 			lane = LaneManager.get_nearest_lane_by_type(pos.x, LaneManager.LaneType.CROWD_MEMBER)

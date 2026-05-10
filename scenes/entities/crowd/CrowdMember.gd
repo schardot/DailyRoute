@@ -9,21 +9,10 @@ var lane : LaneStruct:
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
-var player: CharacterBody2D
-var player_in_area = false
-
 func _physics_process(_delta):
 	if lane == null:
 		return
-	var final_velocity: Vector2 = get_base_velocity()
-
-	if player_in_area:
-		if not player.is_boosting:
-			final_velocity = open_corridor(final_velocity)
-		if player.speed < 10:
-			final_velocity = avoid_like_obstacle(final_velocity)
-
-	velocity = final_velocity
+	velocity = get_base_velocity()
 	move_and_slide()
 	
 	var max_offset = 20.0
@@ -34,18 +23,6 @@ func _physics_process(_delta):
 
 func get_base_velocity() -> Vector2:
 	return Vector2(0, lane.direction.y) * speed
-
-func avoid_like_obstacle(base_velocity: Vector2) -> Vector2:
-	var away_dir = (global_position - player.global_position).normalized()
-	away_dir.y = 0
-	base_velocity.x = away_dir.x * 300.0
-	return base_velocity
-
-func open_corridor(base_velocity: Vector2) -> Vector2:
-	var dx = global_position.x - player.global_position.x
-	var side = sign(dx)
-	base_velocity.x = side * 300.0
-	return base_velocity
 
 func _check_recycle():
 	if not lane:
@@ -75,11 +52,3 @@ func _update_walk_animation():
 		$AnimatedSprite2D.play("walk_down")
 	else:
 		$AnimatedSprite2D.play("walk_up")
-
-func _on_personal_space_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		player_in_area = true
-
-func _on_personal_space_body_exited(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		player_in_area = false
