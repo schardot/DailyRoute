@@ -24,11 +24,9 @@ func _connect_store_signals() -> void:
 	for store in stores:
 		if store == null:
 			continue
-		if store.has_method("unblock_store"):
-			store.unblock_store()
+		store.unblock_store()
 		# `player_entered` has no args in this project, so bind store.
-		if store.has_signal("player_entered"):
-			store.player_entered.connect(func() -> void: _on_store_entered(store))
+		store.player_entered.connect(func() -> void: _on_store_entered(store))
 
 func start_assignment(store: Area2D) -> void:
 	if store == null or player == null:
@@ -37,8 +35,7 @@ func start_assignment(store: Area2D) -> void:
 
 	player.set_goal(store.store_id, store)
 	player.pick_up_box(store)
-	if store.has_method("play_animation"):
-		store.call("play_animation", "door_open")
+	store.call("play_animation", "door_open")
 	assignment_started.emit(store)
 
 func start_random_assignment(avoid_same_as_current: bool = true) -> void:
@@ -64,11 +61,9 @@ func _on_store_entered(store: Area2D) -> void:
 	_complete_assignment(store)
 
 func _complete_assignment(store: Area2D) -> void:
-	if store.has_method("play_animation"):
-		store.call("play_animation", "door_close")
+	store.call("play_animation", "door_close")
 	if "completed" in store:
 		store.completed = false
-	if store.has_method("unblock_store"):
-		store.unblock_store()
+	store.call("unblock_store")
 	current_store = null
 	assignment_completed.emit(store)

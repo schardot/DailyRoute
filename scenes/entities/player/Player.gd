@@ -61,7 +61,7 @@ func _physics_process(delta: float) -> void:
 
 func pick_up_box(store_for_wall_color: Node = null) -> void:
 	is_carrying = true
-	if store_for_wall_color != null and store_for_wall_color.has_method("get_wall_color"):
+	if store_for_wall_color != null:
 		box.set_box_from_store(store_for_wall_color)
 	box.show()
 	update_animation(_last_input_dir)
