@@ -20,19 +20,6 @@ func deactivate() -> void:
 	world = null
 	recent_crossing_rows.clear()
 
-static func create(
-		parent: Node,
-		world_ref: Node2D,
-		spawn_chance: float,
-		try_interval: float,
-		row_memory_size: int
-	) -> CrossingManager:
-	var mgr: CrossingManager = CrossingManager.new()
-	if parent != null:
-		parent.add_child(mgr)
-	mgr.activate(world_ref, spawn_chance, try_interval, row_memory_size)
-	return mgr
-
 func configure(world_ref: Node2D, spawn_chance: float, try_interval: float, row_memory_size: int) -> void:
 	world = world_ref
 	crossing_spawn_chance = spawn_chance
@@ -43,6 +30,7 @@ func configure(world_ref: Node2D, spawn_chance: float, try_interval: float, row_
 func start_auto_spawn() -> void:
 	if not world:
 		return
+	# Manual Timer node rather than create_timer() so we can stop() it on deactivate.
 	if crossing_spawn_timer == null:
 		crossing_spawn_timer = Timer.new()
 		crossing_spawn_timer.one_shot = true
@@ -99,14 +87,14 @@ func _pick_store_pair_with_memory() -> Array:
 	var candidate_rows: Array[int] = []
 	for i in range(pairs.size()):
 		if i == 0:
-			continue
+			continue  # Row 0 is reserved for the delivery truck and is never used for random crossings.
 		if not recent_crossing_rows.has(i):
 			candidate_rows.append(i)
 
 	if candidate_rows.is_empty():
 		for i in range(pairs.size()):
 			if i == 0:
-				continue
+				continue  # Same exclusion when memory is full and all rows are eligible again.
 			candidate_rows.append(i)
 
 	if candidate_rows.is_empty():
