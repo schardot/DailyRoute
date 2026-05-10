@@ -35,8 +35,8 @@ func start_assignment(store: Area2D) -> void:
 		return
 	current_store = store
 
-	player.set_goal(store.color, store)
-	player.pick_up_box(store.color, store)
+	player.set_goal(store.store_id, store)
+	player.pick_up_box(store)
 	if store.has_method("play_animation"):
 		store.call("play_animation", "door_open")
 	assignment_started.emit(store)
@@ -72,4 +72,3 @@ func _complete_assignment(store: Area2D) -> void:
 		store.unblock_store()
 	current_store = null
 	assignment_completed.emit(store)
-

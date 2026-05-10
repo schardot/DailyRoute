@@ -8,7 +8,6 @@ signal player_entered()
 @onready var sprite: Sprite2D = $Visuals/Sprite2D
 @onready var animated_sprite: AnimatedSprite2D = $Visuals/AnimatedSprite2D
 @export var store_id: int
-@export var color: GameTypes.ColorType = GameTypes.ColorType.RED
 
 @export var roof_color: Color = Color.WHITE
 @export var door_color: Color = Color.WHITE
@@ -52,7 +51,7 @@ func _on_store_body_entered(body):
 	if completed:
 		return
 
-	if body.goal_color == color:
+	if body.goal_store_id == store_id:
 		_correct_feedback()
 
 func _correct_feedback():
