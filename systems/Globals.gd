@@ -1,7 +1,19 @@
 extends Node
 
-func _ready() -> void:
-	randomize()
+const OFFSCREEN_MARGIN_Y := 48.0
+const _CROWD_MEMBER_SCENE: PackedScene = preload("res://scenes/entities/crowd/CrowdMember.tscn")
+
+var _crowd_default_half_height: float = -1.0
+
+## Vertical half-extent of the default `CrowdMember` collision shape (cached). Used before any NPC exists (e.g. spawn Y).
+func get_world_half_height() -> float:
+	if _crowd_default_half_height >= 0.0:
+		return _crowd_default_half_height
+	var inst := _CROWD_MEMBER_SCENE.instantiate() as Node2D
+	var cs := inst.get_node("CollisionShape2D") as CollisionShape2D
+	_crowd_default_half_height = get_collision_shape_world_half_height(cs)
+	inst.free()
+	return _crowd_default_half_height
 
 func get_screen_size() -> Vector2:
 	return get_viewport().get_visible_rect().size
@@ -40,28 +52,17 @@ func get_collision_shape_world_radius(collision_shape: CollisionShape2D) -> floa
 
 	var scale: Vector2 = collision_shape.global_transform.get_scale()
 	return local_radius * max(abs(scale.x), abs(scale.y))
-
-func color_type_to_color(c: GameTypes.ColorType) -> Color:
-	match c:
-		GameTypes.ColorType.RED:
-			return Color.RED
-		GameTypes.ColorType.GREEN:
-			return Color.GREEN
-		GameTypes.ColorType.BLUE:
-			return Color.BLUE
-		GameTypes.ColorType.YELLOW:
-			return Color.YELLOW
-		GameTypes.ColorType.PURPLE:
-			return Color.PURPLE
-		GameTypes.ColorType.ORANGE:
-			return Color.ORANGE
-		GameTypes.ColorType.CYAN:
-			return Color.CYAN
-		GameTypes.ColorType.PINK:
-			return Color.PINK
-		GameTypes.ColorType.BROWN:
-			return Color.BROWN
-		GameTypes.ColorType.WHITE:
-			return Color.WHITE
-		_:
-			return Color.BLACK
+	
+func get_collision_shape_world_half_height(collision_shape: CollisionShape2D) -> float:
+	if not collision_shape or collision_shape.shape == null:
+		return 0.0
+	var shape := collision_shape.shape
+	var local_half_h: float = 0.0
+	if shape is CapsuleShape2D:
+		local_half_h = (shape.height * 0.5) + shape.radius
+	elif shape is RectangleShape2D:
+		local_half_h = shape.size.y * 0.5
+	elif shape is CircleShape2D:
+		local_half_h = shape.radius
+	var sy := absf(collision_shape.global_transform.get_scale().y)
+	return local_half_h * sy

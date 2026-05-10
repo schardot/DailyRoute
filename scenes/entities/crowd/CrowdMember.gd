@@ -6,17 +6,11 @@ var lane : LaneStruct:
 	set(value):
 		lane = value
 		_update_walk_animation()
+
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 var player: CharacterBody2D
 var player_in_area = false
-const SPAWN_MARGIN_Y := 8.0
-
-func _get_collision_shape() -> CollisionShape2D:
-	if collision_shape:
-		return collision_shape
-	collision_shape = get_node_or_null("CollisionShape2D") as CollisionShape2D
-	return collision_shape
 
 func _physics_process(_delta):
 	if lane == null:
@@ -58,37 +52,20 @@ func open_corridor(base_velocity: Vector2, _to_player: Vector2) -> Vector2:
 func _check_recycle():
 	if not lane:
 		return
-	var npc_half_height := _get_world_half_height()
-	var top_y := npc_half_height + SPAWN_MARGIN_Y
-	var bottom_y := get_viewport_rect().size.y - npc_half_height - SPAWN_MARGIN_Y
-	if lane.direction.y > 0.0 and global_position.y > bottom_y:
-		global_position = Vector2(lane.center.x, top_y)
-	elif lane.direction.y < 0.0 and global_position.y < top_y:
-		global_position = Vector2(lane.center.x, bottom_y)
+	var half_h := Globals.get_collision_shape_world_half_height(collision_shape)
+	var viewport_h := get_viewport().get_visible_rect().size.y
+	var top_edge : float = -half_h - Globals.OFFSCREEN_MARGIN_Y
+	var bottom_edge : float = viewport_h + half_h + Globals.OFFSCREEN_MARGIN_Y
+	if lane.direction.y > 0.0 and global_position.y > bottom_edge:
+		global_position = Vector2(lane.center.x, top_edge)
+	elif lane.direction.y < 0.0 and global_position.y < top_edge:
+		global_position = Vector2(lane.center.x, bottom_edge)
 
 func get_world_radius() -> float:
-	var cs := _get_collision_shape()
+	var cs := collision_shape
 	if not cs:
 		return 0.0
 	return Globals.get_collision_shape_world_radius(cs)
-
-func _get_world_half_height() -> float:
-	var cs := _get_collision_shape()
-	if not cs or cs.shape == null:
-		return 0.0
-
-	var shape := cs.shape
-	var local_half_h: float = 0.0
-	if shape is CapsuleShape2D:
-		# Capsule extents in Y are height/2 plus radius.
-		local_half_h = (shape.height * 0.5) + shape.radius
-	elif shape is RectangleShape2D:
-		local_half_h = shape.size.y * 0.5
-	elif shape is CircleShape2D:
-		local_half_h = shape.radius
-
-	var sy := abs(cs.global_transform.get_scale().y)
-	return local_half_h * sy
 
 func _ready():
 	_update_walk_animation()
