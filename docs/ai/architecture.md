@@ -101,7 +101,7 @@ There is no HTTP/network API in this repo. “API access” here means *how scri
 
 ## Important abstractions (stable)
 
-- **Autoload singletons**: `SceneManager`, `PauseManager`, `LaneManager`, `Crossings` (`CrossingManager`), `Globals`, `SoundController`, `GameTypes`.
+- **Autoload singletons**: `SceneManager`, `PauseManager`, `LaneManager`, `Crossings` (`CrossingManager`), `Globals`, `SoundController`.
   - These are referenced widely by name; renaming or changing their responsibilities is high-risk.
 - **Groups**: `"stores"`, `"player"`, `"crossing_npcs"` are used as dynamic discovery mechanisms.
   - Group names are effectively API. Changing them silently breaks wiring.

@@ -20,7 +20,6 @@ Use **autoload singletons** (registered in `project.godot`) as the stable “pla
 - `Crossings` (`CrossingManager`): crossing NPC spawning orchestration
 - `Globals`: shared helpers (randomization, timers, geometry helpers)
 - `SoundController`: centralized SFX playback
-- `GameTypes`: shared enums/constants
 
 ## Consequences
 

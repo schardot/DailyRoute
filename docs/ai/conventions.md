@@ -100,7 +100,6 @@ Autoload singletons (see `project.godot`) are treated as stable “platform serv
 - `Crossings`: crossing spawner/manager
 - `Globals`: small shared helpers (random, timers, geometry helpers, mapping)
 - `SoundController`: centralized SFX playback
-- `GameTypes`: enums/constants
 
 ### Do / Don’t
 
@@ -162,6 +161,12 @@ Prefer splitting HUD/UI scenes into two layers when it improves clarity and paus
   - set `process_mode = PROCESS_MODE_ALWAYS` when the UI must remain responsive while the game is paused (e.g. pause toggles).
 
 Example: `scenes/ui/HudTopRight.tscn` uses a root owner script (`HudTopRight.gd`) for configuration (e.g. `show_skip_tutorial`) and a `CanvasLayer` child (`HudCanvas` with `PauseUI.gd`) for pause button wiring and `"pause"` input handling.
+
+## Physics layers: player bounds vs crowd obstacles
+
+Screen-edge boundary walls (`World/Boundaries/Wall*`) exist to contain the **player**. They should live on a **dedicated physics layer** that only the player’s `collision_mask` includes (e.g. layer value `32`, Godot layer 6). Keep **world props the crowd must bump** (e.g. delivery truck on layer `1`) separate so crowd NPCs can use a simple mask (e.g. layer `1` only) without fighting invisible walls.
+
+Crowd spawn/recycle uses **viewport-relative Y** with an off-screen margin (`CrowdManager` / `CrowdMember`); it does not need to query wall geometry.
 
 ## Commit message conventions
 
