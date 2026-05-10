@@ -79,11 +79,5 @@ func get_store_pairs_by_row() -> Array[Array]:
 			pairs.append([left, right])
 	return pairs
 
-func get_random_store_pair() -> Array:
-	var pairs: Array[Array] = get_store_pairs_by_row()
-	if pairs.is_empty():
-		return []
-	return pairs.pick_random()
-
 func get_tilemap() -> TileMapLayer:
 	return tilemap
