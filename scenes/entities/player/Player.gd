@@ -44,10 +44,9 @@ func _physics_process(delta: float) -> void:
 		if boost_dir == Vector2.ZERO:
 			boost_dir = velocity.normalized()
 		if boost_dir != Vector2.ZERO:
-			velocity += boost_dir * 500.0
+			velocity += boost_dir * 700.0
 	
 	if is_boosting:
-		await Globals.wait(0.2)
 		is_boosting = false
 
 	var desired_velocity = input_dir.normalized() * speed
@@ -55,7 +54,7 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.move_toward(desired_velocity, speed * 6 * delta)
 	move_and_slide()
 
-	_last_input_dir = input_dir
+	_last_input_dir = input_dir	
 	update_animation(input_dir)
 
 
