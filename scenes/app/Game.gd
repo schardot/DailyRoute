@@ -6,8 +6,6 @@ const CAR_SCENE: PackedScene = preload("res://scenes/entities/car/Car.tscn")
 @export var crossing_try_interval: float = 5.0
 @export var crossing_row_memory_size: int = 2
 
-var crossing_manager: CrossingManager
-
 func setup_run() -> void:
 	create_score_system()
 	score_system.init_from_pending_score()
@@ -18,8 +16,8 @@ func setup_run() -> void:
 	assignment_system.assignment_completed.connect(on_assignment_completed)
 
 	_init_lanes()
-	init_delivery_truck_idle()
-
+	delivery_truck.park_idle()
+	
 	activate_crossings(crossing_spawn_chance, crossing_try_interval, crossing_row_memory_size)
 	assignment_system.start_random_assignment()
 

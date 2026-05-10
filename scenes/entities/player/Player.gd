@@ -5,14 +5,12 @@ extends CharacterBody2D
 signal boost_used
 var is_boosting = false
 
-var goal_color: GameTypes.ColorType
-var has_goal := false
+var goal_store_id: int = -1
 var is_carrying := false
 var can_move_left := true
 var can_move_right := true
 var can_move_up := true
 var can_move_down := true
-var time := 0.0
 var last_direction := Vector2.DOWN
 var _last_input_dir := Vector2.ZERO
 
@@ -46,10 +44,10 @@ func _physics_process(delta: float) -> void:
 		if boost_dir == Vector2.ZERO:
 			boost_dir = velocity.normalized()
 		if boost_dir != Vector2.ZERO:
-			velocity += boost_dir * 700.0
+			velocity += boost_dir * 500.0
 	
 	if is_boosting:
-		Globals.wait(0.2)
+		await Globals.wait(0.2)
 		is_boosting = false
 
 	var desired_velocity = input_dir.normalized() * speed
@@ -61,12 +59,10 @@ func _physics_process(delta: float) -> void:
 	update_animation(input_dir)
 
 
-func pick_up_box(color_type: GameTypes.ColorType, store_for_wall_color: Node = null) -> void:
+func pick_up_box(store_for_wall_color: Node = null) -> void:
 	is_carrying = true
-	if store_for_wall_color != null and store_for_wall_color.has_method("get_wall_color"):
+	if store_for_wall_color != null:
 		box.set_box_from_store(store_for_wall_color)
-	else:
-		box.set_box_type(color_type)
 	box.show()
 	update_animation(_last_input_dir)
 
@@ -75,12 +71,11 @@ func deliver_box() -> void:
 	box.hide_box()
 	update_animation(_last_input_dir)
 
-func set_goal(color: GameTypes.ColorType, _store_for_display: Node = null) -> void:
-	goal_color = color
-	has_goal = true
+func set_goal(store_id: int, _store_for_display: Node = null) -> void:
+	goal_store_id = store_id
 
 func clear_goal():
-	has_goal = false
+	goal_store_id = -1
 	deliver_box()
 
 func set_movement(left, right, up, down):

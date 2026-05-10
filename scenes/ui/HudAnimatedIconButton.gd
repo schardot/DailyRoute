@@ -57,23 +57,19 @@ func _anim_first_frame_size(sf: SpriteFrames, anim_name: StringName) -> Vector2:
 	return t.get_size()
 
 
-func _reference_size_for_overlay() -> Vector2:
-	return idle_texture.get_size() if idle_texture else Vector2.ZERO
-
-
-func _apply_overlay_scale(fs: Vector2, ref_sz: Vector2, apply_to: AnimatedSprite2D = null) -> void:
+func _apply_overlay_scale(frame_size: Vector2, reference_size: Vector2, apply_to: AnimatedSprite2D = null) -> void:
 	var node: AnimatedSprite2D = apply_to if apply_to != null else sprite
 	var avail := size
 	if avail.x <= 0.0 or avail.y <= 0.0:
 		return
 	var target: Vector2
-	if ref_sz.x <= 0.0 or ref_sz.y <= 0.0:
+	if reference_size.x <= 0.0 or reference_size.y <= 0.0:
 		target = avail
 	else:
-		target = ref_sz * minf(avail.x / ref_sz.x, avail.y / ref_sz.y)
+		target = reference_size * minf(avail.x / reference_size.x, avail.y / reference_size.y)
 	if target.x <= 0.0 or target.y <= 0.0:
 		return
-	var sc := minf(target.x / fs.x, target.y / fs.y)
+	var sc := minf(target.x / frame_size.x, target.y / frame_size.y)
 	node.scale = Vector2(sc, sc)
 
 
@@ -84,16 +80,14 @@ func _sync_overlay_node(overlay: AnimatedSprite2D) -> void:
 	if overlay.sprite_frames == null or anim.is_empty():
 		overlay.scale = Vector2.ONE
 		return
-	var fs := _anim_first_frame_size(overlay.sprite_frames, anim)
-	if fs.x <= 0.0 or fs.y <= 0.0:
+	var frame_size := _anim_first_frame_size(overlay.sprite_frames, anim)
+	if frame_size.x <= 0.0 or frame_size.y <= 0.0:
 		overlay.scale = Vector2.ONE
 		return
-	_apply_overlay_scale(fs, _reference_size_for_overlay(), overlay)
-
+	_apply_overlay_scale(frame_size, _reference_size_for_overlay(), overlay)
 
 func _sync_animated_sprite_scale() -> void:
 	_sync_overlay_node(sprite)
-
 
 func _on_hit_down() -> void:
 	if idle_texture == null:
@@ -104,22 +98,22 @@ func _on_hit_down() -> void:
 	sprite.play()
 	_sync_animated_sprite_scale()
 
-
 func _on_sprite_animation_finished() -> void:
 	if not _animation_finished_override():
 		sprite.visible = false
 
-
 func _on_hit_pressed() -> void:
 	interacted.emit()
-
 
 func _press_down_override() -> bool:
 	return false
 
-
 func _animation_finished_override() -> bool:
 	return false
+
+
+func _reference_size_for_overlay() -> Vector2:
+	return idle_texture.get_size() if idle_texture else Vector2.ZERO
 
 
 func _center_sprite() -> void:
@@ -134,7 +128,7 @@ func _fit_size() -> void:
 
 
 func _intrinsic_sprite_size() -> Vector2:
-	var w := 32.0
+	var w := 32.0  # Minimum fallback matches the default sprite tile size.
 	var h := 32.0
 	if idle_texture:
 		var s := idle_texture.get_size()

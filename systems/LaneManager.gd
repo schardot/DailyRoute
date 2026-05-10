@@ -9,27 +9,26 @@ enum LaneType {
 
 const TILE_SIZE_PX: float = 32.0
 const CAR_LANE_WIDTH_TILES: int = 3
-const USE_MANUAL_LANE_LAYOUT: bool = true
 
 var LanesArray = []
 var tilemap: TileMapLayer
 
-func populate_lanes_array() -> void:
+func generate_lanes() -> void:
 	LanesArray.clear()
 
 	var center_y: int = _get_center_y()
-	var car_line := _manual_car_line()
 	var columns_by_type := _collect_columns()
 	var car_groups: Array = _group_columns(columns_by_type.get("driveable", []))
 	var crowd_groups: Array = _group_columns(columns_by_type.get("walkable", []))
 
-	_append_manual_lane(LaneType.EMPTY, car_line, Vector2.DOWN, car_groups, 0, center_y)
+	_append_manual_lane(LaneType.CAR, [1], Vector2.DOWN, car_groups, 0, center_y)
 	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 2, 3], Vector2.DOWN, crowd_groups, 0, center_y)
-	_append_manual_lane(LaneType.CAR, car_line, Vector2.UP, car_groups, 1, center_y)
-	_append_manual_lane(LaneType.CROWD_MEMBER, [0], Vector2.UP, crowd_groups, 1, center_y)
-	_append_manual_lane(LaneType.CAR, car_line, Vector2.DOWN, car_groups, 2, center_y)
+	_append_manual_lane(LaneType.CAR, [1], Vector2.UP, car_groups, 1, center_y)
+	_append_manual_lane(LaneType.CROWD_MEMBER, [3, 1, 2], Vector2.DOWN, crowd_groups, 1, center_y)
+	_append_manual_lane(LaneType.CAR, [1], Vector2.DOWN, car_groups, 2, center_y)
 	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 3, 1], Vector2.UP, crowd_groups, 2, center_y)
-	_append_manual_lane(LaneType.CAR, car_line, Vector2.UP, car_groups, 3, center_y)
+	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 3, 1], Vector2.UP, crowd_groups, 3 , center_y)
+	_append_manual_lane(LaneType.CAR, [1], Vector2.UP, car_groups, 3, center_y)
 
 func set_tilemap(tm):
 	tilemap = tm
@@ -66,41 +65,6 @@ func get_nearest_lane_by_type(world_x: float, lane_type: LaneType) -> LaneStruct
 
 	assert(best != null, "No lanes found for requested type")
 	return best
-
-func generate_lanes():
-	if USE_MANUAL_LANE_LAYOUT:
-		populate_lanes_array()
-		return
-
-	LanesArray.clear()
-
-	var columns_by_type = _collect_columns()
-
-	for type_key in columns_by_type.keys():
-		var columns = columns_by_type[type_key]
-		var grouped = _group_columns(columns)
-
-		for i in range(grouped.size()):
-			var lane_cols = grouped[i]
-
-			var center_x: int = lane_cols[lane_cols.size() / 2]
-			var center_y: int = _get_center_y()
-
-			var world_pos: Vector2 = tilemap.map_to_local(Vector2i(center_x, center_y))
-
-			var lane_type: LaneType = _map_type(type_key)
-			var direction: Vector2 = _get_direction(lane_type, i)
-			var spawn_line: Array = _get_spawn_pattern(lane_type, i)
-			var lane_line: Array = lane_cols if lane_type == LaneType.CAR else spawn_line
-
-			LanesArray.append(
-				LaneStruct.new(
-					lane_type,
-					lane_line,
-					direction,
-					world_pos
-				)
-			)
 
 func _collect_columns() -> Dictionary:
 	var result := {
@@ -157,43 +121,10 @@ func _group_columns(columns: Array) -> Array:
 	return lanes
 
 
-func _map_type(type_key: String) -> LaneType:
-	match type_key:
-		"driveable":
-			return LaneType.CAR
-		"walkable":
-			return LaneType.CROWD_MEMBER
-		_:
-			return LaneType.EMPTY
-
-
-func _get_direction(lane_type: LaneType, index: int) -> Vector2:
-	if lane_type == LaneType.CAR:
-		return Vector2.DOWN if index % 2 == 0 else Vector2.UP
-	elif lane_type == LaneType.CROWD_MEMBER:
-		return Vector2.UP
-
-	return Vector2.ZERO
-
-
-func _get_spawn_pattern(lane_type: LaneType, index: int) -> Array:
-	if lane_type == LaneType.CAR:
-		return [0] if index % 2 == 0 else [1]
-	elif lane_type == LaneType.CROWD_MEMBER:
-		return [1, 2, 3]
-
-	return []
-
-
 func _get_center_y() -> int:
 	var used_ = tilemap.get_used_rect()
 	return int(used_.position.y + used_.size.y * 0.5)
 
-func _manual_car_line() -> Array:
-	var line: Array = []
-	for i in range(CAR_LANE_WIDTH_TILES):
-		line.append(i)
-	return line
 
 func _append_manual_lane(lane_type: LaneType, line: Array, dir: Vector2, groups: Array, group_index: int, center_y: int) -> void:
 	if groups.is_empty():

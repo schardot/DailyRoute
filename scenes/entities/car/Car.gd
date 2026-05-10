@@ -27,15 +27,12 @@ func set_enabled(enabled: bool) -> void:
 
 func _ready() -> void:
 	world_radius = Globals.get_collision_shape_world_radius(collision_shape)
-	world_half_height = _compute_world_half_height()
+	world_half_height = Globals.get_collision_shape_world_half_height(collision_shape)
 	if hitbox and not hitbox.body_entered.is_connected(_on_hitbox_body_entered):
 		hitbox.body_entered.connect(_on_hitbox_body_entered)
  
-func spawn_car(_street_ref = null) -> void:
-	if lane == null:
-		lane = _resolve_lane()
-		if lane == null:
-			return
+func spawn_car() -> void:
+	assert(lane != null)
 	direction = lane.direction
 	global_position = Vector2(lane.center.x, _get_spawn_y(direction.y > 0.0))
 	if direction == Vector2.DOWN:
@@ -64,8 +61,8 @@ func _should_brake_for_crossing_npc() -> bool:
 	var candidates:= get_tree().get_nodes_in_group("crossing_npcs")
 
 	for n in candidates:
-		var npc:= n
-		if npc.has_method("is_crossing_active") and not npc.call("is_crossing_active"):
+		var npc := n as CrossingNpc
+		if npc == null or not npc.is_crossing_active():
 			continue
 
 		var dir_sign: float = sign(direction.y)
@@ -86,10 +83,6 @@ func _should_brake_for_crossing_npc() -> bool:
 	return false
 
 func _check_recycle() -> void:
-	if lane == null:
-		lane = _resolve_lane()
-		if lane == null:
-			return
 	var top_y := _get_spawn_y(true)
 	var bottom_y := _get_spawn_y(false)
 	if direction.y > 0.0 and global_position.y > bottom_y:
@@ -97,20 +90,8 @@ func _check_recycle() -> void:
 	elif direction.y < 0.0 and global_position.y < top_y:
 		global_position = Vector2(lane.center.x, bottom_y)
 
-func _compute_world_half_height() -> float:
-	if not collision_shape:
-		return 0.0
-	var shape := collision_shape.shape
-	if shape is RectangleShape2D:
-		var world_scale: Vector2 = collision_shape.global_transform.get_scale()
-		return (shape.size.y * 0.5) * abs(world_scale.y)
-	return world_radius
-
 func _clamp_to_street() -> void:
-	if lane == null:
-		lane = _resolve_lane()
-	if lane:
-		global_position.x = lane.center.x
+	global_position.x = lane.center.x
 
 func _get_spawn_y(spawn_top: bool) -> float:
 	var viewport_h := get_viewport_rect().size.y
@@ -118,11 +99,6 @@ func _get_spawn_y(spawn_top: bool) -> float:
 		return -world_half_height - SPAWN_MARGIN_Y
 	return viewport_h + world_half_height + SPAWN_MARGIN_Y
 
-func _resolve_lane() -> LaneStruct:
-	if LaneManager.LanesArray.is_empty():
-		return null
-	return LaneManager.get_nearest_lane_by_type(global_position.x, LaneManager.LaneType.CAR)
-
 func _on_hitbox_body_entered(body: Node) -> void:
-	if body and body.is_in_group("player") and body.has_method("die"):
+	if body.is_in_group("player"):
 		body.call("die")

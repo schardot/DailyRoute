@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dnchrhae8ay0m"]
 
 [ext_resource type="Script" uid="uid://dwbr10qtc8i5h" path="res://scenes/entities/crowd/CrowdMember.gd" id="1_g3vus"]
-[ext_resource type="SpriteFrames" path="res://scenes/entities/crossing/CrossingNpc.tres" id="2_ofrjr"]
+[ext_resource type="SpriteFrames" uid="uid://1p63rbtci4kf" path="res://scenes/entities/crossing/CrossingNpc.tres" id="2_ofrjr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oc416"]
 height = 48.0
@@ -10,8 +10,8 @@ height = 48.0
 
 [node name="CrowdMember" type="CharacterBody2D" groups=["crowd"]]
 z_index = 2
+y_sort_enabled = true
 collision_layer = 4
-collision_mask = 1
 script = ExtResource("1_g3vus")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

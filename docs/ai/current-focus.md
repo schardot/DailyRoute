@@ -56,7 +56,7 @@ Before modifying:
 
 * Tutorial compatibility hooks still exist for older references.
 * Some scene-tree path coupling is still present and accepted for now.
-* Lane layout tuning is still evolving (`USE_MANUAL_LANE_LAYOUT` currently enabled).
+* Lane layout is driven by the manual lane table in `LaneManager.generate_lanes()` and still tuned there.
 * Crossing behavior and row memory logic are still being iterated.
 
 Avoid “cleaning up” these systems aggressively unless the change is intentional and tested.
