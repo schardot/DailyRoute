@@ -29,6 +29,10 @@ Crossings="*res://systems/CrossingManager.gd"
 window/size/viewport_height=768
 window/stretch/mode="canvas_items"
 
+[editor]
+
+movie_writer/movie_file="/Users/nataliaschardosim/christmas-rush-cursor/Movie/Game.avi"
+
 [global_group]
 
 player=""

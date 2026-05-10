@@ -22,12 +22,12 @@ func generate_lanes() -> void:
 	var crowd_groups: Array = _group_columns(columns_by_type.get("walkable", []))
 
 	_append_manual_lane(LaneType.CAR, [1], Vector2.DOWN, car_groups, 0, center_y)
-	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 2, 3], Vector2.DOWN, crowd_groups, 0, center_y)
+	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 2, 2], Vector2.UP, crowd_groups, 0, center_y)
 	_append_manual_lane(LaneType.CAR, [1], Vector2.UP, car_groups, 1, center_y)
-	_append_manual_lane(LaneType.CROWD_MEMBER, [3, 1, 2], Vector2.DOWN, crowd_groups, 1, center_y)
+	_append_manual_lane(LaneType.CROWD_MEMBER, [2, 1, 2], Vector2.DOWN, crowd_groups, 1, center_y)
 	_append_manual_lane(LaneType.CAR, [1], Vector2.DOWN, car_groups, 2, center_y)
-	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 3, 1], Vector2.UP, crowd_groups, 2, center_y)
-	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 3, 1], Vector2.UP, crowd_groups, 3 , center_y)
+	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 2, 1], Vector2.UP, crowd_groups, 2, center_y)
+	_append_manual_lane(LaneType.CROWD_MEMBER, [1, 2, 2], Vector2.DOWN, crowd_groups, 3 , center_y)
 	_append_manual_lane(LaneType.CAR, [1], Vector2.UP, car_groups, 3, center_y)
 
 func set_tilemap(tm):
