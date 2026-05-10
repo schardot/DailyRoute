@@ -7,6 +7,8 @@ signal assignment_completed(store: Area2D)
 var player: CharacterBody2D
 var stores: Array = []
 var current_store: Area2D
+var store_memory_size: int = 2
+var _recent_stores: Array[Area2D] = []
 
 static func create(parent: Node, player_ref: CharacterBody2D, stores_ref: Array) -> AssignmentSystem:
 	var sys := AssignmentSystem.new()
@@ -45,13 +47,30 @@ func start_random_assignment(avoid_same_as_current: bool = true) -> void:
 	start_assignment(chosen)
 
 func _pick_store(exclude: Area2D) -> Area2D:
-	var available: Array = []
-	for s in stores:
-		if s != exclude:
-			available.append(s)
+	var excluded: Array[Area2D] = []
+	if exclude != null:
+		excluded.append(exclude)
+	for s in _recent_stores:
+		if not excluded.has(s):
+			excluded.append(s)
+
+	var available: Array = stores.filter(func(s): return not excluded.has(s))
+	if available.is_empty():
+		# Memory is too restrictive — fall back to only avoiding the immediate previous.
+		available = stores.filter(func(s): return s != exclude)
 	if available.is_empty():
 		available = stores.duplicate()
-	return available.pick_random()
+
+	var chosen: Area2D = available.pick_random()
+	_remember_store(chosen)
+	return chosen
+
+func _remember_store(store: Area2D) -> void:
+	if store_memory_size <= 0:
+		return
+	_recent_stores.append(store)
+	while _recent_stores.size() > store_memory_size:
+		_recent_stores.remove_at(0)
 
 func _on_store_entered(store: Area2D) -> void:
 	if store == null:
