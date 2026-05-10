@@ -22,13 +22,8 @@ func spawn_from_stores(left_store: Node2D, right_store: Node2D) -> void:
 	global_position = Vector2(left_store.global_position.x, row_y)
 	target_x = right_store.global_position.x
 
-	var dir_x: float = sign(target_x - global_position.x)
-	if dir_x == 0.0:
-		dir_x = 1.0
-	_update_anim_for_direction(dir_x)
-		
 	_active = true
-	emit_signal("crossing_started", row_y)
+	crossing_started.emit(row_y)
 
 func _physics_process(_delta: float) -> void:
 	if not _active:
@@ -46,7 +41,7 @@ func _physics_process(_delta: float) -> void:
 
 	var reached: bool = (global_position.x >= target_x) if dir_x > 0.0 else (global_position.x <= target_x)
 	if reached:
-		emit_signal("crossing_ended", row_y)
+		crossing_ended.emit(row_y)
 		queue_free()
 
 func play_anim(anim_name: StringName) -> void:
