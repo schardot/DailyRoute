@@ -51,15 +51,13 @@ func _on_store_body_entered(body):
 
 	if completed:
 		return
-	if not body.has_goal:
-		return
 
 	if body.goal_color == color:
 		_correct_feedback()
 
 func _correct_feedback():
 	completed = true
-	emit_signal("player_entered")
+	player_entered.emit()
 
 func _setup_area():
 	monitoring = true
@@ -77,14 +75,11 @@ func _ensure_unique_material() -> void:
 		return
 	sprite.material = mat.duplicate()
 
-func _get_wall_color_for_store() -> Color:
+func get_wall_color() -> Color:
 	return wall_color
 
-func get_wall_color() -> Color:
-	return _get_wall_color_for_store()
-
 func _apply_store_palette() -> void:
-	set_colors(roof_color, _get_wall_color_for_store(), door_color)
+	set_colors(roof_color, get_wall_color(), door_color)
 
 func set_colors(roof: Color, wall: Color, door: Color):
 	var mat = sprite.material as ShaderMaterial
